@@ -1,0 +1,62 @@
+\newcommand{\FFC}{\emph{FFC}\xspace}
+\newcommand{\BIC}{\emph{BIC}\xspace}
+\newcommand{\NoBIC}{\emph{BIC}\xspace}
+\newcommand{\BFC}{\emph{BFC}\xspace}
+\newcommand{\BFS}{\emph{BFS}\xspace}
+\newcommand{\TSB}{\emph{TSB}\xspace}
+\newcommand{\BIS}{\emph{BIS}\xspace}
+\newcommand{\ACS}{\emph{ACS}\xspace}
+\newcommand{\DCS}{\emph{DCS}\xspace}
+\newcommand{\ac}{\emph{ac}\xspace}
+\newcommand{\LC}[1]{\ensuremath{LC(#1)}\xspace}
+
+\newcommand{\pc}{\emph{pc}\xspace}
+\newcommand{\ipc}[2]{\ensuremath{pc(#1,#2)}\xspace}
+\newcommand{\pcCBL}{\emph{CBL}\xspace}
+
+\newcommand{\trueBIC}{\emph{trueBIC}\xspace}
+\newcommand{\falseBIC}{\emph{falseBIC}\xspace}
+\newcommand{\PC}[1]{\ensuremath{PC(#1)}\xspace}
+\newcommand{\ACSet}[1]{\ensuremath{ACS(#1)}\xspace}
+\newcommand{\DCSet}[1]{\ensuremath{DCS(#1)}\xspace}
+
+
+\newcommand{\setBFC}[1]{\ensuremath{BFC(#1)}}
+\newcommand{\setBIC}[1]{\ensuremath{BIC(#1)}}
+\newcommand{\setNoBIC}[1]{\ensuremath{NOBIC(#1)}}
+\newcommand{\setSZZFound}[1]{\ensuremath{PCSZZ(#1)}}
+\newcommand{\setSZZtoken}[1]{\ensuremath{PCtoken(#1)}}
+\newcommand{\setSZZline}[1]{\ensuremath{PCline(#1)}}
+\newcommand{\setTrueBIC}[1]{\ensuremath{TrueBIC(#1)}}
+\newcommand{\setFalseBIC}[1]{\ensuremath{FalseBIC(#1)}}
+\newcommand{\setTRUEPositives}[1]{\ensuremath{TruePos(#1)}}
+\newcommand{\setFALSEPositives}[1]{\ensuremath{FalsePos(#1)}}
+
+
+
+\newcommand{\rqPrevChanges}{When a line is changed to fix a bug, how frequently was this line the cause of a bug?}
+ \newcommand{\rqPrevBIC}{When a line is changed to fix a bug, how frequently is its previous change the cause of a bug?\xspace}
+
+ 
+
+
+\ifdraft
+  \newcommand{\dmg}[1]{{\color{blue}\emph{Daniel says: #1}}\xspace}
+  \newcommand{\gemaTODO}[1]{{\color{red}\emph{Gema MUST do: #1}}\xspace}
+  \newcommand{\gema}[1]{{\color{green}\emph{Gema says: #1}}\xspace}
+  \newcommand{\grex}[1]{{\color{orange}\emph{Gregorio says: #1}}\xspace}
+  \newcommand{\jgb}[1]{{\color{red}\emph{Jesus says: #1}}\xspace}
+\else
+  \newcommand{\dmg}[1]{}
+  \newcommand{\grex}[1]{}
+  \newcommand{\gema}[1]{}
+  \newcommand{\gemaTODO}[1]{}
+  \newcommand{\jgb}[1]{}
+\fi
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "bugIntroChanges.tex"
+%%% End:
