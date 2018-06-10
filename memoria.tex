@@ -1934,8 +1934,9 @@ Figure~\ref{fig:snapshot3} shows how apply the hypothetical test into the geneal
 \end{figure}
 
 
-subsection{Criterion to apply to the test Signalling a Bug:}
- \gema{Write some intro here.}
+\subsection{Criterion to apply to the test Signalling a Bug:}
+ \gema{Write some intro here. que tenemos que hacer cuando no hay una vision linear si no que tenemos branches. Decir que la idea de test se va a aplicar a todos los ancestor commits }
+ \gema{Explicar porque algunas veces no encontraremos el FFC cuando tiene sentido hablar de FFC, explicar que otras veces no vamos a estar seguros ....}
  \begin{enumerate}
 	\item Undecidable \FFC : When we cannot find the \FFC. In this class, we will not find the \FFC between all the \ACSet{b} using the test, because the test may not be implemented due to some factors. Thus, the \FFC will be the first change that manifests the bug in the lineal vision precedence under analysis.
 	\item \FFC in external dependencies: When the bug is not caused by a change committed into the ancestral tree under analysis but, another external factors cause the failure such as: (1) There is a bug in the dependencies of the project; (2) There is a bug in API's used in the project. In this class, we will find the \FFC between all the \ACSet{b} using the test, but this \FFC is not the cause of the bug, this \FFC will be the first time that the malfunction manifests in my lineal vision precedence.
@@ -1992,39 +1993,124 @@ Figure~\ref{fig:algoritmo} presents the decision tree in order find the \BIC ,wh
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cleardoublepage
-\chapter{Empirical Study on the Application of the Theory}
+\chapter{Empirical Study on the Applicability of the Theory}
 \label{chap:application}
+This chapter presents an empirical study on the applicability of the theoretical model presented in the chapter 5. The empirical study have been carried out analyzing the publicity available data sources from two OSS projects, Nova and ElasticSearch, and it can be extended to others projects as long as the project uses VCS and bug-tracking systems. As a reminder, the goal of this thesis is to describe a model to identify unequivocally the bug introduction commit or to decide that it does not exist given a bug fixing commit. Furthermore, this model allows to define the ``gold standard" of which commits in a the repositories are \BIC. 
 
-\section{Data Sources}
-\label{sec:sources}
+This chapter is divided into three sections. The first part it is an brief analysis that describes the projects Nova and ElasticSearch and arguments its election as cases of study to identify the origin of the bugs.
 
-In general terms, libre software projects provide a huge quantity of data related to software development. This data is publicly available to be used for anyone interested in mining them. The basic ones are those that help in the developing and maintenance stage of the project and help to coordinate the whole project ecosystem: source code management systems, mailing lists or bug tracking systems. In addition, there are others that also help in this process such as: releases of source code, wikis, web sites and some others.
-This dissertation is focused on the analysis of the SCM that is the central point of all interactions, being a way of collaboration among all of the developers. Among others, the usual ones found in FLOSS projects are the CVS, Subversion, Git, Mercurial or Bazaar. The case of study, the Mozilla Foundation, uses Mercurial as its SCM. Initially this community used CVS, although it migrated to Mercurial around 2006. The following subsection will introduce the SCMs and main pieces of information that are interesting from a researching point of view.
+The second part clearly defines the methodology followed in order to manually analyze and identify the bug introduction commits given a bug fixing commit. This methodology explains how the raw dataset has been filtered and details step by step the stages to identify or discard the \BIC from a specific bug report.  
 
+Lastly, the third part presents the results after applying the model into Nova and ElasticSearch project. The results give more insights into problem of correctly finding the \BIC by comparing the ``gold standard" previously identified, with the performance of some state-of-the-art approaches. Computing  the \emph{real} false positives, false negatives. At the end, there is a discussion section to discuss the impact of the results in the community.  
 
-\subsection{Introduction to the Source Code Management Systems}
-Source code management systems (SCMs in the following) are tools that help in the software development process. From the very beginning, FLOSS projects have used them as a way to centralize the work done by all the distributed people. As we have seen, FLOSS communities own some common characteristics, such as a huge distribution around the world, using different mechanisms to keep in touch.
-So far, SCMs such as Subversion or CVS have been used as a way to support the development process. However, in recent years, some others have appeared trying to fill the gap left by the centralization of the source code development process and the distribution effort of FLOSS developers. All in all the main goal of this type of systems is to use them as a back-up strategy, having access to historical revisions of the source code. This let us to research them and study who is the author, what was added, modified or removed and when it was done.
-In recent years, several communities have migrated to SCMs like Git or Mercurial. These migrations were due to several and specific characteristics that made them more attractive in terms of software development.
+\section{Case study and datasets}
+\label{sec:case}
+There are two cases of study in this empirical study that are explained in the subsections 6.1.1 and 6.1.2. The exploratory project is Nova while ElasticSearch is the confirmatory project. Both projects have similar characteristics that make them interesting projects to be analyzed, but they also have some differences that might make the results be extended to other open source projects.  
 
-In addition, there are specific advantages when using distributed SCMs from a researching point of view:
+\subsection{Nova}
+
+%We have validated our methodology using the \emph{Grounded Theory}~\cite{charmaz2014constructing} to analyze tickets from two different Open Source projects.
+Nova is the most active module of OpenStack project in terms of contributions. OpenStack is a cloud computing platform to build a SaaS (software as a service) with a huge development community that makes it an interesting project to study. OpenStack has have a considerable growth of approximately 350 times in code size and 250 times in number of commits since its first release in November 2009.  Currently, it counts with more than 7,900 contributors, and significant industrial support from several major companies such as Red Hat, Huawei, IBM, HP, SUSE, etc. OpenStack is mainly written in Python. Currently it has more than 328,800 commits with more than 47 million lines of code\footnote{\url{http://stackalytics.com}}. All its history is saved and available in a version control system\footnote{\url{https://wiki.openstack.org/wiki/Getting_The_Code}}, an issue tracking system (Launchpad\footnote{\url{https://launchpad.net/openstack}}) and a source code review system (Gerrit\footnote{\url{https://review.openstack.org/}}).  Table \ref{tablenova} provides a summary of the Nova project. There are 1,602 distinct authors identified in the project from more than 200 different companies. 
+
+ \begin{table}[!t]
+\renewcommand{\arraystretch}{0.8}
+% if using array.sty, it might be a good idea to tweak the value of
+%\extrarowheight as needed to properly center the text within the cells
+\caption{Main parameters of the Nova project, June 2018.}
+\label{tablenova}
+\centering
+% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+
+\begin{tabular}{|l|c|}
+\hline
+Parameter & Size \\
+\hline
+\hline
+Companies Contributing &  216 \\
+\hline
+Commits & 32474 \\
+\hline
+Contributors & 1602 \\
+\hline
+LOCs & 4581836\\
+\hline
+Resolved Bugs &1930\\
+\hline
+\end{tabular}
+\end{table}
+
+In addition to the enormous diversity of people and companies contributing to Nova, the project has other characteristic that make it a good case of study.
+\begin{itemize}
+	\item \textbf{Research friendly}: The bug tracking system and the VCS are trustful data source when looking for bug-fixing information. In addition, the policy of adding the link of the bug fixing commit into the bug report information has helped when linking and analyzing two data sources.
+	\item \textbf{The openness of the data set}: all of the data analyzed in this chapter and through the thesis are publicly available. And, this help in the replicability process of the experiments which is a fundamental part of the Empirical Software Enginering .
+	\item \textbf{Lineal VCS}: OpenStack policy keeps basically a lineal history, because it uses rebase before the gate accepts commits instead of merge the branches. This makes Nova easiest to analyzed since we can discard the cases where the bug might be present in some simultaneously existing branches.  
+	\item \textbf{Programming Language}: Nova uses python as programming language and Python is an interpreted language that do not need to compile it before run it. In addition, Python is dynamically typed which means that the type for a value is decided at runtime, not in advance. These specific characteristic of python might affect the way that bugs are inserted into the source code of a project.
+	\end{itemize}
+
+\paragraph{Nova Dataset}:
+
+Launchpad works with issue reports called tickets, which describe bug reports, feature requests, maintenance tickets, and even design discussions. We retrieved randomly 125 closed tickets from Launchpad that were reported during 2015 and that have a commit merged into the code source . But, we are only interested in those tickets are reporting a real bug because it is necessary that a bug exits in order to identify its origin. Thus, to ensure that the tickets describe real bug reports, two different researchers analyzed them. This is not a trivial task; it is very labor intensive as it has to be done manually. Being the task repetitive, we developed a web-based tool\footnote{\url{http://bugtracking.libresoft.info}} described in Rodriguez \emph{et al.}~\cite{rodriguez2016bugtracking} that helps in the classification process. This tool offers the information that is relevant to decide if a ticket is describing a bug report, using information extracted automatically from the project repositories. As it offers a web-based interface, the tool allows for collaboration. Traceability and transparency in the identification of bug reports is also possible as all decisions are stored. 
+
+Each ticket was (manually) categorized into one of following three groups:
 \begin{enumerate}
-	\item As said before, having the database locally accessible is much faster to retrieve the data. In other centralized SCMs such as CVS or SVN the extraction of data is particulary slow due to the bottleneck represented by the network.
-	\item The use of this type of SCM also offers new information. From a mining point of view, there is new data accessible [Bird et al., 2009b] like the real authorship date. This is the example of people with no commit rights that had to create a patch and then submit those changes to a committer with commit rights. Finally, this developer could thank the participation by means of reflecting that in the log commit, in the AUTHORS file or in some other ways. Nowadays, and using some distributed SCM, that information could be specified in the same commit.
-	\item The distributed SCMs also provide other types of new data and this is related to the time when the change to the source code was actually committed. In terms of a traditional SCM, the date registered in the log system is the date registered by the server when a submission was committed. In the case of a decentralized SCM, this information contains the real date (and timezone) when a submission was committed by the author and not the date when it was submitted to the server. In addition, when a server registered that date, this was registered in the timezone and the date of the server and not with the timezone and real date of the authors what creates incorrect data.
+  \item \textit{Bug Report}: The ticket describes a bug report.
+  \item \textit{Not Bug Report}: The ticket describes a feature, an optimization/refactoring of the code, changes in test files, or any other situation... but not a bug report.
+  \item \textit{Undecided}: The ticket presents a vague description and cannot be assigner without doubts to any of the previous groups.
 \end{enumerate}
 
-Finally, it is worth mentioning that each small piece of information found in any SCM is obtained thanks to the existence of specific tools provided by the SCM. An example of this is the use of the hg log or hg diff commands provided by the Mercurial repository. Those commands help to retrieve specific data needed in this dissertation and will be detailed in following subsections.
+After this process, the tickets where both researchers agreed\footnote{Please, consider the reading of the paper for further information about the analysis and the ratio of agreement between the researchers} on they belongs to the bug report group were included into the final dataset. Then, these tickets were linked to their bug-fixing commits, thereby the final dataset counts with 60 real bug reports that are linked with real bug-fixing commits.
 
-\subsection{Introduction to the diffCommand}
-The hg diff command is based on the diff GNU util developed by Paul Eggert, Mike Haertel, David Hayes, Richard Stallman and Len Tower [MacKenzie et al., 2002]. However there is an additional feature and this is that they are using the diff command with a special flag named as XDF NEED MINIMAL and helps to obtain the minimal diff file possible among all the options.
-The basic diff algorithm is described in [Ukkonen, 1985], [Miller \& Myers, 1985] and [Myers, 1986]. In any case, if no further options are detailed when running this command, the typical outcome will be the unified diff. This format is the usual one found in most of the SCMs what would help to extend this analysis.
+\subsection{ElasticSearch}
+ElasticSearch is a distributed Open Source search and analytics engine written in Java. It is continuously evolving since the first release in 2010 and currently it counts with more than 3,900 commits. We have chosen this project because it has a similar number of commits to OpenStack and its policy of labeling issues is very strict. In the project they use the label ``bug" to describes issues considered as bug by the developers of ElasticSearch. Thus, researchers can rely on developers' opinion, and be sure that the issues retrieved from the issue tracking system are real bug reports and their bug-fixing commit is fixing a bug. The code of ElasticSearch is hosted in GitHub\footnote{\url{https://github.com/elastic/elasticsearch/}}, and its issue list is available in GitHub\footnote{\url{https://github.com/elastic/elasticsearch/issues}} as well. Table \ref{tableES} provides a summary of the ElasticSearch project. There are 1,000 distinct authors identified in the project and more than 4,500 closed bug reports. 
 
+ \begin{table}[!t]
+\renewcommand{\arraystretch}{0.8}
+% if using array.sty, it might be a good idea to tweak the value of
+%\extrarowheight as needed to properly center the text within the cells
+\caption{Main parameters of the ElasticSearch project, June 2018.}
+\label{tableES}
+\centering
+% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+
+\begin{tabular}{|l|c|}
+\hline
+Parameter & Size \\
+\hline
+\hline
+Commits & 39402 \\
+\hline
+Contributors & 1032 \\
+\hline
+LOCs & 1187732\\
+\hline
+Resolved Bugs & 4958\\
+\hline
+\end{tabular}
+\end{table}
+
+In addition to the enormous diversity of people and companies contributing to Nova, the project has other characteristic that make it a good case of study.
+\begin{itemize}
+	\item \textbf{Research friendly}: The code and the bug report are hosted in GitHub and it is a trustful data source when looking for bug-fixing information. In addition, the policy of adding the link of the bug report number or the pull request number into the bug fixing commit help when linking and analyzing two data sources.
+	\item \textbf{The openness of the data set}: all of the data analyzed in this chapter and through the thesis are publicly available. And, this help in the replicability process of the experiments which is a fundamental part of the Empirical Software Engineering .
+	\item \textbf{No Lineal VCS}: Contrary to OpenStack, ElasticSearch repository counts with more than 160 branches which creates a no lineal history. This makes ElasticSearch more complicated to analyze.
+	\item \textbf{Programming Language}: ElasticSearch uses Java as programming language. Java encourages error-free programming by being strictly typed and performing run-time checks and it is independent of hardware. These specific characteristic of Java might affect the way that bugs are inserted into the source code of a project.
+	\end{itemize}
+
+\paragraph{Dataset ElasticSearch}: 
+
+ElasticSearch works with issue reports labeled as ``bug" which discards the necessity of filter the issues that are not describing real bug reports. Thus, since ElasticSearch and Nova have similar amount of commits, we retrieved randomly the same amount of closed bugs that are in Nova dataset, a total of 60 bugs reported during 2015 that have a commit merged into the code source. Then, these bug reports were linked to their bug-fixing commits, thereby the final dataset counts with 60 real bug reports that are linked with real bug-fixing commits.
+
+
+%Filtering (first stage) was only necessary in the case of Nova, as Launchpad does not distinguish between bug reports and other issues. Two researchers were involved in this process, so that each ticket was analyzed by both researchers independently. For ElasticSearch, we relied on its strong policy of bug labeling.
+
+%To identify the \FFC of ticket (second stage), we manually analized tickets (that contain bugs, as a result from the first stage) from ElasticSearch and Nova. We have navigated back into each line of to the \BFC in order to understand the context and locate, when it was possible, the \FFC of the bug. At some cases the \FFC was the bug introducing change and in other cases we only were able to locate the \FFC that manifest the bug.
 
 \section{Methodology}
 \label{sec:methodology}
 
-In the case of OpenStack and ElasticSearch, the data needed can be obtained from the source code management, issue tracking system, and code review system. In our analysis, we have focused on Git\footnote{\url{https://git-scm.com/}} as source code management, Launchpad\footnote{\url{https://launchpad.net/}} as issue tracking system, and Gerrit\footnote{\url{https://www.gerritcodereview.com/}} as code review supporting tool. Furthermore, GitHub\footnote{\url{https://github.com/}} has been used such as issue tracking system and pull request system. GitHub and Launchpad work with issue reports called tickets, which describe bug reports, feature request, maintenance tickets, and even design discussions. In our study, however we are only interested specifically in those tickets that describe a bug report that has been fixed (i.e., merged into the code source) and closed.
+The methodology used in this empirical study is divided into two parts, the first part is the filtering stage where the researchers ensure that the datasets fulfilled the requirements to be analyzed under the theory of bug introduction. While the second stage describes each of the steps from the bug-fixing commit until identify (or not) the \BIC and the \FFC.
 
 Figure~\ref{fig:diagram} provides an overview of each step involved in our study and their outcomes.
 
@@ -2039,212 +2125,277 @@ Figure~\ref{fig:diagram} provides an overview of each step involved in our study
 \subsection{First Stage: Filtering}
 \label{sec:methodologyFS}
 
-This stage will be only applicable to those issue tracking systems that do not have a strict policy of bug labeling, such as Launchpad. In these systems, we have to identify those tickets that are describing a bug report. This is not a trivial task; it is very labor intensive as it has to be done manually. Being the task repetitive, we developed a web-based tool\footnote{\url{http://bugtracking.libresoft.info}} described in Rodriguez \emph{et al.}~\cite{rodriguez2016bugtracking} that helps in the classification process. This tool offers the information that is relevant to decide if a ticket is describing a bug report, using information extracted automatically from the project repositories. As it offers a web-based interface, the tool allows for collaboration. Traceability and transparency in the identification of bug reports is also possible as all decisions are stored.
+This stage ensures that the bug reports stored in the datasets can be applicable to out model. Despite the strict policy of bug labelling in ElasticSearch and the agreement on classifying bug reports from other issues in Nova, this stage analyzed carefully each piece of information in the bug reports to ensure the ``gold standard". Thus, the dataset should only store bugs that are considered bugs at the moment of bug fixing. For example, there is a (hypothetical) test that fails right before the bug-fixing commit, and does not fail right after it.  This also means that if there are issues that are reported as bugs but are rather new feature requests or improvement suggestions as discussed are excluded. 
 
-Each ticket was (manually) categorized into one of following three groups:
-
-\begin{enumerate}
-  \item Group 1 (\textit{Bug Report}): The ticket describes a bug report.
-  \item Group 2 (\textit{Not Bug Report}): The ticket describes a feature, an optimization/refactoring of the code, changes in test files, or any other situation... but not a bug report.
-  \item Group 3 (\textit{Undecided}): The ticket presents a vague description and cannot be assigner without doubts to any of the previous groups.
-\end{enumerate}
-
-\subsection{Second Stage: Identifying the First Failing Change of a ticket}
+\subsection{Second Stage: Identifying the First Failing Commit and the Bug Introducing Commit of a bug report}
 \label{sec:methodologySS}
 
-The input of this stage is a set of tickets that describe a \emph{real} bug.
-In addition tickets have to be closed and a bug-fixing commit merged in the code source of the project to be able to apply our methodology.
+The input of this stage is a set of bug report from Nova and ElasticSearch that describe bugs in the moment of bug fixing. The steps in this stage consists on manually identify the corresponding Bug-Introducing commit and the First-Failing commit for a Bug-fixing commit, or decide that there is not a \BIC. The identification of \BIC given a \BFC means that the bug was present at the time commit the lines. Since the \BIC can be in the previous commit or in any of the descendent or antecesor commits, it is necessary to manually analyze them in order to ensure the credibility of the ``gold standard". In the cases where the bug was not present at the time of writing the lines, then there is not a \BIC, it is necessary to find the \FFC. To better understand this process, the steps are detailed in the following paragraphs. Remember the terminology described in section 5.1.1 that explains concepts such as \BFC, \setBFC{b}, \PC{b}, \ACSet{b} ..., etc. 
+
+%Requirements have changed invalidating previous assumptions (GDPR). In this case there is no bug introducing commit.
+%External resources have been modified (GitHub API). In this case there is no bug introducing commit.
+%Internal resources have been modified (directory structure and permissions; the Chromium bug). In this case there is a bug introducing commit but this commit did not directly affect the lines of code modified in the bug fixing commit, so SZZ cannot find it; this bug introducing commit would have taken place after the previous commit and before bug reporting. 
 
 \subsubsection{Finding the lines that fixed the bug}
 
-At this stage, we have to find the source code that fixed the bug $b$. Therefore, we have to:
+At this stage, we have to find the source code that fixed the bug, notice that a generic bug is referred as $b$. Therefore, we have to:
 	\begin{itemize}
-		\item Identify the change(s) that fixed the bug,\setBFC{b}\footnote{To simplify, and because of each \setBFC{b} in ElasticSearch and Nova was always a singleton, we are going to assume in the methodology that in \setBFC{b} only there will be a unique \BFC}
-		After fixing a bug, it is common practice in many open source projects, that developers provide information in the ticket threat of bug, including a link to the commit in the versioning system.
-		\item Find the lines that the \setBFC{b} touched to fix the bug, \LC{c_l} where c\_l is the \BFC:
-	In the previous link, there is all the information related with the code review process. By applying \textit{``git diff''} we can identify what lines have been added, modified or deleted between the version after the \setBFC{b} and the previous one.
-		\item Filter out lines that are not code:
-		Lines that have been modified, but do not contain source code (e.g., comments or blank lines) are not considered.
+		\item Identify the change(s) that fixed the bug,\setBFC{b}. In most of the analyzed cases this set was always singleton, it means that in each bug there is an unique \BFC. But, in the bug report \#1442795\footnote{\url{https://bugs.launchpad.net/nova/+bug/1442795}} there are two different \BFC that really fixed the bug. However to simplify, this methodology assumes that the \setBFC{b} is singleton, and in the case where more than one \BFC fixed the bug, the methodology will analyzed both bug-fixing commit.
+		\item Find the lines that the \setBFC{b} touched to fix the bug, \LC{c} where $c$ is the \BFC:
+	In the bug fixing commit linked to a bug report, there is all the information related with the code review process. By applying \textit{``git diff''} we can identify what lines have been added, modified or deleted between the version after the \setBFC{b} and the previous one. There also exist the possibility of visualize these changes between the version after the \setBFC{b} and the previous one
+ commit using GitHub. GitHub provides a friendly visualization.
+ 		\item Filter out lines that are not code:
+		Lines that have been modified, but do not contain source code (e.g., comments or blank lines) are not considered, and as a consequence they are not analyzed. In addition, there was a \BFC\footnote{\url{https://github.com/elastic/elasticsearch/commit/beaa9153a629c0950182e4e8c4f8eedd1c63f49f}} that closed two different bug reports. In this case, the lines related to the other bug was filtered out.	
 	\end{itemize}
 
-\subsubsection{Determining, for each of those lines, \LC{c_l}, what commit changed these lines for the last time}
+\subsubsection{Determining, for each of those lines, \LC{c}, what commit changed these lines for the last time}
 
-Each individual line touched by the \BFC has only one immediately previous commit in the lineal vision precedence graph. However, there could potentially be as many previous commits as modified lines in the \BFC in the ancestral tree graph. Thus, taking the ancestral graph as reference,  the result is a set of all previous commits of the bug $b$, \PC{b}.
+Each individual line touched by the \BFC has only one previous commit. However, there could potentially be as many previous commits as modified lines in the \BFC, see the genealogy tree in subsection 5.1.2. Thus, taking this genealogy tree as reference, the result is a set of all previous commits of the bug $b$, \PC{b}.  
 
-\subsubsection{Analyze each of these previous commit to determine the first failing change}
+\subsubsection{Analyzing each of these previous commit, and their descendent commits, to determine the \BIC and the \FFC}
 
-This analysis uses information available in the description of the ticket and from the logs of the \BFC and commits of \PC{b}. After understanding the context of the bug and the changes made by the \BFC, we select the lines of each \pc belonging to the \PC{b} and navigate back into the \ACS of these lines until find the line, if it is applicable, that caused the bug. As a result, we could be in one of these situations in order to determine the \FFC:
-\begin{itemize}
-	\item $ Undecidable \FFC $, i.e.,  when we cannot be sure to find the \FFC between all ancestral changes.
-	\item $ \FFC \notin= \ACS$, the bug has been caused by external dependencies: (1) Bug in dependencies or (2) Bug in API's.
-	\item $ \FFC \in = \ACS$, the bug has been caused by a change belonging to the chain of ancestor changes of the bug \ACSet{b}.
-\end{itemize}
+This analysis uses information available in the description of the ticket and from the logs of the \BFC and commits in the set of \PC{b}. After understanding the bug and the changes that fixed the bug. It is necessary to identify the \BIC, if it exists, and the \FFC.Thus, the identification of the \BIC starts with the the analysis of the \PC{b}, for each of the \PC{b} the lines changed are analyzed in order to find which one introduced the bug. At this point, there is three different scenarios and the behaviour is different depending where we are:
+\begin{enumerate}
+	\item \textit{The commit inserted the bug}: This commit is the \BIC because it inserted the buggy lines at the moment of their writing. We were able to identify the \BIC and it is also the \FFC because it is the first commit that manifested the wrong behaviour. According to the theoretical model, the TSB passes in the \BFC and the \BIS is one of the snapshot of a previous commit of the \BFC.
+	\item \textit{The commit does not inserted the bug}: In this case there will be two possible outcomes:
+		\begin{itemize}
+			\item The lines in the commit are correct, they do not inserted the bug at the time of their writing and other factors caused that these lines became to be buggy. There is no \BIC in this scenario and the analysis should be focuses on understand whether this pc is the \FFC or not. According to the theoretical model, the TSB is run in all the \ACSet{b} and it passes in the \BFC but it fails always in the antecessor snapshots. However, if we change the environment,  the TSB fails in the \BFC but it passes in the snapshot, and the first \BIS that passes in the sequence of \BIS is the \FFC.
+			\item The lines in the commit are syntactic sugar and semantically equivalent modifications (refactorings): This means that the commit remains with the same behaviour than before, thereby we need to navigate back into, the \DCSet{b} and start again in the first point of this list..
+		\end{itemize}
+	\item \textit{It is not sure that the commit inserted the bug}: In this case we need to continue navigating back into the \DCSet{b}, if this commit inserted by first time the descendent lines of the \LC{c} and we are not sure if they are buggy or not, we can classify this commit as ``undecided". This means that after the analysis we were unable to manually find the \BIC despite it exists, or that we were unable to find the \FFC or \BIC because we did not have enough context.
+\end{enumerate}
+
 
 \subsection{Outcomes}
 
-At the end of the process, we may have several outcomes for each ticket and commit.
-\subsubsection{Tickets}
+At the end of the process there are three possible outcomes for each bug report analyzed. The outcomes are related with the unequivocally identification of the \BIC and \FFC given a \BFC.
+These outcomes are explained in the following list:  %\subsubsection{Tickets}
 
-There are two possible outcomes for each ticket:
-
+%There are three possible outcomes for each bug report analyzed:
 \begin{itemize}
-	\item Does not exist a \FFC in the set of ancestral commits \ACSet{b} because the ticket was classified into (1) Undecidable \FFC or (2) $ \FFC \notin= \ACS$. Therefore, there is not any buggy line in the \ACS of the \BFC, and we ware only able to find the first commit in which the bug manifested. We will refer this set of tickets as \textit{``Without Bug''}.
-	\item A \FFC exists in the set of ancestral commits \ACSet{b}: In this case we found a the bug introducing change among the ancestral commits. We will refer this et of tickets as \textit{``Bug''}. Furthermore, the \FFC of each ticket could be in one on the following sets:
+	\item A bug report has a Bug-Introducing Change: In this case we are sure that there is at least one bug introducing change among the previous commit set, descendent commit set or ancestor commits set. However, during the manual analysis it may occur that:
 		\begin{enumerate}
-			\item $\FFC \in \PC{b}$ : The bug introducing change are found in the \PC{b} set.
-			\item $\FFC \notin \PC{b}$ : The bug introducing change are not found in the \PC{b} set but it belongs to the \ACSet{b} set.
+			\item We were able to manually identify this moment or,
+			\item We were unable to manually identify this moment.
 		\end{enumerate}
+		Furthermore, in this scenario, the \BIC is also the \FFC.
+	\item A bug report does not have a Bug-Introducing Change: In this case, we are sure that any line contained the bug when it was committed into the source code, and other factors such as modification in internal resources, changes in external resources, buggy code in third-parties or changes in the requirements invalidate previous assumptions are the cause of the bug-fixing commit. And, none of the antecesor commits has inserted the wrong lines, thereby we can not blame any of them and we are only able to identify the first time that the bug manifested in the code. Also, in this case it may occur that:
+	\begin{enumerate}
+			\item We were able to manually identify the \FFC or,
+			\item We were unable to manually identify the \FFC.
+		\end{enumerate}
+	\item It is not clear whether or not a bug report has a Bug-Introducing Change: Some bugs report does not detail enough information about the failure and the bug fixing commit is not enough to decide whether or not there is a \BIC. Also, some commits are very complex to understand their changes and we can not decide whether it inserted the bug or not.
+
 \end{itemize}
 
-\subsubsection{Commits}
-
-There are three possible outcomes for each commit analyzed:
-\begin{itemize}
-	\item It is the first failing change, the change caused the later fixed%. Also, we could classify each bug introducing change as:
-%	\begin{enumerate}
-%		\item \BIC's found with SZZ: When the algorithm is able to locate the $pc$, and it is a true positive.
-%		\item \BIC's not found with SZZ: When the \FC only added new lines since some $pc$ forgot to add, (i.e, an if/else condition). The SZZ algorithm could not found it because it discards these situations.
-%	\end{enumerate}
-	\item It is the closer first failing change.
-	\item It is not a (closer) first failing change, the change did not cause the bug. %In addition, according to SZZ algorithm this commit is false positive because the algorithm is able to locate it but it is not the cause of the failure.
-\end{itemize}
-
-
-\section{Case study: OpenStack and Nova}
-\label{sec:case}
-
-We have validated our methodology using the \emph{Grounded Theory}~\cite{charmaz2014constructing} to analyze tickets from two different Open Source projects.
-
-The first project, Nova, belongs to the OpenStack project. OpenStack is a cloud computing platform with a huge development community (with more than 5,000 developers), and significant industrial support from several major companies such as Red Hat, Intel, IBM, HP, etc. OpenStack is written in Python. Currently it has more than 321,800 commits with more than 20 million lines of code\footnote{\url{http://activity.openstack.org/dash/browser/}}. All its history is saved and available in a version control system\footnote{\url{https://wiki.openstack.org/wiki/Getting_The_Code}}, an issue tracking system (Launchpad\footnote{\url{https://launchpad.net/openstack}}) and a source code review system (Gerrit\footnote{\url{https://review.openstack.org/}}).
-
-The second project is ElasticSearch, a distributed Open Source search and analytics engine written in Java. We have chosen this project because although it has a lower number of commits than OpenStack, ElasticSearch counts with over 29,000 commit, its policy of labeling issues is very strict. Thus we can be sure that the tickets analyzed, those labeled as bug reports, are \emph{real} bug reports. The code of ElasticSearch is hosted in GitHub\footnote{\url{https://github.com/elastic/elasticsearch/}}, and its issue list is available in GitHub\footnote{\url{https://github.com/elastic/elasticsearch/issues}} as well.
-
-Filtering (first stage) was only necessary in the case of Nova, as Launchpad does not distinguish between bug reports and other issues. Two researchers were involved in this process, so that each ticket was analyzed by both researchers independently. For ElasticSearch, we relied on its strong policy of bug labeling.
-
-To identify the \FFC of ticket (second stage), we manually analized tickets (that contain bugs, as a result from the first stage) from ElasticSearch and Nova. We have navigated back into each line of to the \BFC in order to understand the context and locate, when it was possible, the \FFC of the bug. At some cases the \FFC was the bug introducing change and in other cases we only were able to locate the \FFC that manifest the bug.
-
-% Esta sería una contribución. La respuesta es: Lo buscas a mano, y hemos encontrado .... y en todos ellos sabemos que el error fue introducido aqui . El fallo en el sentido en que sabemos donde está el primer commit que falla, o almenos sabemos que está antes de tal sitio, porque en algunos casos es muy dificil saber donde está, pero podemos decir que está antes de tal sitio y además podemos decir que es debido a tal o tal cosa, por ejemplo los cambios de API.
-
+%\begin{itemize}
+%	\item Does not exist a \FFC in the set of ancestral commits \ACSet{b} because the ticket was classified into (1) Undecidable \FFC or (2) $ \FFC \notin= \ACS$. Therefore, there is not any buggy line in the \ACS of the \BFC, and we ware only able to find the first commit in which the bug manifested. We will refer this set of tickets as \textit{``Without Bug''}.
+%	\item A \FFC exists in the set of ancestral commits \ACSet{b}: In this case we found a the bug introducing change among the ancestral commits. We will refer this et of tickets as \textit{``Bug''}. Furthermore, the \FFC of each ticket could be in one on the following sets:
+%		\begin{enumerate}
+%			\item $\FFC \in \PC{b}$ : The bug introducing change are found in the \PC{b} set.
+%			\item $\FFC \notin \PC{b}$ : The bug introducing change are not found in the \PC{b} set but it belongs to the \ACSet{b} set.
+%		\end{enumerate}
+%\end{itemize}
+%
+%\subsubsection{Commits}
+%
+%There are three possible outcomes for each commit analyzed:
+%\begin{itemize}
+%	\item It is the first failing change, the change caused the later fixed%. Also, we could classify each bug introducing change as:
+%%	\begin{enumerate}
+%%		\item \BIC's found with SZZ: When the algorithm is able to locate the $pc$, and it is a true positive.
+%%		\item \BIC's not found with SZZ: When the \FC only added new lines since some $pc$ forgot to add, (i.e, an if/else condition). The SZZ algorithm could not found it because it discards these situations.
+%%	\end{enumerate}
+%	\item It is the closer first failing change.
+%	\item It is not a (closer) first failing change, the change did not cause the bug. %In addition, according to SZZ algorithm this commit is false positive because the algorithm is able to locate it but it is not the cause of the failure.
+%\end{itemize}
+%
+% we select the lines of each \pc belonging to the \PC{b} and navigate back into the \ACS of these lines until find the line, if it is applicable, that caused the bug. As a result, we could be in one of these situations in order to determine the \FFC:
+%\begin{itemize}
+%	\item $ Undecidable \FFC $, i.e.,  when we cannot be sure to find the \FFC between all ancestral changes.
+%	\item $ \FFC \notin= \ACS$, the bug has been caused by external dependencies: (1) Bug in dependencies or (2) Bug in API's.
+%	\item $ \FFC \in = \ACS$, the bug has been caused by a change belonging to the chain of ancestor changes of the bug \ACSet{b}.
+%\end{itemize}
+%
 
 \section{Results}
 \label{sec:results}
-This section presents the results of our analysis to locate the BIC using two different methods in two different projects. Furthermore, there is a comparison between our results, obtained by means of a manual analysis, with the ones obtained using SZZ algorithm.
+This section presents the results of the empirical analysis in order to locate the \BIC and the \FFC in two cases study, Nova and ElasticSearch. Furthermore, there is a comparison between the results obtained after applying the proposed model with the results obtained with the tradicional SZZ algorithm found in the current literature.
 
 \subsection{First Stage}
 \label{sec:resultsFS}
 
-This stage is only applicable to OpenStack. We randomly selected 125 tickets from the Nova and classified them using the Bugtracking tool~\cite{rodriguez2016bugtracking}. In 87 of the cases, the independent researchers agreed in the classification of the ticket, that is, their results matched in 70\% of the cases. Of those, 67 tickets had been classified as bugs, 16 as not bugs, and 4 as \emph{undecided}.
+%This stage is only applicable to OpenStack. We randomly selected 125 tickets from the Nova and classified them using the Bugtracking tool~\cite{rodriguez2016bugtracking}. In 87 of the cases, the independent researchers agreed in the classification of the ticket, that is, their results matched in 70\% of the cases. Of those, 67 tickets had been classified as bugs, 16 as not bugs, and 4 as \emph{undecided}.
 
+From the 120 bug report classified as bug reports in both projects, 58 from Nova and 58 from ES were considered in the next stage. The main reason was the discordance between the developers to classify them as bug. For example, there are some comments in the bug \#1185290 \footnote{\url{https://bugs.launchpad.net/nova/+bug/1185290}} where this discordance is obvious:
+	\begin{itemize}
+		\item `` I am not sure that I consider this a bug. Without --all-tenants=1, the code operates under your own tenant. That means that --all-tenants=1 foo should really be a no-op without --all-tenants=1. "
+		\item `` I disagree, mainly because the structure of the requests and code path should largely be transparent to the user. I would suggest that specifying --tenants should imply you are doing a query across --all-tenants=1unless the --tenants specified is the same as what is contained in OS\_TENANT\_NAME (the unless part is debatable)"
+	\end{itemize}
 
-From the 67 tickets classified as bug reports by both researchers, only 60 were considered in the next stage. This is because, for 7 tickets the \BFC was not merged in Nova, but in a different OpenStack project.
+Nevertheless, other reasons also were found, for instance the bug \#1431571 \footnote{\url{https://bugs.launchpad.net/nova/+bug/1431571}} reported a bug in a test file. We removed it from the analysis because a bug in a test file does not mean that the source code of the project may contain a bug. And, we also found that some bug reports such as \#1814\footnote{\url{https://github.com/elastic/elasticsearch/issues/1814}}, \#7740\footnote{\url{https://github.com/elastic/elasticsearch/issues/7740}} and \#1448075\footnote{\url{https://bugs.launchpad.net/nova/+bug/1448075}} are describing hypothetical scenarios. In these cases the bug description details a possible bug in the future, and we need to remove them from the analysis because despite the developers describe them as bug report, we understand that at the moment of submitting the bug-fixing change, the bug is not present in the project. 
 
 \subsection{Second Stage}
 \label{sec:resultsSS}
 
-This stage is applicable to OpenStack and Nova and presents the outcomes of the analysis to locate the suspicious \BIC of inducing the fixing commit. However, we found that at some cases it was difficult because some ticket was describing a bug that did not have any relationship with the fixed lines in the sense that the lines were correct at the time their was commited, or because third parts changed causing the lines were wrong after that change. Thus, instead of looking for the \BIC because it may exists or not, we have focused on locating what kind of \FFC could be found in each ticket analyzed.
+The main goal of this chapter is to apply the proposed model described in Chapter 5 to identify what are bug-introducing commits, and how they are related to bug-fixing commits. This model allows to define the ``gold standard" of which \BIC in Nova and ElasticSearch correspond with the \BFC. This chapter answers two different questions:
 
-Furthermore, to ensure we have understand the description of the bug, we contacted with two developers of ElasticSearch that participated during the bug-fixing process of the tickets analyzed. And, we asked them to classify the 60 tickets between \BIC, \NoBIC or \emph{Undecided} depending on the ticket analyzed was describing that the behavior was buggy from the beginning (\BIC), the behavior became buggy as the system had evolved or the bug was caused by other aspects (\NoBIC), and in case of doubts they classified the ticket as \emph{Undecided}. The agreement between the two experts and the first author was measured with the \emph{Fleiss' kappa} which is a statistical measure for assessing the reliability of agreement between a number of rates when assigning a classification of a number of items in different groups~\cite{warrens2010inequalities}. The overall agreement measured was 0.527778 which means a moderate agreement which indicates that despite of the first author is not an expert in the project she has enough experience to carry out this analysis and the results are significant, at least as start point to understand the origin of the bugs and all the elements that take place in this complex phenomenon.
+The first part presents the results after applying the model to the data set. Thus, to demonstrate how the model works, we gathered a set of \BFC from two projects, and find out (manually) their \BIC when it exists. As it is mentioned before, we apply the definitions of \BIC and \BFC based on the existence of a \TSB. In case we cannot find the \BIC, we could consider excluding the corresponding \BFC from the study, since the empirical study is focused in the cases when \BIC can be found or when we are sure it does not exist. 
 
-On the other hand, we also have contacted with developers from OpenStack that participated during the bug-fixing process of the tickets selected but, due to the fact they are continuously changing from project and companies none of them could answer in a proper way that question. From this point in advance, we will take the analysis of the first author to find the \FFC. Notice, that when the first author have doubt about the classification of some ticket, she asked some of the other author in order to give an external view and confirm/discuss her opinion.
+The second part presents the effectiveness of SZZ-like algorithm. Once we have the ``gold standard" we can evaluate how SZZ-like algorithms ``really" perform which it is an important contribution to the current literature because as far as we know, any researcher have carried out this empirical anlaysis. 
+
+%Furthermore, to ensure we have understand the description of the bug, we contacted with two developers of ElasticSearch that participated during the bug-fixing process of the tickets analyzed. And, we asked them to classify the 60 tickets between \BIC, \NoBIC or \emph{Undecided} depending on the ticket analyzed was describing that the behavior was buggy from the beginning (\BIC), the behavior became buggy as the system had evolved or the bug was caused by other aspects (\NoBIC), and in case of doubts they classified the ticket as \emph{Undecided}. The agreement between the two experts and the first author was measured with the \emph{Fleiss' kappa} which is a statistical measure for assessing the reliability of agreement between a number of rates when assigning a classification of a number of items in different groups~\cite{warrens2010inequalities}. The overall agreement measured was 0.527778 which means a moderate agreement which indicates that despite of the first author is not an expert in the project she has enough experience to carry out this analysis and the results are significant, at least as start point to understand the origin of the bugs and all the elements that take place in this complex phenomenon.
+
+%On the other hand, we also have contacted with developers from OpenStack that participated during the bug-fixing process of the tickets selected but, due to the fact they are continuously changing from project and companies none of them could answer in a proper way that question. From this point in advance, we will take the analysis of the first author to find the \FFC. Notice, that when the first author have doubt about the classification of some ticket, she asked some of the other author in order to give an external view and confirm/discuss her opinion.
 
 
-\subsection{ RQ1: Could the location of a bug be modeled on the moment of its first failing change and its dependencies? }
-Table~\ref{tableBugNoBug} shows the classification of each ticket in Nova and ElasticSearch, after find the \FFC. \gema{Explicar a que se refiere cada una de las dos categorias}
+\subsection{ RQ1:What is the frequency for a bug-fixing commit being induced by a bug-introducing commit?}
+Table~\ref{tableBugNoBug} shows the number of bug-fixing commit that have been induced by a bug-introducing commit and the number of bug-fixing commit that have not been induced by a bug-introducing commit. It is noticed that in ElasticSearch the number of bug-fixing commit induced by a \BIC is higher than in Nova, and probably the reason is the programming language. While Python is a dynamic language that can be run without compile it before, Java is strictly typed and performing run-time checks. 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Results of the analysis of the previous commits using both methods for Nova.}
+	\caption{Percentage of Bug-Fixing Commit with a Bug-Introducing commit \emph{BIC}, without a Bug-Introducing Commit \emph{NO\_BIC} and Undecided..}
 	\label{tableBugNoBug}
 	\centering
-	\begin{tabular}{|c||c||c||c| }
+	\begin{tabular}{|c|c|c|c| }
 		\hline
-  		&  Without-Bug & With-Bug & Unknown \\
+  		&  BIC & NO\_BIC & Undecided \\
 		\hline
-		ES & (\%) &  (\%) &  (\%)\\
-		Nova & (\%) &  (\%) & (\%)\\
+		\hline
+		Nova & 38 (65\%) & 14 (24\%) & 6 (10\%)\\
+		\hline
+		ES & 45 (77\%) &  6 (10\%) & 7 (12\%)\\
 		\hline
 	\end{tabular}
 \end{table}
 
-Table~\ref{tableFFC} shows the classification of the \FFC in Nova and ElasticSearch, depending on the kind of \FFC. \gema{Explicar a que se refiere cada una de las dos categorias}
+\subsubsection{RQ1.1: Could the location of a bug be modeled on the bug-introducing moment and first failing moment?}
+
+Table~\ref{tableBICFFC} shows the percentage of \BIC and \FFC that have been manually identified by using the model. By definition, in theory our model is able to identify the \FFC and the \BIC whether it exists, but in practise, since the identification needs to be done manually, sometimes we did not identify the \BIC or the \FFC. Thus, for the 58 \FFC and 38 \BIC belongs to Nova dataset, we successfully identify 40 \FFC and 25 \BIC.
+In the dataset of ElasticSearch, from the 60 \FFC and 45 \BIC, we successfully identify 49 \FFC and 34 \BIC.
+
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Results of the analysis of the previous commits using both methods for Nova.}
-	\label{tableFFC}
+	\caption{Percentage of Bug-Introduced Commit and First Failing Commits identified after applying the theoretical model.}
+	\label{tableBICFFC}
 	\centering
-	\begin{tabular}{|c||c||c||c| }
+	\begin{tabular}{|c|c|c|c|}
 		\hline
-  		&  \FFC not in \ACS & \FFC in \ACS & \FFC in \emph{PC} \\
+  		&  BIC & FFC & Undecided \\
 		\hline
-		ES & (\%) &  (\%) &  (\%)\\
-		Nova & (\%) &  (\%) & (\%)\\
+		\hline
+		Nova & 25 (66\%) & 40 (69\%) & 18 (31\%)\\
+		\hline
+		ES & 36 (80\%) &  48 (83\%) & 10 (17\%)\\
 		\hline
 	\end{tabular}
 \end{table}
+
+\subsubsection{RQ1.2: Which reasons may cause that a bug-fixing commit is not induced by a bug-introducing change?}
+Additionally, in those cases where the bug report does not present a \BIC, we have looked for its cause. Table~\ref{tablereasosNoBIC} shows the main reasons for a bug not having a \BIC. 
+\begin{table}[!t]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{ Reasons why a bug-fixing commit is not induced by a bug-introduced commit }
+	\label{tablereasosNoBIC}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+  		& Nova & ElasticSearch  \\
+		\hline
+		\hline
+		Co-evolution Internal & 9 (50\%) & 2 (40\%) \\
+		\hline
+		Co-evolution External  & 3 (17\%) & 2 (27\%)\\
+		\hline
+		Compatibility & 2 (11\%) & 0 (0\%)\\
+		\hline
+		Bug in External API & 4 (22\%) & 2 (20\%)\\
+		\hline
+	\end{tabular}
+\end{table}
+Furthermore, they are explained below:
+\begin{itemize}
+ 	\item \textit{Co-evolution Internal}: Changes in the source code related to satisfy the new requirements of the project. Since internal resources have been modified (directory structure and permissions) or requirements have changed invalidating previous assumptions.  	
+	\item \textit{Co-evolution External}: Bugs are caused by some external change. External resources have been modified without a previous notification and the source code of the project starts to fail.
+  	\item \textit{Incompatibility}: Bugs are caused by an incompatibility between software and hardware or an incompatibility with some operating systems.
+  	\item \textit{Bug in External API}: A change in the API of a third-party code caused a bug in the source code of the project.
+\end{itemize}
+
+\gema{maybe make an inclusion list of all the scenarios}
+
+%Table~\ref{tableFFC} shows the classification of the \FFC in Nova and ElasticSearch, depending on the kind of \FFC. \gema{Explicar a que se refiere cada una de las dos categorias}
+%\begin{table}[!t]
+%	\renewcommand{\arraystretch}{1.3}
+%	\caption{Results of the analysis of the previous commits using both methods for Nova.}
+%	\label{tableFFC}
+%	\centering
+%	\begin{tabular}{|c||c||c||c| }
+%		\hline
+%  		&  \FFC not in \ACS & \FFC in \ACS & \FFC in \emph{PC} \\
+%		\hline
+%		ES & (\%) &  (\%) &  (\%)\\
+%		Nova & (\%) &  (\%) & (\%)\\
+%		\hline
+%	\end{tabular}
+%\end{table}
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{30em}
-\textbf{RQ1}
+\textbf{RQ1: A bug-fixing commit is not always induced by a bug-introducing commit and depending on the programming language used in the project this situation is more frequent. The main reasons why a bug-introducing commit is not present in a bug-fixing commit is the co-evolution internal and external.}
 \end{minipage}}
 \vspace{0.1cm}
 
 \subsection{ RQ2: What are the specifications that define the effectiveness of an algorithm used to locate the origin of a bug? }
-%reasons why the SZZ is not working well
+After applying the model and identifying the number of \BIC and \FFC in our dataset, we have the ``gold standard" in which we can be sure of the number of bug-fixing commit with a bug-introducing change and without a bug-introducing change. For that reason, we are able to really compute the true/false positives/negatives for an algorithm, and for that purpose we have chosen the SZZ-1 algorithm~\cite{kim2008classifying}, which is an enhancement proposed by Kim~\textit{et al.} of the SZZ. 
+
+The SZZ-1 algorithm does not compute the bug-fixing changes with only new lines added, and in the ``gold standard" of Nova there are tree \BFC with only new lines whereas in ElasticSearch there are seven. These cases are the false negatives of the SZZ-1. Furthermore, in some \BFC, the SZZ-1 algorithm identifies more than on possible bug-introduction change, in this case if the \BFC was induced by a \BIC and the SZZ-1 is able to identify it, we compute one true positive and the rest of possible bug-introduction change as false negatives. On the contrary, if the SZZ-1 is not able to identify the \BIC between the set of possible bug-introduction changes, we compute all of them as false positives.  
+
+The ``gold standard" of Nova consists of 25 Bug-Fixing commit with a bug-introducing change and six bug-fixing commits without a bug-introducing change. While the ``gold standard" of ElasticSearch is made up 36 bug-fixing commit with a bug-introducing change and six bug-fixing commits without a bug-introducing change. When applying the SZZ-1 algorithm to the set 31 \BFC of Nova, it returns a set of 63 possible bug-introduction changes. And when the algorithm is applied to the 42 \BFC of ElasticSearch, it returns a set of 73 possible bug-introduction changes. Table~\ref{realSZZ} presents the percentage of true/false positives/negatives for the SZZ-1 as well as the precision and recall.
+%We compare SZZ with the ?gold standard?, and also SZZ-token (SZZ, but considering tokens, as dmg does it, instead of lines), and/or other SZZ variants. The main contribution of this part is to show how really to compute true/false positives/negatives for an algorithm, since we can compare with our gold standard in our two petty cases. 
 
 \begin{table}[!t]
-\renewcommand{\arraystretch}{1.3}
-\caption{Results of the analysis of the previous commits using both methods for Nova.}
-\label{tableIV}
-\centering
-\begin{tabular}{|c||c||c||c| }
-\hline
-  &  BIC & NoBIC & Undecided \\
-\hline
-ES & 47 (78\%) & 8 (14\%) & 5 (8\%)\\
-Nova & 39 (65\%) & 15 (25\%) & 6 (10\%) \\
-\hline
-\end{tabular}
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Results of True Positives, True Negatives, False Negatives, Recall and Precision for the SZZ-1 algorithm assuming that the algorithm flags all of the commits belong to a set of \PC{b} as \BIC.}
+	\label{realSZZ}
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+ 	 	&  True Positives & False Positives & False Negatives & Recall & Precision \\
+		\hline
+		\hline
+		Nova & 22 (33\%) & 41 (62\%) & 3 (5\%) & 0.88 & 0.35\\
+		\hline
+		ES &  26 (33\%) & 47 (60\%) & 7 (9\%)& 0.79 & 0.36 \\
+		\hline
+	\end{tabular}
 \end{table}
 
-\subsubsection{Which reasons may cause that a fixing commit is not induced by bug introducing change?}
-
-Additionally, in those cases where the ticket does not present a \BIC, we have looked for its cause. Table~\ref{tablereasosNoBIC} shows the main reasons for a bug not having a \BIC. Furthermore, they are explained below:
+In the literature there is no clear the heuristic followed by some researchers when the SZZ identifies a set of possible bug-introduction changes for a Bug-fixing commit. In Table~\ref{realSZZ} we assume that whether this case occurs, the researchers flag all of the commits belong to that set as a possible bug-introduction changes. However, some researchers in the literature state that whether this case exists the bug-introduction change is the earlier one in time. With this assumption, we have compute again the number of true/false positives/negatives of the SZZ-1 using the ``gold standard" of Nova and ElasticSearch. Now, when applying the SZZ-1 to the 31 \BFC of Nova, it returns a set of 28 possible bug-introduction changes. And, when SZZ-1 is applied to the 42 \BFC of ElasticSearch, it returns a set of 35 possible bug-introduction changes. Table~\ref{realSZZ2} presents the percentage of true/false positives/negatives for the SZZ-1 as well as the precision and recall in this scenario.
+%We compare SZZ with the ?gold standard?, and also SZZ-token (SZZ, but considering tokens, as dmg does it, instead of lines), and/or other SZZ variants. The main contribution of this part is to show how really to compute true/false positives/negatives for an algorithm, since we can compare with our gold standard in our two petty cases. 
 
 \begin{table}[!t]
-% increase table row spacing, adjust to taste
-\renewcommand{\arraystretch}{1.3}
-% if using array.sty, it might be a good idea to tweak the value of
-%\extrarowheight as needed to properly center the text within the cells
-\caption{ Reasons why a ticket does not have a BIC in each project}
-\label{tablereasosNoBIC}
-\centering
-% Some packages, such as MDW tools, offer better commands for making tables
-%% than the plain LaTeX2e tabular which is used here.
-\begin{tabular}{|c||c||c| }
-\hline
-  & ElasticSearch & Nova  \\
-\hline
-Changes to APIs & 6 (33\%) & 6 (40\%) \\
-\hline
-New functionalities & 5 (28\%) & 4 (27\%)\\
-\hline
-External artifact & 2 (11\%) & 0 (0\%)\\
-\hline
-Changes in the operating system & 2 (11\%) & 3 (20\%)\\
-\hline
-New lines & 2 (11\%) & 1 (7\%)\\
-\hline
-Others & 1 (6\%) & 1 (7\%) \\
-\hline
-\end{tabular}
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Results of True Positives, True Negatives, False Negatives, Recall and Precision for the SZZ-1 algorithm assuming that the algorithm only flags the earlier commits that belongs to a set of \PC{b} as \BIC.}
+	\label{realSZZ2}
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+ 	 	&  True Positives & False Positives & False Negatives & Recall & Precision \\
+		\hline
+		\hline
+		Nova & 21 (68\%) & 8 (26\%) & 2 (6\%) & 0.91 & 0.72\\
+		\hline
+		ES &  19 (45\%) & 16 (38\%) & 7 (17\%)& 0.73 & 0.54 \\
+		\hline
+	\end{tabular}
 \end{table}
 
-\begin{itemize}
-  \item Changes to APIs, such as the addition of an argument.
-  \item Change in lines caused by new functionalities in the project, the lines changed were correct at the moment of their insertion but due to the new requirements they became wrong lines.
-  \item Changes in lines were external artifact are being used.
-  \item Changes to the operating system or packages.
-\end{itemize}
-\gema{ Application of the Theory(estudio empirico)}
+
+\gema{studio de tokens para los falsos positivos que encontramos en nova y en ES}
+\vspace{0.2cm}
+\fbox{\begin{minipage}{30em}
+\textbf{RQ2: In the best scenario applying the heuristics of the SZZ-1, Nova computes 26\% of false positives with a precision of 0.72 and a recall of 0.91. ElasticSearch presents higher percentage of false positives (38\%) than Nova, and lower precision (0.73) and recall (0.54).}
+\end{minipage}}
+\vspace{0.1cm}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
