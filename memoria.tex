@@ -1689,7 +1689,7 @@ Table~\ref{tableSZZimproved} shows how many publications have used improvements 
 \chapter{The Theory of Bug Introduction}
 \label{chap:Theory}
 
-The proper understanding of the bug introduction process is an essential part of any research work related to the identification of the seed of a bug. The study of the changes in a bug-fixing commit to locate the origin of a bug is the foundation for researchers to carry out research studies in other disciplines of Software Engineering. For example, researchers need to identify where previous bugs were inserted and obtain their characteristics in order to build models that can predict future bugs. Also, researchers should define and understand what a bug is and how it was introduced into the source code before building classification models. To detect bugs, researchers should develop algorithms based on the learning from previous bugs patterns. However, to identify the bug-introducing change researchers rely on a common practice that only analyzes static metadata retrieved from previous changes to the modified lines in a bug-fixing commit (i.e, developer experience, lines of code inserted, type of changes, etc.). When in fact, it is necessary to keep in mind that the software evolves. It is continuously evolving thereby, a clean code today may start to become buggy tomorrow due to the dependencies and requirements of the software. There could be instances where other changes in the code or third-parties are affecting the lines, thus understanding the introduction of bugs from a static point of view may lead to problems in the results. It us therefore logical to think that a more in depth knowledge of when and how a bug is inserted will make the state-of-the-art techniques more accurate. %many approaches are built upon the assumption that ``a given bug was introduced by the lines of code that were modified to fix it", or variations of it. 
+The proper understanding of the bug introduction process is an essential part of any research work related to the identification of the seed of a bug. The study of the changes in a bug-fixing commit to locate the origin of a bug is the foundation for researchers to carry out research studies in other disciplines of Software Engineering. For example, researchers need to identify where previous bugs were inserted and obtain their characteristics in order to build models that can predict future bugs. Also, researchers should define and understand what a bug is and how it was introduced into the source code before building classification models. To detect bugs, researchers should develop algorithms based on the learning from previous bugs patterns. However, to identify the bug-introducing change researchers rely on a common practice that only analyzes static metadata retrieved from previous changes to the modified lines in a bug-fixing commit (i.e, developer experience, lines of code inserted, type of changes, etc.). When in fact, it is necessary to keep in mind that the software evolves. It is continuously evolving thereby, a clean code today may start to become buggy tomorrow due to the dependencies and requirements of the software. There could be instances where other changes in the code or third-parties are affecting the lines, thus understanding the introduction of bugs from a static point of view may lead to problems in the results. It us therefore logical to think that a more in-depth knowledge of when and how a bug is inserted will make the state-of-the-art techniques vary in accuracy accurate. %many approaches are built upon the assumption that ``a given bug was introduced by the lines of code that were modified to fix it", or variations of it. 
 
 There are two primary moments that should be understood and distinguished when analyzing the origin of a bug. The bug manifestation moment and the bug introduction moment; they are different but currently there is no clear distinction between them in the software research literature on bugs. The limited knowledge of when a bug is inserted into the source code makes it difficult to distinguish between these moments, and as a consequence, researchers cannot be sure whether the line(s) identified after applying these approaches inserted the bug in the same moment of inserting the lines, or if the line only manifested the bug because of other reasons. Furthermore, the lack of a meaningful model to validate these algorithms as well as the lack of definition of what needs to validated prevents researchers from calculating what a false positive or true positive is as they unsure if the line was buggy or clean at the moment of their insertion.
 
@@ -1710,7 +1710,7 @@ With the intention of better understanding the complex phenomenon of bug introdu
 
 \section{Towards a Theoretical Model}
 
-This section introduces the definition of a model to unequivocally identify bug-introducing commits. This model identifies a set of bug-introducing changes that corresponds to a set of bug fixing commits. This model includes precise definitions of \BFC and \BIC based on the assumption that there is a hypothetical test with the perfect test coverage that could be run indefinitely in the past. This model returns as true or false depending on whether or not the bug was present at a given specific moment. For the first time, this model contemplates different scenarios that have been largely excluded in the current literature, such as bug-fixing commits with only new additions, and the distinction between the moment of insertion and the moment of manifestation of a bug. 
+This section introduces the definition of a model to unequivocally identify bug-introducing commits. This model identifies a set of bug-introducing changes that corresponds to a set of bug fixing commits. This model includes precise definitions of \BFC and \BIC based on the assumption that there is a hypothetical test with the perfect test coverage that could be run indefinitely across the history of the source code. This model returns as true or false depending on whether or not the bug was present at a given specific moment. For the first time, this model contemplates different scenarios that have been largely excluded in the current literature, such as bug-fixing commits with only new additions, and the distinction between the moment of insertion and the moment of manifestation of a bug. 
 
 The main aim of describing this model is to extend the current state-of-the-art approaches in order to ensure that the commits identified inserted the bug into the source code at some point in the project history. This model will be used as a framework to evaluate in a comprehensive way the performance of other approaches as well as to compare the effectiveness between different algorithms since the proposed model defines the \emph{``gold standard"} of which commits in a project are \BIC.  Before explaining in detail the theory of the model, some important concepts used to better understand the model are described below.%Despite of the large theoretical description of the model, we define in next sections \gema{Add reference to the sections}, in which aspects we are doing an abstraction in order to understand whether they might be mapped into something practical later.
 
@@ -1874,7 +1874,7 @@ In order to discover the Bug-Introducing Change with the maximum accuracy, it is
 
 Theoretically and under optimal conditions, this process can be fully automatic relying on the Test Signaling a Bug (\TSB) which flags as \emph{True} when the test is passed and \emph{False} when the test fails in the analyzed snapshots of the project. Despite the high complexity of automatization, there us an easy way to find the \BIC or \FFC in this model, which can be achieved through looking manually for the first snapshot when the \TSB fails. This snapshot contains the commit that is the perfect candidate to be the \BIC or the \FFC.
 
-This model focuses on the cases when a \BIC for a BFC can be found or the cases when it is sure that a \BIC for a \BFC does not exist. To show how the model works, the definitions of \BIC and \BFC based on the existence of a \TSB are applied. The \TSB is applied in all the snapshots of the lineal vision precedence of a \BFC to identify whether there is a Bug-Introducing Commit. Considering that the \TSB  has a coverage of 100\% and that it can run indefinitely in the past, the proposed model is able to find out the \BIC or the \FFC of a bug report by analyzing the changes that fixed the bug. This \TSB will be passed into all the descendent commit set of the lines modified in the bug-fixing commit. Thus, when the \TSB test is passed to all the snapshots, it looks for the snapshot that fails; if found, the model will consider it as a candidate for the \BIC. %depending on how the \TSB fails.  %Furthermore, we will be sure if such \FFC might be the \BIC by using some heuristics that check that the line(s) inserted by this commit was (were) buggy, otherwise it cannot be considered as the $BIC$.
+This model focuses on the cases when a \BIC for a BFC can be found or the cases when it is sure that a \BIC for a \BFC does not exist. To show how the model works, the definitions of \BIC and \BFC based on the existence of a \TSB are applied. The \TSB is applied in all the snapshots of the lineal vision precedence of a \BFC to identify whether there is a Bug-Introducing Commit. Considering that the \TSB  has a coverage of 100\% and that it can run indefinitely across the history of the source code, the proposed model is able to find out the \BIC or the \FFC of a bug report by analyzing the changes that fixed the bug. This \TSB will be passed into all the descendent commit set of the lines modified in the bug-fixing commit. Thus, when the \TSB test is passed to all the snapshots, it looks for the snapshot that fails; if found, the model will consider it as a candidate for the \BIC. %depending on how the \TSB fails.  %Furthermore, we will be sure if such \FFC might be the \BIC by using some heuristics that check that the line(s) inserted by this commit was (were) buggy, otherwise it cannot be considered as the $BIC$.
 
 
 %For instance, a similar notion to locate the \FFC would be to use the \emph{Oracle} as a conceptual idea, which is used in testing to determine whether the result of executing a program using a test is correct~\cite{staats2011programs}. Therefore we can take this concept to find the \FFC asking to the \emph{Oracle} whether after a specific change the result of the program is correct. The oracle is only a part of specifications related to the expected output (when it exists) and, contains information about the input ranges, about non-functional properties, etc. As example, a test suite will be a specification, that contains test cases, which themselves contain assertions (oracles).
@@ -1906,7 +1906,7 @@ The outcome of the \TSB varies depending on each snapshot, there are three diffe
 %\caption{Omnipotent view of a test that automatically locates the \FFC}
 %\label{fig:testrecursive}       % Give a unique label
 %\end{figure}
-There are three different scenarios to illustrate how to apply the hypothetical test into a lineal vision of precedence for the \setBFC{i} in order to identify whether the Bug-Introducing Commit exists. In these scenarios it is considered that the \TSB have 100\% of coverage and that it can run indefinitely in the previous snapshots of the system. Thus, the \TSB is passed to all the snapshots (ancestral commit set) in search for the one that fails; if found, it will be consider it as a candidate for the \BIC. %Furthermore, we will be sure if this snapshot is the \BIC by using some heuristics that check that the line(s) inserted by this commit was (were) buggy, otherwise it cannot be considered as the $BIC$.
+There are three different scenarios to illustrate how to apply the hypothetical test into a lineal vision of precedence for the \setBFC{i} in order to identify whether the Bug-Introducing Commit exists. In these scenarios it is considered that the \TSB have 100\% of coverage and that it can run indefinitely across the history of the source code. Thus, the \TSB is passed to all the snapshots (ancestral commit set) in search for the one that fails; if found, it will be consider it as a candidate for the \BIC. %Furthermore, we will be sure if this snapshot is the \BIC by using some heuristics that check that the line(s) inserted by this commit was (were) buggy, otherwise it cannot be considered as the $BIC$.
 
 Figure~\ref{fig:snapshot1} shows how to apply the hypothetical test into the genealogy tree when there is a \BIC and the \TSB can be run in all the snapshots. To locate the \BIC, the \TSB is passed into all the snapshots of the descendent commit set, and the \BIS will be the first that fails (i-1b). It can be known that the \BIS is a \BIC because the snapshot before (i-2c) passes. 
 
@@ -1926,7 +1926,7 @@ Figure~\ref{fig:snapshot2} shows how  the hypothetical test is applied to the ge
 \label{fig:snapshot2}       % Give a unique label
 \end{figure}
 
-Figure~\ref{fig:snapshot3} 5 shows how the hypothetical test is applied to the genealogy tree when there is not BIC and the \TSB can be run forever in the past. The \TSB always fails with the BFS environment the snapshots, but if the older environment is set, it will pass in the descendent snapshot. Thus, the first \BIS before the \BFC will be the \FFC, there was not \BIC in the descendent commit set.
+Figure~\ref{fig:snapshot3} 5 shows how the hypothetical test is applied to the genealogy tree when there is not BIC and the \TSB can be run indefinitely across the history of the source code. . The \TSB always fails with the BFS environment the snapshots, but if the older environment is set, it will pass in the descendent snapshot. Thus, the first \BIS before the \BFC will be the \FFC, there was not \BIC in the descendent commit set.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/snapshot3.png}
@@ -1996,9 +1996,9 @@ Figure~\ref{fig:algoritmo} presents the decision tree in order find the \BIC, wh
 \cleardoublepage
 \chapter{Empirical Study on the Applicability of the Theory}
 \label{chap:application}
-This chapter presents an empirical study on the applicability of the theoretical model presented in the chapter 5. The empirical study have been carried out analyzing the publicity available data sources from two OSS projects, Nova and ElasticSearch, and it can be extended to others projects as long as the project uses VCS and bug-tracking systems. As a reminder, the goal of this thesis is to describe a model to identify unequivocally the bug introduction commit or to decide that it does not exist given a bug fixing commit. Furthermore, this model allows to define the ``gold standard" of which commits in a the repositories are \BIC. 
+This chapter presents an empirical study on the applicability of the theoretical model presented in the chapter 5. The empirical study has been carried out analyzing the publicity available data sources from two OSS projects, Nova and ElasticSearch, and it can be extended to others projects as long as the project uses VCS and bug-tracking systems. As a reminder, the goal of this thesis is to describe a model to identify unequivocally the bug introduction commit or to decide that it does not exist given a bug fixing commit. Furthermore, this model allows to define the ``gold standard" of which commits in the repositories are \BIC. 
 
-This chapter is divided into three sections. The first part it is an brief analysis that describes the projects Nova and ElasticSearch and arguments its election as cases of study to identify the origin of the bugs.
+This chapter is divided into three sections. The first part it is a brief analysis that describes the projects Nova and ElasticSearch and arguments its election as cases of study to identify the origin of the bugs.
 
 The second part clearly defines the methodology followed in order to manually analyze and identify the bug introduction commits given a bug fixing commit. This methodology explains how the raw dataset has been filtered and details step by step the stages to identify or discard the \BIC from a specific bug report.  
 
@@ -2011,7 +2011,7 @@ There are two cases of study in this empirical study that are explained in the s
 \subsection{Nova}
 
 %We have validated our methodology using the \emph{Grounded Theory}~\cite{charmaz2014constructing} to analyze tickets from two different Open Source projects.
-Nova is the most active module of OpenStack project in terms of contributions. OpenStack is a cloud computing platform to build a SaaS (software as a service) with a huge development community that makes it an interesting project to study. OpenStack has have a considerable growth of approximately 350 times in code size and 250 times in number of commits since its first release in November 2009.  Currently, it counts with more than 7,900 contributors, and significant industrial support from several major companies such as Red Hat, Huawei, IBM, HP, SUSE, etc. OpenStack is mainly written in Python. Currently it has more than 328,800 commits with more than 47 million lines of code\footnote{\url{http://stackalytics.com}}. All its history is saved and available in a version control system\footnote{\url{https://wiki.openstack.org/wiki/Getting_The_Code}}, an issue tracking system (Launchpad\footnote{\url{https://launchpad.net/openstack}}) and a source code review system (Gerrit\footnote{\url{https://review.openstack.org/}}).  Table \ref{tablenova} provides a summary of the Nova project. There are 1,602 distinct authors identified in the project from more than 200 different companies. 
+Nova is the most active module of OpenStack project in terms of contributions. OpenStack is a cloud computing platform to build a SaaS (software as a service) with a huge development community that makes it an interesting project to study. OpenStack has had a considerable growth of approximately 350 times in code size and 250 times in number of commits since its first release in November 2009.  Currently, it counts with more than 7,900 contributors, and significant industrial support from several major companies such as Red Hat, Huawei, IBM, HP, SUSE, etc. OpenStack is mainly written in Python. Currently it has more than 328,800 commits with more than 47 million lines of code\footnote{\url{http://stackalytics.com}}. All its history is saved and available in a version control system\footnote{\url{https://wiki.openstack.org/wiki/Getting_The_Code}}, an issue tracking system (Launchpad\footnote{\url{https://launchpad.net/openstack}}) and a source code review system (Gerrit\footnote{\url{https://review.openstack.org/}}).  Table \ref{tablenova} provides a summary of the Nova project. There are 1,602 distinct authors identified in the project from more than 200 different companies. 
 
  \begin{table}[!t]
 \renewcommand{\arraystretch}{0.8}
@@ -2057,10 +2057,10 @@ Each ticket was (manually) categorized into one of following three groups:
 \begin{enumerate}
   \item \textit{Bug Report}: The ticket describes a bug report.
   \item \textit{Not Bug Report}: The ticket describes a feature, an optimization/refactoring of the code, changes in test files, or any other situation... but not a bug report.
-  \item \textit{Undecided}: The ticket presents a vague description and cannot be assigner without doubts to any of the previous groups.
+  \item \textit{Undecided}: The ticket presents a vague description and cannot be assigned without doubts to any of the previous groups.
 \end{enumerate}
 
-After this process, the tickets where both researchers agreed\footnote{Please, consider the reading of the paper for further information about the analysis and the ratio of agreement between the researchers} on they belongs to the bug report group were included into the final dataset. Then, these tickets were linked to their bug-fixing commits, thereby the final dataset counts with 60 real bug reports that are linked with real bug-fixing commits.
+After this process, the tickets where both researchers agreed\footnote{Please, consider the reading of the paper for further information about the analysis and the ratio of agreement between the researchers} on they belong to the bug report group were included into the final dataset. Then, these tickets were linked to their bug-fixing commits, thereby the final dataset counts with 60 real bug reports that are linked with real bug-fixing commits.
 
 \subsection{ElasticSearch}
 ElasticSearch is a distributed Open Source search and analytics engine written in Java. It is continuously evolving since the first release in 2010 and currently it counts with more than 3,900 commits. We have chosen this project because it has a similar number of commits to OpenStack and its policy of labeling issues is very strict. In the project they use the label ``bug" to describes issues considered as bug by the developers of ElasticSearch. Thus, researchers can rely on developers' opinion, and be sure that the issues retrieved from the issue tracking system are real bug reports and their bug-fixing commit is fixing a bug. The code of ElasticSearch is hosted in GitHub\footnote{\url{https://github.com/elastic/elasticsearch/}}, and its issue list is available in GitHub\footnote{\url{https://github.com/elastic/elasticsearch/issues}} as well. Table \ref{tableES} provides a summary of the ElasticSearch project. There are 1,000 distinct authors identified in the project and more than 4,500 closed bug reports. 
@@ -2096,7 +2096,7 @@ In addition to the enormous diversity of people and companies contributing to No
 	\item \textbf{Research friendly}: The code and the bug report are hosted in GitHub and it is a trustful data source when looking for bug-fixing information. In addition, the policy of adding the link of the bug report number or the pull request number into the bug fixing commit help when linking and analyzing two data sources.
 	\item \textbf{The openness of the data set}: all of the data analyzed in this chapter and through the thesis are publicly available. And, this help in the replicability process of the experiments which is a fundamental part of the Empirical Software Engineering .
 	\item \textbf{No Lineal VCS}: Contrary to OpenStack, ElasticSearch repository counts with more than 160 branches which creates a no lineal history. This makes ElasticSearch more complicated to analyze.
-	\item \textbf{Programming Language}: ElasticSearch uses Java as programming language. Java encourages error-free programming by being strictly typed and performing run-time checks and it is independent of hardware. These specific characteristic of Java might affect the way that bugs are inserted into the source code of a project.
+	\item \textbf{Programming Language}: ElasticSearch uses Java as programming language. Java encourages error-free programming by being strictly typed and performing run-time checks and it is independent of hardware. These specific characteristics of Java might affect the way that bugs are inserted into the source code of a project.
 	\end{itemize}
 
 \paragraph{Dataset ElasticSearch}: 
@@ -2158,9 +2158,9 @@ Each individual line touched by the \BFC has only one previous commit. However, 
 This analysis uses information available in the description of the ticket and from the logs of the \BFC and commits in the set of \PC{b}. After understanding the bug and the changes that fixed the bug. It is necessary to identify the \BIC, if it exists, and the \FFC.Thus, the identification of the \BIC starts with the the analysis of the \PC{b}, for each of the \PC{b} the lines changed are analyzed in order to find which one introduced the bug. At this point, there is three different scenarios and the behaviour is different depending where we are:
 \begin{enumerate}
 	\item \textit{The commit inserted the bug}: This commit is the \BIC because it inserted the buggy lines at the moment of their writing. We were able to identify the \BIC and it is also the \FFC because it is the first commit that manifested the wrong behaviour. According to the theoretical model, the TSB passes in the \BFC and the \BIS is one of the snapshot of a previous commit of the \BFC.
-	\item \textit{The commit does not inserted the bug}: In this case there will be two possible outcomes:
+	\item \textit{The commit does not insert the bug}: In this case there will be two possible outcomes:
 		\begin{itemize}
-			\item The lines in the commit are correct, they do not inserted the bug at the time of their writing and other factors caused that these lines became to be buggy. There is no \BIC in this scenario and the analysis should be focuses on understand whether this pc is the \FFC or not. According to the theoretical model, the TSB is run in all the \ACSet{b} and it passes in the \BFC but it fails always in the antecessor snapshots. However, if we change the environment,  the TSB fails in the \BFC but it passes in the snapshot, and the first \BIS that passes in the sequence of \BIS is the \FFC.
+			\item The lines in the commit are correct, they do not insert the bug at the time of their writing and other factors caused that these lines became to be buggy. There is no \BIC in this scenario and the analysis should be focuses on understand whether this pc is the \FFC or not. According to the theoretical model, the TSB is run in all the \ACSet{b} and it passes in the \BFC but it fails always in the antecessor snapshots. However, if we change the environment,  the TSB fails in the \BFC but it passes in the snapshot, and the first \BIS that passes in the sequence of \BIS is the \FFC.
 			\item The lines in the commit are syntactic sugar and semantically equivalent modifications (refactorings): This means that the commit remains with the same behaviour than before, thereby we need to navigate back into, the \DCSet{b} and start again in the first point of this list..
 		\end{itemize}
 	\item \textit{It is not sure that the commit inserted the bug}: In this case we need to continue navigating back into the \DCSet{b}, if this commit inserted by first time the descendent lines of the \LC{c} and we are not sure if they are buggy or not, we can classify this commit as ``undecided". This means that after the analysis we were unable to manually find the \BIC despite it exists, or that we were unable to find the \FFC or \BIC because we did not have enough context.
@@ -2391,12 +2391,97 @@ In the literature there is no clear the heuristic followed by some researchers w
 \end{table}
 
 
-\gema{studio de tokens para los falsos positivos que encontramos en nova y en ES}
+\gema{el estudio de tokens para los falsos positivos que encontramos en nova y en ES??}
+
 \vspace{0.2cm}
 \fbox{\begin{minipage}{30em}
 \textbf{RQ2: In the best scenario applying the heuristics of the SZZ-1, Nova computes 26\% of false positives with a precision of 0.72 and a recall of 0.91. ElasticSearch presents higher percentage of false positives (38\%) than Nova, and lower precision (0.73) and recall (0.54).}
 \end{minipage}}
 \vspace{0.1cm}
+
+\gema{RQ sobre como afecta TTN y el BFT y developer en la grand verdad ? }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DiSSCUSSION %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\cleardoublepage
+\chapter{Disscussion}
+\label{chap:discussion}
+In this concluding chapter, we recapitulate the contributions of our study over time, we discuss the findings and describe lessons learned and threats to validity. Finally, we draw some lines of our future research.
+
+\section{Threats to validity}
+\label{sec:threats}
+
+The limited sample size of tickets used in this research is the major threat to its validity. It may happen, that only with 120 seemingly random bug reports, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
+The main threat to validity is the number of tickets considered. It is relatively high, but there is a long way to get a representative sample from a variety of free/open source systems, or software projects at large. Our analysis requires a lot of human effort, so increasing meaningfully the number of tickets is difficult. However, it should be noted that our numbers are the order of magnitude of similar studies: for instance Hindle's \emph{et al.} ~\cite{hindle2008large} article on large commits, considered 100 commits.
+
+\subsection{Construct validity}
+\subsection{Internal validity}
+Other internal threats to validity are:
+
+\begin{itemize}
+    \item
+    \item 
+    \item
+    %\item Although the researchers are experienced programmers, they are not experts in the  OpenStack and ElasticSearch projects, and their inexperience may have influenced the results of the analysis.
+    \item 
+    %\item We have used a random script to extract the tickets from Launchpad that have been reported during 2015. There could be unintended bias of the data, because many reasons, as for instance the phase of the project.
+    \item
+\end{itemize}
+
+\subsection{External validity}
+The most important external threats, most of them related to peculiarities of the Nova project, are:
+
+\begin{itemize}
+    \item 
+    \item 
+    \item 
+\end{itemize}
+
+
+\section{Discussion Chapters}
+\subsection{Reproducibility and Credibility of the SZZ Discussion}
+\label{subsec:implicationsSZZ}
+
+We consider it important to highlight some of the lessons learned after performing this SLR. It turns out that, when empirical studies are based on heuristics or assumptions, authors must be conscious that to produce reproducible studies the best method is to include a replication package that can be publicly available together with its publication (ideally, for ever). Researchers have however to be aware that some issues, such as the software environments, might change, causing that both programs and data become obsolete, so a detailed description of the elements, methods and software used during the study is also valuable.
+
+On the other hand, to provide more trustable results, we recommend that researchers specify (and argue) the use of those methods/algorithms that mitigate the limitations of their studies, be aware of the risk of every assumptions that is being used and, if needed, provide a manual analysis of the results. For those studies where the study size is large, researchers can select a random sample to validate it manually.
+
+As it is the case in software projects with release numbering~\cite{israeli2010linux}, it would be desirable to have a similar mechanism for software implementations used in such type of research, although this may not always be possible given the decentralized nature of research. We, therefore, recommend researchers who develop modifications to the SZZ algorithm to publish the software implementation in development sites such as \texttt{GitHub}, so other researchers can \emph{fork} the project. These \emph{forks} could be easily traced, and the authors could ask for a specific citation to their solution if other researchers make use of it.
+
+Finally, we offer a simple way to measure the ease of reproducibility and credibility of research papers. Even if this measure has been conceived with those studies that make use of SZZ in mind, we think it can be adapted to other ESE research easily. Thus, authors can easily assess if their paper offers a reproducible and trustable work (i.e., with scores above or equal to 5). Although we have often addressed authors directly, we should not forget the responsibility of reviewers in the scientific process. We have seen that authors are often detail-focused when presenting their research --in favor our intuition, we have found that reproducibility is related with being aware of the limitations --, but reviewers should have the required vision to evaluate the studies taking these details into consideration, and helping authors to raise the level of their research. Thus, we recommend reviewers to ask themselves the questions, adapted to the context of the research, proposed in Section when performing a review of a paper using heuristics and assumptions.
+
+In this paper we have studied the use of SZZ, a widely used algorithm in ESE research. We have shown that SZZ is certainly relevant, and that it is not limited to a niche audience, but has spread to be an important component of publications in top journals and prominent conferences. In this regard, we can see its study as a case study of how a software engineering practice spreads across academia.
+
+We have observed that limitations to SZZ are well known and documented. Improvements have been proposed, with unequal success up to the moment. While the limitations to its first part --related to linking fix commits and bug tracking issues-- has improved significantly, the enhancements for the second part --that has to do with finding the bug introducing change-- are still limited and accuracy has room for improvement.
+
+Even if limitations have been widely documented, from our study we can see that this has not made ESE practices stronger. From the detailed study of the threats to validity of publications using SZZ, SZZ-1 and SZZ-2, we have seen that most publications are not reporting the limitations, and interestingly enough, limitations to the first part --which have shown to be less relevant-- are discussed more often than those to the second part. The fact that 37\% of the publications use the \emph{original} SZZ is indicative in this regard.
+
+We have found that reproducibility of the publications is limited, and replication packages are offered seldom. The results presented in our research are in line with previous research~\cite{amann2015software}, although not as \emph{bad} as the ones found for MSR in 2010~\cite{robles2010replicating}. In any case, we think they are not satisfactory enough, and should raise some reflexions about the scientific methods used in our discipline.
+
+Even if using one of the improved versions of the algorithm helps in the accuracy of the SZZ approach as pointed out in~\cite{rahman2012clones}: ``Accuracy in identifying bug introducing changes may be increased by using advanced algorithms (Kim et al. 2006, 2008)'', they are seldom used -- only 22\% of the publications use one of the two (improved) revisions of SZZ. It seems that researchers prefer to \emph{reinvent the wheel}, 49\% use an ad-hoc \emph{modified} version of SZZ in their publications, than to use others' improvements. One possible reason for this is that papers that describe the SZZ algorithm or any of its improvements do not provide a software implementation. Thus, researchers have to implement it from scratch for their investigation. Our results show that in such a situation what is done is taking the base SZZ algorithm and then adding some modifications, resulting in an 'ad-hoc' solution. For all 'ad-hoc' solutions identified, we have not found a rationale of why other enhancements to SZZ have not been implemented. Another major problem when using improvements to SZZ is that they have not been given a version/label. Even if a revision of SZZ is used, publications often refer to it as SZZ, making it difficult to follow, to reproduce, to replicate and to raise awareness on this issue.
+
+We have observed that full comprehensive reports of reproducibility are seldom found, we classified only 15\% of the papers as being \emph{good and excellent quality with respect to reproducibility}. The research community should direct more attention to these aspects; we believe that too much attention is put on the final result(s) (the \emph{product} of the research: new knowledge) in comparison to the research process. As researchers in the field of software engineering, we know that both --a high quality product and process- are essential for a successful advancement in the long term~\cite{kan2002metrics}.
+
+All these factors undermine the credibility of ESE research, and require a profound consideration  by the research community
+\gema{Como afecta las asunciones hechas en la credibilidad de los resultados}
+
+\subsection{Theoretical Model Discussion}
+\label{subsec:implicationsModel}
+After analyzing several bugs in this study, we have realized as well that determining where and when a bug was introduced is not a trivial task. In fact, even just determining if the bug was present at the time a certain commit introduced the code that latter triggered it is in some cases not easy at all.
+
+For example, we have found some cases where we the current automatic techniques are unable to determine the point of introduction of the bug, as no previous commit can be identified. One of those cases is when the fix only adds code: in such case there is no way of identifying the previous commit as we defined it, since there is no previous commit touching the fixing lines. In this case, only the description of the ticket or the \BFC could clarify either the new lines were not included due to an error causing that some  ancestor commit is the cause of the bug or they were included in the \BFC because of the later introduction of some new functionality, and thus the line in the ancestor commits was correct at the time it was introduced causing that the \BFC does not have a BIC. Thus, studies based on SZZ removed the \BFC that only adds new lines to fix the bug because they can not track back such lines, and as a consequence this lead to mislead the results, showing higher percentage of accuracy.
+
+Furthermore, many researchers have based their methods to locate the bug-introducing change in the SZZ algorithm or they may have used datasets to feed their bug prediction or classification models with results obtained form the SZZ such as Ray~\emph{et al.} that used a dataset from \~cite{rahman2014comparing} which was gathered using the SZZ algorithm to study the naturalness of buggy code~\cite{ray2016naturalness}. Massacci~\emph{et al.} evaluated most existing vulnerabilities discovery models on web browsers and took many datasets where at least the built in~\cite{neuhaus2007predicting} used the SZZ approach ~\cite{massacci2014empirical}. And, Abreu~\emph{et al.} uses the data set obtained in ~\cite{sliwerski2005changes} to study how the frequency of communication between developers affects the fact to introduce a bug in the source code~\cite{abreu2009developer}.
+
+
+All in all, we believe in the benefit that this new concept to locate the \FFC has in the Software engineering. In addition, with the classification of the origin of the bugs, we seed some more lights in the problem of emulating software faults realistically. However, to achieve greater bug location automation, we therefore need a concerted effort in testing to find ways or techniques to address the re-built problem and to build a test that can be automated or partially automated to find the \FFC.% Also, it will be necessary to define how to use this information in a technique to inject these kind of bugs because they are not as obvious as the classical fault injection that emulates hardware faults.
+
+
+\subsection{Results Discussion}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2413,72 +2498,9 @@ In this concluding chapter, we recapitulate the contributions of our study over 
 This article has presented a detailed definition of the FFC that includes its dependencies and the different classes to be grouped. In addition, the empirical experiment we have performed in Nova and ElasticSearch has shown that for a large fraction of the analyzed tickets, Gema says: Write percentage, presented a FFC due to external artifacts. Whereas from those tickets where a FFC can be clearly found in the chain of precedence, the implicit assumption that bugs were introduced in the previous commit does not hold at least in Gema says: Write percentage of them.
 Also, we have traced a guide with the rules to define the effectiveness of an approach in order to find the FFC and we have described some of the reasons why looking for the BIC or using some heuristics to predict bugs are not the best option whether our purpose is reduce the error in the results or predictions.
 
-\section{Conlcusions}
-\subsection{Implications on credibility and Reproducibility}
-\label{subsec:implications}
-In this paper we have studied the use of SZZ, a widely used algorithm in ESE research. We have shown that SZZ is certainly relevant, and that it is not limited to a niche audience, but has spread to be an important component of publications in top journals and prominent conferences. In this regard, we can see its study as a case study of how a software engineering practice spreads across academia.
-
-We have observed that limitations to SZZ are well known and documented. Improvements have been proposed, with unequal success up to the moment. While the limitations to its first part --related to linking fix commits and bug tracking issues-- has improved significantly, the enhancements for the second part --that has to do with finding the bug introducing change-- are still limited and accuracy has room for improvement.
-
-Even if limitations have been widely documented, from our study we can see that this has not made ESE practices stronger. From the detailed study of the threats to validity of publications using SZZ, SZZ-1 and SZZ-2, we have seen that most publications are not reporting the limitations, and interestingly enough, limitations to the first part --which have shown to be less relevant-- are discussed more often than those to the second part. The fact that 37\% of the publications use the \emph{original} SZZ is indicative in this regard.
-
-We have found that reproducibility of the publications is limited, and replication packages are offered seldom. The results presented in our research are in line with previous research~\cite{amann2015software}, although not as \emph{bad} as the ones found for MSR in 2010~\cite{robles2010replicating}. In any case, we think they are not satisfactory enough, and should raise some reflexions about the scientific methods used in our discipline.
-
-Even if using one of the improved versions of the algorithm helps in the accuracy of the SZZ approach as pointed out in~\cite{rahman2012clones}: ``Accuracy in identifying bug introducing changes may be increased by using advanced algorithms (Kim et al. 2006, 2008)'', they are seldom used -- only 22\% of the publications use one of the two (improved) revisions of SZZ. It seems that researchers prefer to \emph{reinvent the wheel}, 49\% use an ad-hoc \emph{modified} version of SZZ in their publications, than to use others' improvements. One possible reason for this is that papers that describe the SZZ algorithm or any of its improvements do not provide a software implementation. Thus, researchers have to implement it from scratch for their investigation. Our results show that in such a situation what is done is taking the base SZZ algorithm and then adding some modifications, resulting in an 'ad-hoc' solution. For all 'ad-hoc' solutions identified, we have not found a rationale of why other enhancements to SZZ have not been implemented. Another major problem when using improvements to SZZ is that they have not been given a version/label. Even if a revision of SZZ is used, publications often refer to it as SZZ, making it difficult to follow, to reproduce, to replicate and to raise awareness on this issue.
-
-We have observed that full comprehensive reports of reproducibility are seldom found, we classified only 15\% of the papers as being \emph{good and excellent quality with respect to reproducibility}. The research community should direct more attention to these aspects; we believe that too much attention is put on the final result(s) (the \emph{product} of the research: new knowledge) in comparison to the research process. As researchers in the field of software engineering, we know that both --a high quality product and process- are essential for a successful advancement in the long term~\cite{kan2002metrics}.
-
-All these factors undermine the credibility of ESE research, and require a profound consideration  by the research community
-\gema{Como afecta las asunciones hechas en la credibilidad de los resultados}
-
-\subsection{Implications on the model proposed}
-\label{subsec:implications}
-After analyzing several bugs in this study, we have realized as well that determining where and when a bug was introduced is not a trivial task. In fact, even just determining if the bug was present at the time a certain commit introduced the code that latter triggered it is in some cases not easy at all.
-
-For example, we have found some cases where we the current automatic techniques are unable to determine the point of introduction of the bug, as no previous commit can be identified. One of those cases is when the fix only adds code: in such case there is no way of identifying the previous commit as we defined it, since there is no previous commit touching the fixing lines. In this case, only the description of the ticket or the \BFC could clarify either the new lines were not included due to an error causing that some  ancestor commit is the cause of the bug or they were included in the \BFC because of the later introduction of some new functionality, and thus the line in the ancestor commits was correct at the time it was introduced causing that the \BFC does not have a BIC. Thus, studies based on SZZ removed the \BFC that only adds new lines to fix the bug because they can not track back such lines, and as a consequence this lead to mislead the results, showing higher percentage of accuracy.
-
-Furthermore, many researchers have based their methods to locate the bug-introducing change in the SZZ algorithm or they may have used datasets to feed their bug prediction or classification models with results obtained form the SZZ such as Ray~\emph{et al.} that used a dataset from \~cite{rahman2014comparing} which was gathered using the SZZ algorithm to study the naturalness of buggy code~\cite{ray2016naturalness}. Massacci~\emph{et al.} evaluated most existing vulnerabilities discovery models on web browsers and took many datasets where at least the built in~\cite{neuhaus2007predicting} used the SZZ approach ~\cite{massacci2014empirical}. And, Abreu~\emph{et al.} uses the data set obtained in ~\cite{sliwerski2005changes} to study how the frequency of communication between developers affects the fact to introduce a bug in the source code~\cite{abreu2009developer}.
+\section{Conclusions}
 
 
-All in all, we believe in the benefit that this new concept to locate the \FFC has in the Software engineering. In addition, with the classification of the origin of the bugs, we seed some more lights in the problem of emulating software faults realistically. However, to achieve greater bug location automation, we therefore need a concerted effort in testing to find ways or techniques to address the re-built problem and to build a test that can be automated or partially automated to find the \FFC.% Also, it will be necessary to define how to use this information in a technique to inject these kind of bugs because they are not as obvious as the classical fault injection that emulates hardware faults.
-
-
-\section{Lessons Learned}
-\label{sec:lessons}
-
-We consider it important to highlight some of the lessons learned after performing this SLR. It turns out that, when empirical studies are based on heuristics or assumptions, authors must be conscious that to produce reproducible studies the best method is to include a replication package that can be publicly available together with its publication (ideally, for ever). Researchers have however to be aware that some issues, such as the software environments, might change, causing that both programs and data become obsolete, so a detailed description of the elements, methods and software used during the study is also valuable.
-
-On the other hand, to provide more trustable results, we recommend that researchers specify (and argue) the use of those methods/algorithms that mitigate the limitations of their studies, be aware of the risk of every assumptions that is being used and, if needed, provide a manual analysis of the results. For those studies where the study size is large, researchers can select a random sample to validate it manually.
-
-As it is the case in software projects with release numbering~\cite{israeli2010linux}, it would be desirable to have a similar mechanism for software implementations used in such type of research, although this may not always be possible given the decentralized nature of research. We, therefore, recommend researchers who develop modifications to the SZZ algorithm to publish the software implementation in development sites such as \texttt{GitHub}, so other researchers can \emph{fork} the project. These \emph{forks} could be easily traced, and the authors could ask for a specific citation to their solution if other researchers make use of it.
-
-Finally, we offer a simple way to measure the ease of reproducibility and credibility of research papers. Even if this measure has been conceived with those studies that make use of SZZ in mind, we think it can be adapted to other ESE research easily. Thus, authors can easily assess if their paper offers a reproducible and trustable work (i.e., with scores above or equal to 5). Although we have often addressed authors directly, we should not forget the responsibility of reviewers in the scientific process. We have seen that authors are often detail-focused when presenting their research --in favor our intuition, we have found that reproducibility is related with being aware of the limitations --, but reviewers should have the required vision to evaluate the studies taking these details into consideration, and helping authors to raise the level of their research. Thus, we recommend reviewers to ask themselves the questions, adapted to the context of the research, proposed in Section when performing a review of a paper using heuristics and assumptions.
-
-\section{Threats to validity}
-\label{sec:threats}
-
-The limited sample size of tickets used in this research is the major threat to its validity. It may happen, that only with 120 seemingly random bug reports, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
-The main threat to validity is the number of tickets considered. It is relatively high, but there is a long way to get a representative sample from a variety of free/open source systems, or software projects at large. Our analysis requires a lot of human effort, so increasing meaningfully the number of tickets is difficult. However, it should be noted that our numbers are the order of magnitude of similar studies: for instance Hindle's \emph{et al.} ~\cite{hindle2008large} article on large commits, considered 100 commits.
-
-Other internal threats to validity are:
-
-\begin{itemize}
-    \item
-    \item 
-    \item
-    %\item Although the researchers are experienced programmers, they are not experts in the  OpenStack and ElasticSearch projects, and their inexperience may have influenced the results of the analysis.
-    \item 
-    %\item We have used a random script to extract the tickets from Launchpad that have been reported during 2015. There could be unintended bias of the data, because many reasons, as for instance the phase of the project.
-    \item
-\end{itemize}
-
-The most important external threats, most of them related to peculiarities of the Nova project, are:
-
-\begin{itemize}
-    \item 
-    \item 
-    \item 
-\end{itemize}
 
 \section{Future Work}
 \label{sec:future}
