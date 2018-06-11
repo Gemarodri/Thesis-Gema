@@ -2390,6 +2390,38 @@ In the literature there is no clear the heuristic followed by some researchers w
 	\end{tabular}
 \end{table}
 
+\gema{anadir la info aqui??}
+\subsubsection{RQ2.1: Which reasons caused the false Positives?}
+Additionally, in those cases where the bug report does not present a \BIC, we have looked for its cause. Table~\ref{tablereasosNoBIC} shows the main reasons for a bug not having a \BIC. 
+\begin{table}[!t]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{ Reasons why a bug-fixing commit is not induced by a bug-introduced commit }
+	\label{tablereasosNoBIC}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+  		& Nova & ElasticSearch  \\
+		\hline
+		\hline
+		Co-evolution Internal & 9 (50\%) & 2 (40\%) \\
+		\hline
+		Co-evolution External  & 3 (17\%) & 2 (27\%)\\
+		\hline
+		Compatibility & 2 (11\%) & 0 (0\%)\\
+		\hline
+		Bug in External API & 4 (22\%) & 2 (20\%)\\
+		\hline
+	\end{tabular}
+\end{table}
+Furthermore, they are explained below:
+\begin{itemize}
+ 	\item \textit{Co-evolution Internal}: Changes in the source code related to satisfy the new requirements of the project. Since internal resources have been modified (directory structure and permissions) or requirements have changed invalidating previous assumptions.  	
+	\item \textit{Co-evolution External}: Bugs are caused by some external change. External resources have been modified without a previous notification and the source code of the project starts to fail.
+  	\item \textit{Incompatibility}: Bugs are caused by an incompatibility between software and hardware or an incompatibility with some operating systems.
+  	\item \textit{Bug in External API}: A change in the API of a third-party code caused a bug in the source code of the project.
+\end{itemize}
+
+
 
 \gema{el estudio de tokens para los falsos positivos que encontramos en nova y en ES??}
 
@@ -2413,6 +2445,34 @@ In this concluding chapter, we recapitulate the contributions of our study over 
 
 \section{Threats to validity}
 \label{sec:threats}
+
+Wohlin et al. discuss four main types of validity threats in ESE research: conclusion, internal, construct and external [45].
+Conclusion validity, being related to how sure we can be that the treatment we used in an investigation is related to the actual outcome we observed, does
+745 not affect our approach.
+Internal validity is the extent to which a causal conclusion based on a study
+is warranted, which is determined by the degree to which a study minimizes systematic errors. We have attempted to minimize this threat by following the procedures for performing SLRs described in [46], and offer a replication
+750 package so that third parties can inspect our sources. However, there might be a selection bias due to having chosen Google Scholar and Semantic Scholar as the source of all publications on SZZ; other publications may exist that are not indexed by Google Scholar or Semantic Scholar. In addition, other publications could make use of SZZ and not cite the original publication or its improvements.
+755 Another factor affecting internal validity may be the maturity of the field, in the sense that our study may have been done in a too early a stage to draw conclusions. We think, however, that more than 10 years is enough time to allow to extract valid lessons from its study.
+Construct validity is the degree to which an investigation measures what it 760 claims to be measuring. In this paper, we measure impact by number of publi- cations and types and diversity of venues, reproducibility by the availability of a replication package or of a detailed description and data set, and have manu- ally analyzed hundreds of papers for specific, sometimes very detailed aspects, so human errors may have occurred. We think that the effect on impact is 765 small, given the large number of publications and venues that we have found. The effect on reproducibility is to be considered, as we have not reproduced or replicated the studies by ourselves; in this regard, we offer an upper limit of publications that may be reproducible. Our replication package does not re- move the human errors that we may have incurred, but it offers the possibility
+35
+770 to others to check and improve our work.
+External validity is the degree to which results can be generalized to other
+contexts. In this paper, we have selected a single case study, with its particu- larities and peculiarities. We cannot claim that our results can be generalized to ESE research. However, the value of case studies should be not undermined;
+775 Flyvbjerg provides several examples of individual cases that contributed to dis- coveries in physics, economics, and social sciences [47], while Beveridge observed for social sciences: ?More discoveries have arisen from intense observation than from statistics applied to large groups? (as quoted in [48], page 95).
+9. Conclusions and further research
+780 We have performed a case study of ESE practice by means of conducting a SLR on the use of the well-known SZZ algorithm. Our sample of publications has consisted of 187 publications that make use of the complete SZZ algorithm (first and second part), out of 458 publications that cite the seminal paper where SZZ was presented or one of the two papers that propose an enhanced version
+785 of SZZ.
+Our study sheds some light on some of the problems that ESE research
+faces when assumptions, as it is the case in SZZ, are made in research methods: publications are primarily non-reproducible, limitations are just occasionally re- ported, improved versions are seldom used and difficult to identify, researchers
+790 prefer to use their own enhancements, and awareness and use of improved ver- sions do not suppose an enhancement in reproducibility. All in all, we have observed that the result is a situation with a lot of room for improvement as excellence in reproducibility is seldom found, and where factors that undermine the credibility of the results are common. We finish by offering some advice in
+795 how this situation could be improved in the future, sharing our reflections and stressing the importance of reviewers.
+Future research should address the limitations of this study and extend it to other domains. There is a need for boosting reproducibility and to investigate
+36
+
+how it should be addressed by the ESE community. Additional case studies 800 should be carried out on other empirical techniques to ascertain if our findings hold in other scenarios and contexts, for instance, when confidential data are
+involved.
+
+
 
 The limited sample size of tickets used in this research is the major threat to its validity. It may happen, that only with 120 seemingly random bug reports, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
 The main threat to validity is the number of tickets considered. It is relatively high, but there is a long way to get a representative sample from a variety of free/open source systems, or software projects at large. Our analysis requires a lot of human effort, so increasing meaningfully the number of tickets is difficult. However, it should be noted that our numbers are the order of magnitude of similar studies: for instance Hindle's \emph{et al.} ~\cite{hindle2008large} article on large commits, considered 100 commits.
@@ -2470,18 +2530,38 @@ All these factors undermine the credibility of ESE research, and require a profo
 
 \subsection{Theoretical Model Discussion}
 \label{subsec:implicationsModel}
+
+This paper addresses the very important problem of finding the bug introducing changes. Currently, the lion?s share of the work is based on methods and techniques which rely on the inherently flawed assumption that the lines of code that have been used to fix the bug are also the ones that have introduced the bug in the first place. While the problematic nature of this assumption is known, this paper makes an important contribution by trying to quantify the extent of the problem and by detailing a new model of bug introduction in order to find the first time that the software manifest the wrong behavior, without the necessity of blame to a change as the bug introducing change, but locating the first change that states the bug and comprehend that moment to its context and dependencies.
 After analyzing several bugs in this study, we have realized as well that determining where and when a bug was introduced is not a trivial task. In fact, even just determining if the bug was present at the time a certain commit introduced the code that latter triggered it is in some cases not easy at all.
+For example, we have found some cases where we the current automatic techniques are unable to determine the point of introduction of the bug, as no previous commit can be identified. One of those cases is when the fix only adds code: in such case there is no way of identifying the previous commit as we defined it, since there is no previous commit touching the fixing lines. In this case, only the description of the ticket or the BFC could clarify either the new lines were not included due to an error causing that some ancestor commit is the cause of the bug or they were included in the BFC because of the later introduction of some new functionality, and thus the line in the ancestor commits was correct at the time it was introduced causing that the
+20 Gema Rodrguez-Perez et al.
+ BFC does not have a BIC. Thus, studies based on SZZ removed the BFC that only adds new lines to fix the bug because they can not track back such lines, and as a consequence this lead to mislead the results, showing higher percentage of accuracy.
+Furthermore, many researchers have based their methods to locate the bug- introducing change in the SZZ algorithm or they may have used datasets to feed their bug prediction or classification models with results obtained form the SZZ such as Ray et al. that used a dataset from citerahman2014comparing which was gathered using the SZZ algorithm to study the naturalness of buggy code [?]. Massacci et al. evaluated most existing vulnerabilities discovery mod- els on web browsers and took many datasets where at least the built in [?] used the SZZ approach [?]. And, Abreu et al. uses the data set obtained in [?] to study how the frequency of communication between developers affects the fact to introduce a bug in the source code [?].
+All in all, we believe in the benefit that this new concept to locate the FFC has in the Software engineering. In addition, with the classification of the origin of the bugs, we seed some more lights in the problem of emulating software faults realistically. However, to achieve greater bug location automation, we therefore need a concerted effort in testing to find ways or techniques to address the re-built problem and to build a test that can be automated or partially automated to find the FFC.
 
-For example, we have found some cases where we the current automatic techniques are unable to determine the point of introduction of the bug, as no previous commit can be identified. One of those cases is when the fix only adds code: in such case there is no way of identifying the previous commit as we defined it, since there is no previous commit touching the fixing lines. In this case, only the description of the ticket or the \BFC could clarify either the new lines were not included due to an error causing that some  ancestor commit is the cause of the bug or they were included in the \BFC because of the later introduction of some new functionality, and thus the line in the ancestor commits was correct at the time it was introduced causing that the \BFC does not have a BIC. Thus, studies based on SZZ removed the \BFC that only adds new lines to fix the bug because they can not track back such lines, and as a consequence this lead to mislead the results, showing higher percentage of accuracy.
-
-Furthermore, many researchers have based their methods to locate the bug-introducing change in the SZZ algorithm or they may have used datasets to feed their bug prediction or classification models with results obtained form the SZZ such as Ray~\emph{et al.} that used a dataset from \~cite{rahman2014comparing} which was gathered using the SZZ algorithm to study the naturalness of buggy code~\cite{ray2016naturalness}. Massacci~\emph{et al.} evaluated most existing vulnerabilities discovery models on web browsers and took many datasets where at least the built in~\cite{neuhaus2007predicting} used the SZZ approach ~\cite{massacci2014empirical}. And, Abreu~\emph{et al.} uses the data set obtained in ~\cite{sliwerski2005changes} to study how the frequency of communication between developers affects the fact to introduce a bug in the source code~\cite{abreu2009developer}.
-
-
-All in all, we believe in the benefit that this new concept to locate the \FFC has in the Software engineering. In addition, with the classification of the origin of the bugs, we seed some more lights in the problem of emulating software faults realistically. However, to achieve greater bug location automation, we therefore need a concerted effort in testing to find ways or techniques to address the re-built problem and to build a test that can be automated or partially automated to find the \FFC.% Also, it will be necessary to define how to use this information in a technique to inject these kind of bugs because they are not as obvious as the classical fault injection that emulates hardware faults.
+In any case, our research shows evidence that assuming that the previous commit is where the cause of a bug can be found does not hold for a significant fraction of bugs. The most common reasons for the previous commit not introduc- ing the bug are:
+7. Changes to APIs, such as the addition of an argument. Variable renaming.
+    Changes in the operating system, packages or requirements.
+    Optimization of the code in some lines. Grammar errors, dragged from former commits.
 
 
 \subsection{Results Discussion}
 
+The identification of an issue as a bug report is a process that is not as straightforward as one might think. Out of 459 tickets we were only capable to achieve a consensus for 292 cases (63.6\%), which hints to the difficulty of the task. Tom help the humans taking the decisions, we investing in building a tool to assist them, by presenting all the rele- vant information, coming from different data sources, in an easy way. That helped to make the process smoother, but still the differences in judgment, with the same information available, persisted.
+After analyzing several hundreds of bugs in this study, we have realized as well that determining where and when a bug was introduced in not a trivial task. In fact, even just determining if the bug was present at the time a certain commit introduced the code that latter triggered it is in some cases not easy.
+For example, we have found many cases where we have been unable to determine the point of introduction of the bug, as no previous commit can be identified. One of those cases is when the fix only adds code: in such case there is no way of identifying the previous commit as we defined it, since there is no previous commit touching the fixing lines. In this case, only further research could find out if the code surrounding the added lines was responsible for the bug, or maybe some other part of the code.
+
+Another case is when additional conditions are added to if or else clauses. One might think that in the previous commit those were not included due to an error, so that the previous commit is the cause of the bug. However, situations exist where the need for additional code in an if clause appear because of the later introduction of some new functionality, and thus the line in the previous commit was correct at the time it was introduced. In our analysis, if the latter situation is not explicitly mentioned we have considered that the previous commit caused the error.
+In studies such as Kim et al. [16] and Williams et al. [24] also manually analyzed samples of SZZ data. However, they report much higher percentages of correct SZZ results than in this study. The reason could be linked to the time spent in the manual verification (40 seconds in mean), which was lower than us, so they maybe didn?t entered into details as much as we have did. Whereas we have analyzed the whole context of a bug-fix they only focused in verify the bug-fix hunks, thus they could omit changes in the API or changes due to the evolution of the code. In the other hand, Williams et al. [24] only took 25 random bug fix commits to manually analyze, and probably it was a small size population. Of course, it could also be because of the specific projects se- lected in the studies, which could lead to very different cases of bug introduction by previous commits. This is one of the reasons we propose further work to extend our analysis to a varied set of projects.
+
+
+After analyzing several fixing commits in this study, we have seen that real (manually validated) TTN values differ substantially from the ones computed using the well-known and widely-used SZZ algorithm, identifying different BICs for 36\% of the cases in Nova and for 24\% in ElasticSearch. This is the reason why the mean TTN computed using SZZ is almost half the real one.
+The median time to notify a bug is almost 200 days in ElasticSearch and about 350 days in Nova. If we want to calculate the median time of bug fixing for each project, we have to add the median TTF to the TTN, obtaining the BFT. The BFT in ElasticSearch does not differ much from the TTN, whereas in Nova it reaches 400 days. Kim and Whitehead in [11] reported values of BFT that range from 100 to 200 days. In our case studies, only ElasticSearch is in this range, although by very little margin. An explanation for the deviation is because Kim and Whitehead used SZZ to locate the BIC, which we have found is not only always true, but provides an optimistic value.
+
+We have studied the relationship between the variables under study. We have seen for Nova that TTN shows a tendency to increase for lower values of EuBIC, meaning that one of the reasons for high values of TTN could be that the developer who introduced the bug did not have much experience on the project at that moment.
+Given that we have the meta-data from the source code management systems, we could trace how many developers do several tasks in the bug introduction ? > notification ? > fixing process. The results show that notifiers often also fix the bugs. Developers who introduced the bug also appear to fix it (after a third party notifies it) and sometimes they even notify the bug without providing a solution. Interestingly enough, we have found that the number of times where a developer is involved in the three tasks for the same bug report is not negligible. These results raise a lot of questions that are very interesting from the community perspective. One possible reason that explains the low percentage of authors who fix their bugs may be because they are no longer in the project when the bug is reported. We have looked for this and have found that the number of authors who have abandoned the project when the bug was reported was only one in ElasticSearch and two in Nova. This means that other reasons have to be more important than code ownership when it comes to a bug. On the contrary, the high percentages of developers notifying and fixing bugs may be because when they reporting the bug, they already know how to fix it, and this might have and impact reducing the time to fix a bug.
+All in all, we think that the Time To Notify a bug can demonstrate to be a good metric of a project, as it provides good perspective on how the project is maintained. Other metrics can be easily circumvented, as for instance the number of commits or of mailing list messages, and may result in per- verse effects if they are linked with incentives or productivity measures. For TTN (and BFT) this is more difficult to achieve, but not impossible: one could think of a developer introducing a bug and the notifying and fixing it shortly thereafter to obtain lower values.
+Given that one of the problems with TTN (and the rest of associated metrics) is that finding the BIC is difficult and has to be done in a manual way if high precision is the goal, we would like to propose that bug tracking systems include an additional field when closing a bug. In this field, the fixing developer could specify which one was the BIC. It should be noted that there is no one more qualified at this moment that knows where and when the bug was caused. That way the project could have an accurate measure of its maintenance activities and processes, and researchers will access better data and build a better models that estimate effort and the total cost of the software [2], [16], [23].
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2492,22 +2572,42 @@ All in all, we believe in the benefit that this new concept to locate the \FFC h
 \cleardoublepage
 \chapter{Conclusions and Future Research}
 \label{chap:conclusions}
+
+This chapter will describe the main conclusions of this thesis based on the initial research goals and contributions stated in Chapter 1 . Furthermore, the future work is also detailed at the end.
+
+\section{Conclusions}
+
+This thesis focuses on describing and contextualizing the current problem on locating the origin of a bug. To deal with this problem we have proposed a solution based on a new theoretical model to unequivocally locate the Bug-Introducing commits. This new method is able to distinguish between two relevant moments given a bug-fixing commit, the Bug-Introduction moment and the First-Failing moment. Whereas the first moment not always exists, because some external changes or the evolution of internal requirements changed causing the failure, there always be a First-Failing moment which indicates when the project manifest the bug fixed by the bug-fixing commit. To have faith in the bug prediction, bug categorization and bug detection models is necessary to study and distinguish these both moments, since the current state-of-the-art approaches are given more than 25\% of ``real" false positives.  
+
+ thesis based
+This new method is able to distinguish between two relevant moments given a bug-fixing commit, the Bug-Introduction moment and the First-Failing moment. Whereas the first moment not always exists, because some external changes or the evolution of internal requirements changed causing the failure, there always be a First-Failing moment which indicates when the project manifest the bug fixed by the bug-fixing commit. To have faith in the bug prediction, bug categorization and bug detection models is necessary to study and distinguish these both moments, since the current state-of-the-art approaches are given more than 25\% of ``real" false positives.  
+
 In this concluding chapter, we recapitulate the contributions of our study over time, we discuss the findings and describe lessons learned and threats to validity. Finally, we draw some lines of our future research.
 
 
 This article has presented a detailed definition of the FFC that includes its dependencies and the different classes to be grouped. In addition, the empirical experiment we have performed in Nova and ElasticSearch has shown that for a large fraction of the analyzed tickets, Gema says: Write percentage, presented a FFC due to external artifacts. Whereas from those tickets where a FFC can be clearly found in the chain of precedence, the implicit assumption that bugs were introduced in the previous commit does not hold at least in Gema says: Write percentage of them.
 Also, we have traced a guide with the rules to define the effectiveness of an approach in order to find the FFC and we have described some of the reasons why looking for the BIC or using some heuristics to predict bugs are not the best option whether our purpose is reduce the error in the results or predictions.
 
-\section{Conclusions}
+We have performed a case study of ESE practice by means of conducting a SLR on the use of the well-known SZZ algorithm. Our sample of publications has consisted of 187 publications that make use of the complete SZZ algorithm (first and second part), out of 458 publications that cite the seminal paper where SZZ was presented or one of the two papers that propose an enhanced version
+785 of SZZ.
+Our study sheds some light on some of the problems that ESE research
+faces when assumptions, as it is the case in SZZ, are made in research methods: publications are primarily non-reproducible, limitations are just occasionally re- ported, improved versions are seldom used and difficult to identify, researchers
+790 prefer to use their own enhancements, and awareness and use of improved ver- sions do not suppose an enhancement in reproducibility. All in all, we have observed that the result is a situation with a lot of room for improvement as excellence in reproducibility is seldom found, and where factors that undermine the credibility of the results are common. We finish by offering some advice in
+795 how this situation could be improved in the future, sharing our reflections and stressing the importance of reviewers.
 
 
+The study we have performed on Nova and ElasticSearch has shown that the mean Time To Notify (TTN) a bug is over ten months, whereas using the SZZ algorithm to calculate this metric we obtain a value slightly higher than five months.
+Our study shows a negative correlation between the TTN and EuBIC, which means that the time to notify an error is related to the overall experience of the author.
+In addition, we propose to build a new field/option in the bug tracking system to record which commit was the BIC, increasing that way the confidence of which previous commit inserted the bug. Once we have found this, it makes sense to explore, as future work, to which extent this happens in other projects with probably higher number of tickets and with a higher number metrics.
 
 \section{Future Work}
 \label{sec:future}
-Once we have found that at least manually we can identify the FFC us- ing the criterion established and theoretically we were able to classify them depending their nature. It makes sense to automatize the test idea to find the FFC, as future work, to which extent this happens in an optimal project where we could have all the dependencies under control and probably use higher number of tickets.
-Of course, another future line is a detailed classification, in different projects, of all the cases of introduction of bugs that are not related to the previous changes but can be automatically detectable. This could help to better design- ing integration tests, to better check for those cases.
-The full automation of the methodology used in this paper is also interesting from a practical point of view. That would provide software projects with a valuable tool for understanding how they are introducing bugs, and therefore design measures for mitigation.
 
+After manually identifying the Bug-introducing commits and the First-Failing Commits using the criterio detailed in the proposed model, it is comprehensible to attempt to automatize as much as posible the theory in order to find unequivocally the \BIC and \FFC given a bug-fixing commit. As it has been mentioned earlier, there will be some scenarios where the Test-Signalling Bug can not be implemented due to many reasons related with the dependencies and the environments used at some previous point in the history of the project. But at least, we should provide different layers of abstraction which describe where and how the \TSB can run. Thus, as future work, I would like to study to which extent this occurs in an optimal project where all the dependencies would be under control and probably. We hope that the automation of the proposed model is also interesting from a practical point of view, because it  would provide software projects with a valuable tool for better understanding what is a bug and how they are introduced, and therefore design measures for mitigation.
+
+Of course, another future line is select a bigger simple size to carry out a classification to study the frequency with which a bug-fixing commit presents a \BIC or not depending on the bug report description and the code changed in the of the bug-fixing commit. This study will provide us with more in-depth about whether there exists some patterns that have been hidden in the current literature. This study could help to better designing integration tests, to better identifying real \BIC or to better check for those cases.
+
+Finally, another interesting future line concerns to the reproducibility and replicability of previous studies based on the use of SZZ-like techniques in order to predict, detect and classify bugs. There is a need for boosting reproducibility and replicability to investigate how it should be addressed by the ESE community, this will help to ascertain the impact of this thesis in other domains as well as the necessity of improving and better defining what is a bug and how will be located.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
