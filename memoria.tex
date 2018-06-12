@@ -441,32 +441,36 @@ To solve the lack of definitions and the need to validate the current algorithms
 \section{Contributions}
 \label{subsec:contributions}
 \gema{Not reviewed}
-We outline the contributions of this thesis below. The contributions are grouped by their respective studies.
+This thesis makes four main contributions that are outlined below. %The contributions are grouped by their respective studies.
 
-\paragraph{Study 1:}
-We have carried out a study to analyze reproducibility and credibility in Empirica Software Engineering~\emph{ESE} with the SZZ algorithm as case of study. This study has been published in the Information and Software Technology Journal in March, 2018 \cite{rodriguez2018reproducibility}. The aim of the SLR is to obtain an overview of how authors have addressed the reproducibility and credibility in the studies where they have used the SZZ.
-
-The contributions of this study are described below:
 \begin{enumerate}
-  \item \textbf{An overview on the impact that the SZZ has had so far in ESE:} The SZZ algorithm has been shown to be a key factor to locate when a change induced fixing-commits. Furthermore, to provide insight of how widespread the use of SZZ is, we also addresses the maturity and diversity of the publications where SZZ has been used in order to understand its audience.
-  \item \textbf{An overview of how studies that use the SZZ algorithm address the reproducibility in their research work:} Reproducibility is a crucial aspect of a credible study in ESE~\cite{gonzalez2012reproducibility}. Piwowar et al. state that reproducibility improves the impact of research~\cite{piwowar2007sharing}. In addition, when a research work incorporates reproducibility, it is more likely to be replicated. However, there is evidence in the ESE literature that replicable studies are not common~\cite{robles2010replicating}. By providing a replication package, the authors facilitate others to replicate or to reproduce their experiment, which increases the credibility of their results~\cite{juristo2009using}.
-  \item \textbf{An analysis of these studies manage the limitations of SZZ:} Limitations of SZZ are well-known in the research literature. we would like to find out how many papers report any of these. Therefore, we study whether authors mention the limitations of SZZ that may affect their findings, be it in the description of the method, in the threats to validity or in the discussion.
+	\item\textbf{A systematic Literature Review on the Use of the SZZ Algorithm:} We have carried out a study to analyze reproducibility and credibility in Empirical Software Engineering~\emph{ESE} with the SZZ algorithm as case of study. This study has been published in the Information and Software Technology Journal in March, 2018 \cite{rodriguez2018reproducibility}. The aim of the SLR is to obtain an overview of how authors have addressed the reproducibility and credibility in the studies where they have used the SZZ algorithm.
+
+	The goals of this study are described below:
+	\begin{enumerate}
+  		\item \textbf{An overview on the impact that the SZZ has had so far in ESE:} The SZZ algorithm has been shown to be a key factor to locate when a change induced fixing-commits. Furthermore, to provide insight of how widespread the use of SZZ is, we also addresses the maturity and diversity of the publications where SZZ has been used in order to understand its audience.
+  		\item \textbf{An overview of how studies that use the SZZ algorithm address the reproducibility in their research work:} Reproducibility is a crucial aspect of a credible study in ESE~\cite{gonzalez2012reproducibility}. Piwowar et al. state that reproducibility improves the impact of research~\cite{piwowar2007sharing}. In addition, when a research work incorporates reproducibility, it is more likely to be replicated. However, there is evidence in the ESE literature that replicable studies are not common~\cite{robles2010replicating}. By providing a replication package, the authors facilitate others to replicate or to reproduce their experiment, which increases the credibility of their results~\cite{juristo2009using}.
+ 	 	\item \textbf{An analysis of how these studies manage the limitations of the SZZ algorithm:} Limitations of SZZ are well-known in the research literature, and we would like to analyze how many papers report any of the limitations or how they address them. Therefore, we study whether authors are aware of that and mention that some limitations of SZZ may affect their findings, be it in the description of the method, in the threats to validity or in the discussion.
+	\end{enumerate}
+
+	\item\textbf{A Theoretical Model to Unequivocally Identify the Bug-Introduction Changes:}
+In Chapter 5, there is a detailed description of a comprehensive model to understand what is a bug and how it is introduced, including definitions and a taxonomy which helps to analyze formally the process. The taxonomy helps to understand the many different ways in which a bug is introduced, and why some of the methods proposed in the literature fail to find many of them. 
+
+	The goals of this chapter are described below:
+	\begin{enumerate}
+ 		 \item \textbf{A detailed definition of the First Failing Change:} It introduces a general method to determine, unequivocally and falsifiability, the first time that the software fails in relation with the bug-fixing change.
+ 		 \item \textbf{The relation of the First Failing Change with its environment:} This relationship details the dependencies of a change in a specific moment, because it makes no sense to explain when a bug manifests itself by first time whether there is not explanation of the dependencies in which this bug appear.
+ % \item \textbf{A classification of the first failing change due to its nature}.
+ % \item \textbf{The rules to define the effectiveness of an algorithm when searching for the origin of the bug.}
+	\end{enumerate}
+
+	\item\textbf{Empirical Study on the Application of the Proposed Model:}
+	\gema{escribir detalladamente las contribuciones de este estudio}
+%The model allows as well for a better framing of the comparison of automatic methods to find bug inducting changes, which we apply to analyze some of these methods. Finally, based on this comparison, we propose some method that at least in the cases considered show better results than the classical methods described in the literature.
+
+	\item\textbf{Quantification of the SZZ Algorithm:}
+We have studied and contextualized the current problem when identify a bug-introducing change using algorithms based on tracking back the lines such as the SZZ. In Chapter 3, we have described each one of the possible source os error to correctly identify the bug-introduction commit using the SZZ algorithm. Furthermore, in Chapter 6, we have computed the performance of this algorithm to identify the bug-introducing changes based on computing the``real" true positives and true negatives of their results.
 \end{enumerate}
-
-\paragraph{Study 2:}
-We have developed a comprehensive model of how bugs are introduced, including definitions and a taxonomy which help to analyze formally the process. The taxonomy helps to understand the many different ways in which a bug is introduced, and why some of the methods proposed in the literature fail to find many of them. The model allows as well for a better framing of the comparison of automatic methods to find bug inducting changes, which we apply to analyze some of these methods. Finally, based on this comparison, we propose some method that at least in the cases considered show better results than the classical methods described in the literature.
-
-The contributions of this study are described below:
-\begin{enumerate}
-  \item \textbf{A detailed definition of the first failing change:} It introduces a general method to determine, unequivocally and falsifiability, the first time that the software fails in relation with the bug-fixing change.
-  \item \textbf{The relation of the first failing change with its environment:} This relationship details the dependencies of a change in a specific moment, because it makes no sense to explain when a bug manifests itself by first time whether there is not explanation of the dependencies in which this bug appear.
-  \item \textbf{A classification of the first failing change due to its nature}.
-  \item \textbf{The rules to define the effectiveness of an algorithm when searching for the origin of the bug.}
-\end{enumerate}
-
-%\paragraph{Study 3:}
-%\gema{Aqui me gustaria poner el estdudio sobre SZZ line based and token based }
-
 
 \section{Structure}
 \label{subsec:structure}
@@ -2439,73 +2443,94 @@ Furthermore, they are explained below:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \cleardoublepage
-\chapter{Disscussion}
+\chapter{Results and Disscussion}
 \label{chap:discussion}
-In this concluding chapter, we recapitulate the contributions of our study over time, we discuss the findings and describe lessons learned and threats to validity. Finally, we draw some lines of our future research.
+
+This chapter aims to summarize the main results obtained in Chapter 4 and Chapter 6 . Also, the threats to validity and the potential automatization of the theoretical model presented in Chapter 5 is discussed in this Chapter. 
+
+In first place, the threats to validity are discussed, they will raise potential questions that are discussed through the following sections. The discussion of the results is divided into four subsections that present the discussion of  the objetives of this thesis.
+
+The first discussion point of the study is based on the credibility and reproducibility of studies that used the SZZ algorithm. This algorithm has been cited more than 600 times since its publication 10 years before, but however there are few studies that provide a replication package even though the researchers of the paper are aware of the limitations and shortcomings of this algorithm
+
+In second place, thanks to the previously mentioned SLR and the depth study carried out about why and how the SZZ flags clear changes as bug-introducing changes, we were able to quantify the SZZ. Thus, in this part the discussion is based on how this quantification helps to formulate new models to locate the origin of the bugs.
+
+Finally, the last two points to discuss are focus on the applicability of the theoretical model proposed and the implications of the results from the empirical study where this model was applied. The model identifies unequivocally the bug-introduction commit  whether it exists, for a bug-fixing commits based on the assumption of an hypothetical test that can be run indefinitely in the past of a software project.  
 
 \section{Threats to validity}
 \label{sec:threats}
 
-Wohlin et al. discuss four main types of validity threats in ESE research: conclusion, internal, construct and external [45].
-Conclusion validity, being related to how sure we can be that the treatment we used in an investigation is related to the actual outcome we observed, does
-745 not affect our approach.
-Internal validity is the extent to which a causal conclusion based on a study
-is warranted, which is determined by the degree to which a study minimizes systematic errors. We have attempted to minimize this threat by following the procedures for performing SLRs described in [46], and offer a replication
-750 package so that third parties can inspect our sources. However, there might be a selection bias due to having chosen Google Scholar and Semantic Scholar as the source of all publications on SZZ; other publications may exist that are not indexed by Google Scholar or Semantic Scholar. In addition, other publications could make use of SZZ and not cite the original publication or its improvements.
-755 Another factor affecting internal validity may be the maturity of the field, in the sense that our study may have been done in a too early a stage to draw conclusions. We think, however, that more than 10 years is enough time to allow to extract valid lessons from its study.
-Construct validity is the degree to which an investigation measures what it 760 claims to be measuring. In this paper, we measure impact by number of publi- cations and types and diversity of venues, reproducibility by the availability of a replication package or of a detailed description and data set, and have manu- ally analyzed hundreds of papers for specific, sometimes very detailed aspects, so human errors may have occurred. We think that the effect on impact is 765 small, given the large number of publications and venues that we have found. The effect on reproducibility is to be considered, as we have not reproduced or replicated the studies by ourselves; in this regard, we offer an upper limit of publications that may be reproducible. Our replication package does not re- move the human errors that we may have incurred, but it offers the possibility
-35
-770 to others to check and improve our work.
-External validity is the degree to which results can be generalized to other
-contexts. In this paper, we have selected a single case study, with its particu- larities and peculiarities. We cannot claim that our results can be generalized to ESE research. However, the value of case studies should be not undermined;
-775 Flyvbjerg provides several examples of individual cases that contributed to dis- coveries in physics, economics, and social sciences [47], while Beveridge observed for social sciences: ?More discoveries have arisen from intense observation than from statistics applied to large groups? (as quoted in [48], page 95).
-9. Conclusions and further research
-780 We have performed a case study of ESE practice by means of conducting a SLR on the use of the well-known SZZ algorithm. Our sample of publications has consisted of 187 publications that make use of the complete SZZ algorithm (first and second part), out of 458 publications that cite the seminal paper where SZZ was presented or one of the two papers that propose an enhanced version
-785 of SZZ.
-Our study sheds some light on some of the problems that ESE research
-faces when assumptions, as it is the case in SZZ, are made in research methods: publications are primarily non-reproducible, limitations are just occasionally re- ported, improved versions are seldom used and difficult to identify, researchers
-790 prefer to use their own enhancements, and awareness and use of improved ver- sions do not suppose an enhancement in reproducibility. All in all, we have observed that the result is a situation with a lot of room for improvement as excellence in reproducibility is seldom found, and where factors that undermine the credibility of the results are common. We finish by offering some advice in
-795 how this situation could be improved in the future, sharing our reflections and stressing the importance of reviewers.
-Future research should address the limitations of this study and extend it to other domains. There is a need for boosting reproducibility and to investigate
-36
+Wohlin \emph{et al.} state that there are four main types of validity threats in Empirical Software Engineering research: construct, internal, external and conclusion \cite{wohlin2012experimentation}.
 
-how it should be addressed by the ESE community. Additional case studies 800 should be carried out on other empirical techniques to ascertain if our findings hold in other scenarios and contexts, for instance, when confidential data are
-involved.
+\paragraph{Construct validity}:  This kind of threat is focused on the validity of the metrics used in the empirical research method and whether they claims to be measuring. In the context of this thesis, this validity aspect will focus on the metrics and concepts used and the potential problems that may bias the result of the metrics when retrieving them.
 
+\paragraph{Internal validity}: It is the degree to which a causal conclusion based on a study is warranted, which is determined by the degree to which a study minimizes systematic errors. We have attempted to minimize this threat by following the procedures for performing SLRs described in ~\cite{madeyski2017would} and by reducing as much as possible the interaction with tools that can introduce bias in the results. Furthermore, we also offer replications packages so that third parties can inspect our sources.
 
-
-The limited sample size of tickets used in this research is the major threat to its validity. It may happen, that only with 120 seemingly random bug reports, there may be a prior unknown tendency. This is in fact similar to~\cite{sliwerski2005changes}, where the trend indicates that most bugs are fixed on Fridays.
-The main threat to validity is the number of tickets considered. It is relatively high, but there is a long way to get a representative sample from a variety of free/open source systems, or software projects at large. Our analysis requires a lot of human effort, so increasing meaningfully the number of tickets is difficult. However, it should be noted that our numbers are the order of magnitude of similar studies: for instance Hindle's \emph{et al.} ~\cite{hindle2008large} article on large commits, considered 100 commits.
-
+\paragraph{External validity}: It is the extend to which results can be generalized to other contexts. In the empirical study of this thesis, we have selected two single case study, Nova and ElasticSearch, with its particularities and peculiarities. Thus, this thesis do cannot claim that our results can be generalized to other projects. However, the value of these case studies should be not undermined.
+ 
+ \paragraph{Conclusion validity}: it is related to how sure we can be that the conclusions we reach about relationships in our data are reasonable, does not affect our approach. 
+ 
 \subsection{Construct validity}
-\subsection{Internal validity}
-Other internal threats to validity are:
+Construct validity is the degree to which a research work represent what it expected to measure. In the context of this thesis: 
 
-\begin{itemize}
-    \item
-    \item 
-    \item
-    %\item Although the researchers are experienced programmers, they are not experts in the  OpenStack and ElasticSearch projects, and their inexperience may have influenced the results of the analysis.
-    \item 
-    %\item We have used a random script to extract the tickets from Launchpad that have been reported during 2015. There could be unintended bias of the data, because many reasons, as for instance the phase of the project.
-    \item
-\end{itemize}
+\begin{enumerate}
+	\item In the Systematic Literature Review: 
+		\begin{itemize}
+			\item The impact of the SZZ is measured by the number of publications using it per year and the types and diversity of venues that published these publications.
+			\item The reproducibility of the publications that use the SZZ is measured by the availability of a detailed description and data set or of a replication package.  
+			\item Since the studies have not been replicated or reproduced in this thesis, the effect on reproducibility is to be considered. However to mitigate this, we list an upper limit of publications that may be reproducible.  
+		\end{itemize}
+	 \item In the Empirical Study: 
+	 	\begin{itemize}
+			\item The bug-fixing commits are the commits that have fixed a bug that was described in a bug report. As mentioned before, there may have commits detected as being fixing bug that are not really fixing a bug because the bug report was not describing a real bug. To mitigate this threat, the bug reports extracted from Nova were analyzed by two researchers to ensure that they described real bug reports. Then in a second round, all the dataset was reviewed again in order to filter out some borderline case. 
+			\item The Bug-introducing commits are the commits that involuntary introduced a bug in the source code. To mitigate the erroneous identification of Bug-introducing commit, they were manually discover by tracking back the fixed lines in a bug-fixing commit. And in case of doubt whether a commit is a \BIC or not it was rejected from the final ``gold standard". 
+			\item The First Failing Commits are the commits that manifest a failure by first time. They were identified manually and based on an hypothetical test, it may happen that the theory will not match with the practise whether the implementation of the test is reached. To mitigate this, a commit is rejected from the ``gold standard" in case of doubting whether or not a commit is a \FFC. 
+		\end{itemize}
+\end{enumerate}
+
+In addition, we have manually analyzed hundreds of papers during the SLR as well as in the empirical study, thus human errors might have occurred. The replication packages provided in this thesis do not remove the human errors, but researchers have the possibility to improve and check the work of this thesis. 
+
+\subsection{Internal validity}
+The internal threats to validity are:
+
+\begin{enumerate}
+	\item In the Systematic Literature Review: 
+		\begin{itemize}
+   		 	\item  There might be a selection bias due to having chosen Google Scholar and Semantic Scholar as the source of all publications on SZZ; other publications may exist that are not indexed by Google Scholar or Semantic Scholar. 
+    			\item  There might exists publications that use the SZZ algorithm and not cite the original publication or its improvements. 
+    		 	\item The maturity of the field might also affect whether the study has been done in a too early a stage to draw conclusions. However, that more than 10 years is enough time to allow to extract valid lessons from its study.
+		\end{itemize}
+	\item {In the Empirical Study}: 
+		\begin{itemize}
+   			\item The limited sample size of bug reports used in this research is the major threat to its validity. It may occur, that only with 120 seemingly random bug reports, there may be a prior unknown tendency. It is relatively high, but there is a long way to get a representative sample from a variety of free/open source systems, or software projects at large. Our analysis requires a lot of human effort, so increasing meaningfully the number of tickets is difficult. However, it should be noted that our numbers are in the order of magnitude of similar studies: for instance Hindle's \emph{et al.} ~\cite{hindle2008large} article on large commits considered 100 commits, Da Costa~\textit{et al.} ~\cite{da2016framework} article considered to manually analyze 160 bugs as a whole and 80 bug-introducing changes. And Williams y Spacco~\cite{williams2008szz} manually analyzed 25 bug-fixing commits that contained a total of 50 changed lines which were mapped back to a fix-inducing commit.
+			\item We are not experts in OpenStack and ElasticSearch projects, and our inexperience may have influenced the results of the analysis when identifying whether a bug was been in the system from the very beginning or wether the code has been clean always. 
+			\item We have used a random script to extract the tickets from Launchpad and Github that have been reported during 2015. There could be unintended bias of the data during this year, because many reasons, as for instance the phase of the project.
+			\item There could be some lax criteria involving the subjective opinion of the researchers. To mitigate this, we have discussed those bug-fixing commit that were not sure, furthermore we have add the ``Undecided" category to mitigate possible false positives from our dataset.
+			\item We have rejected commits classified into Undecided, and It may occur that, in fact they were \BIC or not, and as a consequence we have lost some data that would vary the results. 	
+		\end{itemize}
+\end{enumerate}
 
 \subsection{External validity}
 The most important external threats, most of them related to peculiarities of the Nova project, are:
-
-\begin{itemize}
-    \item 
-    \item 
-    \item 
-\end{itemize}
-
+\begin{enumerate}
+	\item In the Systematic Literature Review: 
+		\begin{itemize}
+			\item The results about reproducibility using SZZ cannot be generalized to Empirical Software Engineering research because it was a case of study.
+		\end{itemize}
+	\item {In the Empirical Study}: 
+		\begin{itemize}
+    			\item The use of diff: this is the most extended way of providing diff information when looking for the difference between two files and, since it works in Git and it is implemented in Github we use it in this thesis. However, other ways of providing diff information are possible.
+   			 \item Programming languages: this thesis selected only two programming languages Java and Python. Maybe, with other programming languages the results might be totally different.
+			 \item Number of projects analyzed: the use of the Nova and ElasticSearch as the cases study implies a better understanding of how bugs are injected in these projects. However, Nova and ElasticSearch are projects with a very rapid evolution, and a very active community of developers. Maybe, in other projects with less commits per year, results may be totally different.. A higher number of projects would enrich the study.
+		\end{itemize}
+\end{enumerate}
 
 \section{Discussion Chapters}
+
+
 \subsection{Reproducibility and Credibility of the SZZ Discussion}
 \label{subsec:implicationsSZZ}
 
-We consider it important to highlight some of the lessons learned after performing this SLR. It turns out that, when empirical studies are based on heuristics or assumptions, authors must be conscious that to produce reproducible studies the best method is to include a replication package that can be publicly available together with its publication (ideally, for ever). Researchers have however to be aware that some issues, such as the software environments, might change, causing that both programs and data become obsolete, so a detailed description of the elements, methods and software used during the study is also valuable.
+We consider it important to highlight some of the lessons learned after performing the SLR. It turns out that, when empirical studies are based on heuristics or assumptions, authors must be conscious that to produce reproducible studies the best method is to include a replication package that can be publicly available together with its publication (ideally, for ever). Researchers have however to be aware that some issues, such as the software environments, might change, causing that both programs and data become obsolete, so a detailed description of the elements, methods and software used during the study is also valuable.
 
 On the other hand, to provide more trustable results, we recommend that researchers specify (and argue) the use of those methods/algorithms that mitigate the limitations of their studies, be aware of the risk of every assumptions that is being used and, if needed, provide a manual analysis of the results. For those studies where the study size is large, researchers can select a random sample to validate it manually.
 
@@ -2513,7 +2538,7 @@ As it is the case in software projects with release numbering~\cite{israeli2010l
 
 Finally, we offer a simple way to measure the ease of reproducibility and credibility of research papers. Even if this measure has been conceived with those studies that make use of SZZ in mind, we think it can be adapted to other ESE research easily. Thus, authors can easily assess if their paper offers a reproducible and trustable work (i.e., with scores above or equal to 5). Although we have often addressed authors directly, we should not forget the responsibility of reviewers in the scientific process. We have seen that authors are often detail-focused when presenting their research --in favor our intuition, we have found that reproducibility is related with being aware of the limitations --, but reviewers should have the required vision to evaluate the studies taking these details into consideration, and helping authors to raise the level of their research. Thus, we recommend reviewers to ask themselves the questions, adapted to the context of the research, proposed in Section when performing a review of a paper using heuristics and assumptions.
 
-In this paper we have studied the use of SZZ, a widely used algorithm in ESE research. We have shown that SZZ is certainly relevant, and that it is not limited to a niche audience, but has spread to be an important component of publications in top journals and prominent conferences. In this regard, we can see its study as a case study of how a software engineering practice spreads across academia.
+In the Chapter 4 of this thesis we have detailed the study of the use of SZZ, a widely used algorithm in Empirical Software Engineering research. We have shown that SZZ is certainly relevant, and that it is not limited to a niche audience, but has spread to be an important component of publications in top journals and prominent conferences. In this regard, we can see its study as a case study of how a software engineering practice spreads across academia.
 
 We have observed that limitations to SZZ are well known and documented. Improvements have been proposed, with unequal success up to the moment. While the limitations to its first part --related to linking fix commits and bug tracking issues-- has improved significantly, the enhancements for the second part --that has to do with finding the bug introducing change-- are still limited and accuracy has room for improvement.
 
@@ -2525,8 +2550,7 @@ Even if using one of the improved versions of the algorithm helps in the accurac
 
 We have observed that full comprehensive reports of reproducibility are seldom found, we classified only 15\% of the papers as being \emph{good and excellent quality with respect to reproducibility}. The research community should direct more attention to these aspects; we believe that too much attention is put on the final result(s) (the \emph{product} of the research: new knowledge) in comparison to the research process. As researchers in the field of software engineering, we know that both --a high quality product and process- are essential for a successful advancement in the long term~\cite{kan2002metrics}.
 
-All these factors undermine the credibility of ESE research, and require a profound consideration  by the research community
-\gema{Como afecta las asunciones hechas en la credibilidad de los resultados}
+All these factors undermine the credibility of ESE research, and require a profound consideration  by the research community.
 
 \subsection{Theoretical Model Discussion}
 \label{subsec:implicationsModel}
@@ -2543,6 +2567,8 @@ In any case, our research shows evidence that assuming that the previous commit 
 7. Changes to APIs, such as the addition of an argument. Variable renaming.
     Changes in the operating system, packages or requirements.
     Optimization of the code in some lines. Grammar errors, dragged from former commits.
+    
+    This new method is able to distinguish between two relevant moments given a bug-fixing commit, the Bug-Introduction moment and the First-Failing moment. Whereas the first moment not always exists, because some external changes or the evolution of internal requirements changed causing the failure, there always be a First-Failing moment which indicates when the project manifest the bug fixed by the bug-fixing commit. To have faith in the bug prediction, bug categorization and bug detection models is necessary to study and distinguish these both moments, since our empirical case of study states that the current state-of-the-art approaches identify from 26\% up to 38\% of ``real" false positives. Thus, these results are promising to start thinking to implement new methods based on the theoretical model proposed in this dissertation, or at least, to consider re-formulate correctly the definition of inserting a bug into the source code. This process cannot be considered as a static problem, the methods proposed might be able to distinguish between buggy lines and clean lines at the moment of inserting them. This dissertation has demonstrated that other external and internal reasons rather than buggy lines are causing the failure of the systems and that it is not fair to blame some change as the cause when in fact, it was correct at the time it was submitted because it fulfil with the functionalities, environments, necessities and requirements of the project.
 
 
 \subsection{Results Discussion}
@@ -2573,32 +2599,23 @@ Given that one of the problems with TTN (and the rest of associated metrics) is 
 \chapter{Conclusions and Future Research}
 \label{chap:conclusions}
 
-This chapter will describe the main conclusions of this thesis based on the initial research goals and contributions stated in Chapter 1 . Furthermore, the future work is also detailed at the end.
+This chapter recapitulates the initial research goals and contributions claimed in Chapter 1 and describes the main conclusions of this thesis based. Furthermore, the future research is also detailed at the end, in section 8.2  .
 
 \section{Conclusions}
 
-This thesis focuses on describing and contextualizing the current problem on locating the origin of a bug. To deal with this problem we have proposed a solution based on a new theoretical model to unequivocally locate the Bug-Introducing commits. This new method is able to distinguish between two relevant moments given a bug-fixing commit, the Bug-Introduction moment and the First-Failing moment. Whereas the first moment not always exists, because some external changes or the evolution of internal requirements changed causing the failure, there always be a First-Failing moment which indicates when the project manifest the bug fixed by the bug-fixing commit. To have faith in the bug prediction, bug categorization and bug detection models is necessary to study and distinguish these both moments, since the current state-of-the-art approaches are given more than 25\% of ``real" false positives.  
+Regarding to the initial set of research goals and contributions of this thesis introduced in chapter 1, section 1.2 and section 1.3, those were divided into three main sets: 1) The study of the current problem when locating the bug-introducing commit with a SLR of the use of SZZ and the quantification of the limitations of this algorithm. 2) A proposed solution to address more accurately the identification of bug-introducing changes by distinguishing them from the First-Failing Changes. 3) The empirical study on the application of the proposed theory in two case studies: Nova and ElasticSearch.  
 
- thesis based
-This new method is able to distinguish between two relevant moments given a bug-fixing commit, the Bug-Introduction moment and the First-Failing moment. Whereas the first moment not always exists, because some external changes or the evolution of internal requirements changed causing the failure, there always be a First-Failing moment which indicates when the project manifest the bug fixed by the bug-fixing commit. To have faith in the bug prediction, bug categorization and bug detection models is necessary to study and distinguish these both moments, since the current state-of-the-art approaches are given more than 25\% of ``real" false positives.  
+In this dissertation to understand the current problem in the literature;  we have performed a case study of ESE practice by means of conducting a SLR on the use of the well-known SZZ algorithm to identify \BIC. Our sample of publications has consisted of 187 publications that make use of the complete SZZ algorithm, out of 458 publications that cite the seminal paper. This SLR sheds some light on some of the problems that ESE research faces when assumptions, as it is the case in SZZ, are made in research methods: publications are primarily non-reproducible, limitations are just occasionally reported, improved versions are seldom used and difficult to identify, researchers prefer to use their own enhancements. In addition, the SLR also helps to quantify the limitations and problems that affects to this particular algorithm when identifying the bug-introducing commits: (1) Identification of more than one previous commit, (2) scenarios when only new lines are used to fix the bug, (3) changes in the environment or configuration, (4) multiple modifications over a line, (5) weak semantic level, (6) scenarios when a bug fixing commit fixed more than one bug, (7) compatibility reasons and (8) dormant bugs.
 
-In this concluding chapter, we recapitulate the contributions of our study over time, we discuss the findings and describe lessons learned and threats to validity. Finally, we draw some lines of our future research.
+Another point of this dissertation is the proposed theoretical model that solves the limitations of the SZZ-like approaches. This thesis detail what is a bug and how practitioners identify the moment of its insertion by assuming that there exists a hypothetical test that can check the correct behaviour of the project in different snapshots, also the criteria that has to be used to apply this model. In addition, the empirical experiment we have performed in Nova and ElasticSearch in order to apply the theoretical model, has shown that for a large fraction of the analyzed bug reports we have identify whether or no a \BFC is caused by a \BIC. When a \BFC is caused by a \BIC, we have manually identify 66\% and 80\% of the commits that inserted the bug. Also, we have identify up to 69\% and 83\% of the \FFC in Nova and ElasticSearch.
+Also, we have list the most common reasons why a \BFC does not have a \BIC. Furthermore, this thesis presents a terminology of different elements and concepts that need to be understand in order to identify the bug-introduction moment. As far as we know, this is the first time that a detailed terminology to identify the \BIC given a \BFC is formulated.
 
+To summarize, this thesis focuses on describing and contextualizing the current problem on locating the origin of a bug. To deal with this problem we have quantify the limitations of the most used algorithm, we have proposed a solution based on a new theoretical model to unequivocally locate the Bug-Introducing commits, we have applied this model into two cases studies: Nova and ElasticSearch in order to identify the ``real" Bug-Introducing Changes and the First-Failing Commits and we have built the ``gold standard" dataset that was used to compute the real performance of the SZZ approaches.  
 
-This article has presented a detailed definition of the FFC that includes its dependencies and the different classes to be grouped. In addition, the empirical experiment we have performed in Nova and ElasticSearch has shown that for a large fraction of the analyzed tickets, Gema says: Write percentage, presented a FFC due to external artifacts. Whereas from those tickets where a FFC can be clearly found in the chain of precedence, the implicit assumption that bugs were introduced in the previous commit does not hold at least in Gema says: Write percentage of them.
-Also, we have traced a guide with the rules to define the effectiveness of an approach in order to find the FFC and we have described some of the reasons why looking for the BIC or using some heuristics to predict bugs are not the best option whether our purpose is reduce the error in the results or predictions.
-
-We have performed a case study of ESE practice by means of conducting a SLR on the use of the well-known SZZ algorithm. Our sample of publications has consisted of 187 publications that make use of the complete SZZ algorithm (first and second part), out of 458 publications that cite the seminal paper where SZZ was presented or one of the two papers that propose an enhanced version
-785 of SZZ.
-Our study sheds some light on some of the problems that ESE research
-faces when assumptions, as it is the case in SZZ, are made in research methods: publications are primarily non-reproducible, limitations are just occasionally re- ported, improved versions are seldom used and difficult to identify, researchers
-790 prefer to use their own enhancements, and awareness and use of improved ver- sions do not suppose an enhancement in reproducibility. All in all, we have observed that the result is a situation with a lot of room for improvement as excellence in reproducibility is seldom found, and where factors that undermine the credibility of the results are common. We finish by offering some advice in
-795 how this situation could be improved in the future, sharing our reflections and stressing the importance of reviewers.
+% All in all, we have observed that the result is a situation with a lot of room for improvement as excellence in reproducibility is seldom found, and where factors that undermine the credibility of the results are common. We finish by offering some advice in how this situation could be improved in the future, sharing our reflections and stressing the importance of reviewers.
 
 
-The study we have performed on Nova and ElasticSearch has shown that the mean Time To Notify (TTN) a bug is over ten months, whereas using the SZZ algorithm to calculate this metric we obtain a value slightly higher than five months.
-Our study shows a negative correlation between the TTN and EuBIC, which means that the time to notify an error is related to the overall experience of the author.
-In addition, we propose to build a new field/option in the bug tracking system to record which commit was the BIC, increasing that way the confidence of which previous commit inserted the bug. Once we have found this, it makes sense to explore, as future work, to which extent this happens in other projects with probably higher number of tickets and with a higher number metrics.
+This thesis may present minor modifications compared with the version that was reviewed by the Ph.D. committee. This was done in order to improve the language used and the presentation of the results. For that reason, please be noted that the last version of this thesis is available at : \url{http://gemarodri.github.io/Thesis-Gema}. 
 
 \section{Future Work}
 \label{sec:future}
@@ -2619,23 +2636,24 @@ Finally, another interesting future line concerns to the reproducibility and rep
 \chapter{Replicability of the Results}
 \label{app:replicability}
 
-Mining software repositories is a complex task in time, tools and datasets. Different authors have dealt with the issue of replicability in software engineering [Shull et al., 2008], [Basili et al., 1999]. In addition, Robles [Robles, 2010] and later in [Gonzlez-Barahona \& Robles, 2011] have raised a set of questions directly related to this problematic.
+Some authors such as Shull \emph{et al.}~\cite{shull2008role} and Basilli \emph{et al.} \cite{basili1999building} have deat with the task of Mining Software Repositories \emph{MSR}.  This is a complex task because of the high amount of time spent, the necessity of developing some specific tools and the management of datasets. Furthermore Robles ~\cite{robles2010replicating} has raised some questions related with this problem in the ESE.
+
 In first place, there are several elements that may be of interest for reproducibility:
 
 \section{SLR}
 \label{sec:replicabilitySLR}
-\paragraph{Original data source}: the original data sources used along this dissertation can be found in \gema{url github}
-\paragraph{Extraction methodology}: this methodology is briefly detailed in chapter 4, section ...., the paper introduce more details. While the scripts created and needed can be found at  \gema{url github}
-\paragraph{Study parameters}: the initial filter applied over the raw data set is detailed in \gema{section chapter}.
-\paragraph{Results dataset}:
+\paragraph{Original data source}: The original data sources used along this thesis can be found in \url{http://gemarodri.github.io/Thesis-Gema/Data/SLR} or along Chapter 2, Section 3.
+\paragraph{Extraction methodology}: The methodology is briefly detailed in Chapter 4, section 3. While the scripts created and needed can be also found at \url{http://gemarodri.github.io/Thesis-Gema/Scripts/SLR}
+\paragraph{Study parameters}: The initial filter applied over the raw data set is detailed in Chapter 4, Section 3. 
+\paragraph{Results dataset}: The results can be found in Chapter 4. In addition, they are also available at \url{http://gemarodri.github.io/Thesis-Gema/Results/SLR}
 \paragraph{Persistence}: it is expected to have access to the website as long as Github exists. 
 
 \section{Empirical Study}
 \label{sec:replicabilityEmpirical}
-\paragraph{Original data source}:  the original data sources used along this dissertation can be found in \gema{url github}
-\paragraph{Extraction methodology}: this methodology is detailed in chapter 6, section 6..... . While the scripts created and needed can be found at \gema{url github}
-\paragraph{Study parameters}: the initial filter applied over the dataset is detailed in chapter 6 \gema{section chapter}.
-\paragraph{Results dataset}:
+\paragraph{Original data source}: The original data sources used along this thesis can be found in \url{http://gemarodri.github.io/Thesis-Gema/Data/EmpriricalStudy} or along Chapter 6, Section 1.
+\paragraph{Extraction methodology}: The methodology is briefly detailed in Chapter 6, Section 2. While the scripts created and needed can be found at \url{http://gemarodri.github.io/Thesis-Gema/Scripts/EmpiricalStudy}
+\paragraph{Study parameters}: The initial filter applied over the raw data set is detailed in Chapter 5, Section1 and Section 2. 
+\paragraph{Results dataset}: The results can be found in Chapter 6, Section 3. Furthermore, they are also available at \url{http://gemarodri.github.io/Thesis-Gema/Results/EmpiricalStudy}
 \paragraph{Persistence}:  it is expected to have access to the website as long as Github exists. 
 
 
