@@ -2874,9 +2874,9 @@ La figura~\ref{fig:snapshot3} muestra c\'omo se aplica la prueba hipot\'etica cu
 Sin embargo, automatizar este proceso es tedioso y complejo, debido a la necesidad de recrear todas las dependencias externas utilizadas en el proyecto en cada una de las instant\'aneas previas a un \BFC. Sin embargo, seguimos confiando en que la automatizaci\'on puede ser posible en base a declaraciones de estudios anteriores como el realizado por Bowes~\emph{et al.}. Este estudio proporciona una lista b\'asica de principios de prueba que se centra en diferentes aspectos de calidad, adem\'as de la efectividad o la cobertura. Para nuestra investigaci\'on, el principio m\'as interesante es la (in)dependencia de prueba que describe que una prueba debe poder ejecutarse en cualquier orden y de forma aislada. La prueba no debe depender de otras pruebas de todos modos, para permitir a los profesionales agregar nuevas pruebas sin tener en cuenta las dependencias o los efectos que puedan tener en las pruebas existentes~\cite{bowes2017good}.
 
 \section{Objetivos/Problema}
-El objetivo principal de esta tesis es desarrollar un modelo te\'orico que ayude a identificar inequ\'ivocamente el momento en el que una linea err\'onea es introducida en el c\'odigo fuente de un programa a partir del arreglo de un fallo que ha sido reportado. Para ello, esta tesis realiza un anvalisis minucioso sobre las t\'ecnicas actuales usadas en la localizaci\'on de un error detallando el problema actual existente que impide que estas t\'ecnicas identifiquen correctamente el momento en el que el error fue introducido en el c\'odigo fuente. En concreto, esta tesis cuantifica las limitaciones encontradas en el algoritmo SZZ. Desde hace mas de diez anos, este algoritmo es el mas utilizado para encontrar el origen del error a pasar de que tanto investigadores como desarrolladores y profesionales son conscientes de sus limitaciones, sin embargo, la falta de otro modelo que explique como encontrar el origen de un error as\'i como la definici\'on actual de lo que significa un fallo, causan que todos los estudios donde se analiza el momento en el que un error es introducido empiecen con la misma premisa ``Las lineas modificadas para arreglar son potencialmente culpables de introducir la falla en el sistema ". Sin embargo, esta premisa trata a los errores como una variable est\'atica que permanece en el sistema desde que se introduce, cuando en realidad los errores no deben ser estudiados como variables est\'aticas ya que factores externos como cambios el las APIs o la evoluci\'on interna del sistema causan que una linea correcta en un un momento determinado empiece a manifestar el error en un momento posterior.   
+El objetivo principal de esta tesis es desarrollar un modelo te\'orico que ayude a identificar inequ\'ivocamente el momento en el que una linea err\'onea es introducida en el c\'odigo fuente de un programa a partir del arreglo de un fallo que ha sido reportado. Para ello, esta tesis realiza un an\'alisis minucioso sobre las t\'ecnicas actuales usadas en la localizaci\'on de un error detallando el problema actual existente que impide que estas t\'ecnicas identifiquen correctamente el momento en el que el error fue introducido en el c\'odigo fuente. En concreto, esta tesis cuantifica las limitaciones encontradas en el algoritmo SZZ. Desde hace mas de diez anos, este algoritmo es el mas utilizado para encontrar el origen del error a pasar de que tanto investigadores como desarrolladores y profesionales son conscientes de sus limitaciones, sin embargo, la falta de otro modelo que explique como encontrar el origen de un error as\'i como la definici\'on actual de lo que significa un fallo, causan que todos los estudios donde se analiza el momento en el que un error es introducido empiecen con la misma premisa ``Las lineas modificadas para arreglar son potencialmente culpables de introducir la falla en el sistema ". Sin embargo, esta premisa trata a los errores como una variable est\'atica que permanece en el sistema desde que se introduce, cuando en realidad los errores no deben ser estudiados como variables est\'aticas ya que factores externos como cambios el las APIs o la evoluci\'on interna del sistema causan que una linea correcta en un un momento determinado empiece a manifestar el error en un momento posterior.   
 
-El modelo te\'orico propuesto en esta tesis define claramente que es un error y como podemos encontrar su semilla en el c\'odigo. El modelo se basa en la hipotetica idea de 
+El modelo te\'orico propuesto en esta tesis define claramente que es un error y como podemos encontrar su semilla en el c\'odigo. El modelo se basa en la hipot\'etica idea de 
 Por tanto, este modelo permite definir un est\'andar de comparaci\'on de cambios que introducen errores (\BIC)
 
 The main goal is to define a model for what are bug-introducing commits, and how they are related to bug-fixing commits. This model should allow to define the ``gold standard" of which commits in certain repo are BICs, and how to find a set of BICs corresponding to a set of BFCs. The model includes precise definitions of BFC and BIC based on TSBs, that are assumed to be possible to define. The main contribution of this part is to show how SZZ-like algorithms can be evaluated in a comprehensive and ``right" way, which is something missing in the current literature. This way we could really compare the effectiveness of SZZ-like algorithms.
@@ -2900,88 +2900,84 @@ A continuaci\'on se puede encontrar un listado de los objetivos principales de l
 \end{enumerate}
 
 \section{Metodolog\'ia}
-La metodolog\'ia general usada se basa en el estudio del sistema de control de versiones y en algunos casos a\~nadir informaci\'on extra del sistema de control de errores. Como visi\'on global, esta tesis se enfoca en el estudio de los cambios en el c\'odigo fuente que han arreglado un error y que gracias a la existencia del sistema de control de versiones, permite trazar ciertos par\'ametros que son \'utiles para llegar hasta las el origen del error.
+La metodolog\'ia utilizada en este estudio emp\'irico se divide en dos partes, la primera parte es la etapa de filtrado donde los investigadores se aseguran que los conjuntos de datos extra\'idos de Nova y ElasticSearch cumplen con los requisitos para ser analizados usando la teor\'ia de la introducci\'on de errores descrita anteriormente. La segunda etapa describe cada uno de los pasos que hay que seguir desde que se selecciona un \BFC hasta que se identifica el \BIC y el \FFC.
 
-Para ello, la metodolog\'ia general se divide en los siguientes pasos:
+La figura~\ref{fig:diagram} proporciona una visi\'on general de cada paso involucrado en nuestro estudio, as\'i como los resultados que se obtendr\'ian.
 
-The methodology used in this empirical study is divided into two parts, the first part is the filtering stage where the researchers ensure datasets fulfill the requirements for analysis under the theory of bug introduction. While the second stage describes each of the steps from the bug-fixing commit until the identification (or not) of the \BIC and the \FFC.
-
-Figure~\ref{fig:diagram} provides an overview of each step involved in our study and their outcomes.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/diagram.png}
-\caption{Overview of the steps involved in our analysis \gema{I need to modify the steps, writing the FFC instead of BIC} }
+\caption{Descripci\'on de los pasos involucrados en nuestro an\'alisis }
 \label{fig:diagram}       % Give a unique label
 \end{figure}
 
 
-\subsection{First Stage: Filtering}
+\subsection{Primera Etapa: Filtrado}
 \label{sec:methodologyFS}
 
-This stage ensures that the bug reports stored in the datasets can be applicable to our model. Despite the strict policy of bug labelling in ElasticSearch and the agreement on classifying bug reports from other issues in Nova, this stage analyzed carefully each piece of information in the bug reports to ensure the ``gold standard". Thus, the dataset should only store bugs that are considered bugs at the moment of bug fixing. For example, there is a (hypothetical) test that fails right before the bug-fixing commit and does not fail right after it.  This also ensures that if there are issues that are reported as bugs but are discovered to be new feature requests or improvement suggestions as discussed, they are excluded. 
+Esta etapa garantiza que el modelo propuesto se pueda aplicar a los informes de errores extra\'idos anteriormente. Uno de los requerimientos necesarios en esta etapa es que los informes de error que pasen a la siguiente etapa describan realmente errores, y a pesar de la estricta pol\'itica de etiquetado de errores presente en ElasticSearch y la clasificaci\'on manual para distinguir informes de errores de otro tipo de errores llevada acabo en Nova, esta etapa se encarga de analizar cuidadosamente cada informaci\'on en los informes de errores para garantizar que el ``estándar de oro" obtenido al final del estudio es lo m\'as preciso posible. Consecuentemente, el conjunto de datos tanto en Nova como en ElasticSearch, solo debe almacenar errores que se consideran errores en el momento de su correci\'on. Por ejemplo, hay una prueba (hipot\'etica) que falla justo antes del \BFC pero no falla inmediatamente despu\'es. Esto asegura que si existen problemas que se describen como errores pero se descubre que son nuevas peticiones para a\~nadir nuevas caracter\'isticas o sugerencias de mejoras, ser\'an excluidas.
 
-\subsection{Second Stage: Identifying the First Failing Commit and the Bug Introducing Commit of a bug report}
+\subsection{Segunda etapa: identificar el \BIC y el \FFC}
 \label{sec:methodologySS}
 
-The input of this stage is a set of bug report from Nova and ElasticSearch that describe bugs in the moment of bug fixing. The steps in this stage consists of manually identifying the corresponding Bug-Introducing commit and the First-Failing commit for a Bug-fixing commit, or to decide whether or not there is a \BIC. The identification of \BIC given a \BFC means that the bug was present at the time of committing the lines. Since the \BIC can be in the previous commit or in any of the descendent or ancestor commits, it is necessary to manually analyze them in order to ensure the credibility of the ``gold standard". In cases where the bug was not present at the time the lines were written, then there is not a \BIC and it becomes necessary to find the \FFC. To better understand this process, the steps are detailed in the following paragraphs. Remember the terminology described in section 5.1.1 that explains concepts such as \BFC, \setBFC{b}, \PC{b}, \ACSet{b} ..., etc. 
+Esta etapa tiene como entrada un conjunto de informes de errores de Nova y ElasticSearch que describen errores reales en el momento de su correcci\'on. En esta etapa se require identificar manualmente el \BIC y el \FFC correspondiente a un \BFC dado, aunque en algunas ocasiones, no se puede identificar ning\'un \BIC como el inductor del \BFC.  La identificaci\'on de un \BIC dado un \BFC significa que el error estaba presente en el momento de escribir las l\'ineas en el c\'odigo fuente. El \BIC puede estar en el commit previo o en cualquiera de los commits descendientes o antecesores, por tanto se requiere analizar manualmente cada uno de ellos para garantizar la credibilidad en el ``est\'andar de oro". En los casos en que el error no est\'a presente en el momento de insertar las l\'ineas en el c\'odigo fuente, significa que no podemos identificar ning\'un \BIC y es necesario encontrar el \FFC. Para entender mejor este proceso, los pasos seguidos se detallan a continuaci\'on donde se hace uso de la terminolog\'ia que se encuentra descrita en la secci\'on 5.1.1.
 
 %Requirements have changed invalidating previous assumptions (GDPR). In this case there is no bug introducing commit.
 %External resources have been modified (GitHub API). In this case there is no bug introducing commit.
 %Internal resources have been modified (directory structure and permissions; the Chromium bug). In this case there is a bug introducing commit but this commit did not directly affect the lines of code modified in the bug fixing commit, so SZZ cannot find it; this bug introducing commit would have taken place after the previous commit and before bug reporting. 
 
-\subsubsection{Finding the lines that fixed the bug}
+\subsubsection{Encontrar las l\'ineas que corrigieron el error}
 
-At this stage, the source code that fixed the bug must be identified; a generic bug is referred to as $b$. Therefore, it is important to:
-	\begin{itemize}
-		\item Identify the change(s) that fixed the bug,\setBFC{b}. In most of the analyzed cases this set was always singleton, meaning that in each bug there is a unique \BFC. However, in the bug report \#1442795\footnote{\url{https://bugs.launchpad.net/nova/+bug/1442795}} there are two different \BFC that fixed the bug. To simplify this process, the methodology assumes that the \setBFC{b} is singleton, and in the case where more than one \BFC fixed the bug, the methodology will analyzed both bug-fixing commit.
-		\item Find the lines that the \setBFC{b} touched to fix the bug, \LC{c} where $c$ is the \BFC:
-	In the bug fixing commit linked to a bug report, there is all the information related with the code review process. By applying \textit{``git diff''} it is possible to identify what lines have been added, modified or deleted between the version after the \setBFC{b} and the previous one. There is also the possibility to visualize these changes between the version after the \setBFC{b} and the previous one
- commit using GitHub. GitHub provides a friendly visualization.
- 		\item Filter out lines that are not code:
-		Lines that have been modified, but do not contain source code (e.g., comments or blank lines) are not considered, and as a consequence they are not analyzed. In addition, there was a \BFC\footnote{\url{https://github.com/elastic/elasticsearch/commit/beaa9153a629c0950182e4e8c4f8eedd1c63f49f}} that closed two different bug reports. In this case, the lines related to the other bug was filtered out.	
+En esta etapa, se debe identificar las l\'ineas de c\'odigo fuente que corrigi\'o el error; nos referimos a un error gen\'erico como $b$. Es importante:
+\begin{itemize}
+	\item Identificar los commits que corrigieron el error entre el conjunto \setBFC{b}. En la mayor\'ia de los casos analizados, este conjunto siempre fue unitario, lo que significa que para cada error hab\'ia un \BFC \'unico que lo arreglaba. Sin embargo, encontramos algunas excepciones, por ejemplo, el informe de error \#1442795\footnote{\url{https://bugs.launchpad.net/nova/+bug/1442795}} ten\'ia dos \BFC diferentes que corrigieron el error. 
+	Para simplificar este proceso, la metodolog\'ia asume que el conjunto \setBFC{b} es unitario, y en el caso donde m\'as de un \BFC corrigi\'o el error, la metodolog\'ia analizar\'a ambos commits indistintamente para identificar el \BIC.
+	\item Encuentra las l\'ineas que fueron modificadas por el \setBFC{b} para corregir el error, nos referiremos al conjunto de l\'ineas a\~nandias, modificadas y eliminadas por un commit como \LC{c} donde $c$ es el \BFC:
+El \BFC se encuentra vinculado a un informe de error, en este informe se encuentra disponible toda la informaci\'on relacionada con el proceso de revisi\'on del c\'odigo. Aplicando la herramienta \textit{``git diff ''} es posible identificar qu\'e l\'ineas se han agregado, modificado o eliminado entre la versi\'on despu\'es del \BFC y la anterior. Tambi\'en existe la posibilidad de visualizar los cambios realizados por el \BFC usando la herramienta web de GitHub donde visualmente se observan de una forma muy intuitiva los cambios realizados en el \BFC.
+	\item Filtrar las l\'ineas modificadas o eliminadas que no son c\'odigo fuente:
+Algunas l\'ineas que se han modificado o eliminado pueden no contienen c\'odigo fuente (por ejemplo, comentarios o l\'ineas en blanco). \'Estas l\'ineas no se consideran en el posterior an\'alis. Adem\'as, como caso excepcional, en el conjunto de \BFC analizados se encontraba un \BFC\footnote{\url{https://github.com/elastic/elasticsearch/commit/beaa9153a629c0950182e4e8c4f8eedd1c63f49f}} que arregl\'o dos informes de errores diferentes al mismo tiempo. En este caso, se eliminaron el conjunto de \LC{c} relacionadas con el informe de error que no se estaba analizando.
+\end{itemize}.
+
+\subsubsection{Determinar qu\'e commit cambi\'o por \'ultima vez cada una de las l\'ineas \LC{c}.}
+
+Cada una de las l\'ineas modificadas por un \BFC tiene un \'unico commit previo. Sin embargo, podr\'ia haber tantos commits previos como l\'ineas modificadas en por un \BFC, (la figura del \'arbol geneal\'ogico representado en la subsecci\'on 5.1.2 muestra visualmente este concepto). Consecuentemente,  el resultado obtenido en este paso es un conjunto de todos los commits previos del error $b$, \PC{b}.
+
+\subsubsection{Analizando cada una de los commits previos, y sus commits descendientes, para identificar el \BIC y el \FFC}
+
+En este paso se utiliza la informaci\'on disponible en la descripci\'on del ticket, en los registros del \BFC y en commits pertenecientes al conjunto de \PC{b} para analizar si existe o no un \BIC y si manualmente podemos identificarlo. Despu\'es de entender el error y los cambios que arreglaron ese error, es necesario identificar el \BIC en caso de que exista, as\'i como el \FFC. Consecuentemente, la identificaci\'on del \BIC comienza con el an\'alisis del conjunto de \PC{b}, para cada uno de los commits pertenecientes al conjunto de \PC{b} se analizan las l\'ineas modificadas para encontrar si alguno de los commits previos introdujo el error. En este punto, hay tres escenarios diferentes y el comportamiento es difiere seg\'un las siguientes condiciones:
+
+\begin {enumerate}
+	\item \textit {El commit insert\'o las l\'ineas que contienen el error}: Este commit es el \BIC porque insert\'o las l\'ineas defectuosas en el c\'odigo fuente en el momento de su escritura. El \BIC que a su vez es el \FFC se pudo identificar porque es el primer commit que manifest\'o el comportamiento incorrecto. De acuerdo con el modelo te\'orico, el TSB ejecutado en el \BFC pasa y el \BIS es una de las instant\'aneas previas, es decir, es uno de los commits previos del \BFC.
+	\item \textit {El commit no inserta las l\'ineas que contienen el error}: en este caso, hay dos resultados posibles:
+	\begin {itemize}
+		\item Las l\'ineas del commit son correctas ya que no insertaron el error en las l\'ineas del c\'odigo fuente en el momento de su escritura y otros factores externos causaron que esas l\'ineas se volvieran defectuosas. En este escenario, no hay un \BIC en  y el an\'alisis debe centrarse en comprender si este commit es el \FFC. De acuerdo con el modelo te\'orico, la TSB se ejecuta en todo el \ACSet{b} y pasa en el \BFC pero siempre falla en las instant\'aneas de los ancestros. Sin embargo, si se cambia el entorno, el TSB falla en el \BFC pero pasa en la instant\'aneas anteriores, y el primer \BIS que falla en la secuencia continua de \BIS es el \FFC.
+		\item Las l\'ineas del commit son cambios sint\'actico y modificaciones sem\'anticas equivalentes (refactorizaciones): Esto significa que el commit conserva el mismo comportamiento que antes, por lo tanto, es necesario volver a navegar, en el conjunto de \DCSet{b} y volver al primer punto de esta lista para identificar el \BIC.
 	\end{itemize}
-
-\subsubsection{Determining, for each of those lines, \LC{c}, what commit last changed the lines}
-
-Each individual line touched by the \BFC has only one previous commit. However, there could potentially be as many previous commits as modified lines in the \BFC, (see the genealogy tree in subsection 5.1.2). Thus, taking this genealogy tree as reference, the result is a set of all previous commits of the bug $b$, \PC{b}.  
-
-\subsubsection{Analyzing each of these previous commit, and their descendent commits, to determine the \BIC and the \FFC}
-
-This analysis uses information available in the description of the ticket as well as from the logs of the \BFC and commits in the set of \PC{b}. After understanding the bug and the changes that fixed the bug, it is necessary to identify the \BIC and whether it exists, as well as the \FFC.Thus, the identification of the \BIC starts with the analysis of the \PC{b}, for each of the \PC{b} the lines changed are analyzed in order to find which one introduced the bug. At this point, there are three different scenarios and the behavior is different depending on the following conditions:
-
-\begin{enumerate}
-	\item \textit{The commit inserted the bug}: This commit is the \BIC because it inserted the buggy lines at the moment of their writing. It was possible to identify the \BIC which is also the \FFC because it is the first commit that manifested the wrong behavior. According to the theoretical model, the TSB passes in the \BFC and the \BIS is one of the snapshot of a previous commit of the \BFC.
-	\item \textit{The commit does not insert the bug}: In this case there will be two possible outcomes:
-		\begin{itemize}
-			\item The lines in the commit are correct, they do not insert the bug at the time of their writing and other factors caused the lines to became to be buggy. There is no \BIC in this scenario and the analysis should focuses on understanding whether this pc is the \FFC. According to the theoretical model, the TSB is run in all of the \ACSet{b} and it passes in the \BFC but it always fails in the ancestor snapshots. However, if the environment is changed, the TSB fails in the \BFC but it passes in the snapshot, and the first \BIS that passes in the sequence of \BIS is the \FFC.
-			\item The lines in the commit are syntactic sugar and semantically equivalent modifications (refactorings): This means that the commit retains the same behavior as before, thereby it is required to navigate back into, the \DCSet{b} and start again in the first point of this list..
-		\end{itemize}
-	\item \textit{It is not sure whether the commit inserted the bug}: In this case it is important to continue navigating back into the \DCSet{b}, if this commit inserted for the first time in the descendent lines of the \LC{c} and it is not certain that they are buggy, the commit is classified as ``undecided". This means that after the analysis the \BIC was unable to be found manually despite its existance, or their is the case that the \FFC or \BIC was unable to be found due to the lack of context.
+	\item \textit {No es seguro que el commit insertase el error}: en este escenario, es importante continuar navegando por el conjunto de \DCSet{b}, si el commit insert\'o por primera vez en las l\'ineas descendentes al conjunto de lineas del \LC{c} y no podemos estrar seguros de que esas l\''ineas contengan el error, el commit se clasifica como ``indecisa". Esto significa que despu\'es del an\'alisis, el \BIC no se pudo encontrar manualmente a pesar de que podemos asegurar su existencia, o que no podemos asegurar el \FFC o \BIC debido a la falta de informaci\'on.
 \end{enumerate}
 
+\subsection{Resultados de las etapas}
 
-\subsection{Outcomes}
-
-At the end of the process there are three possible outcomes for each bug report analyzed. The outcomes are related with the unequivocally identification of the \BIC and \FFC given a \BFC.
-These outcomes are explained in the following list:  %\subsubsection{Tickets}
-
-%There are three possible outcomes for each bug report analyzed:
-\begin{itemize}
-	\item A bug report has a Bug-Introducing Change: In this case it is not sure whether there is at least one bug introducing change among the previous commit set, descendent commit set or ancestor commits set. However, during the manual analysis it may occur that:
-		\begin{enumerate}
-			\item The moment was able to be identified manually or,
-			\item The moment was unable to be identified manually. 
-		\end{enumerate}
-		Furthermore, in this scenario, the \BIC is also the \FFC.
-	\item A bug report does not have a Bug-Introducing Change: In this case, it can be sure that any given line contained the bug when it was committed into the source code, and other factors such as modification in internal resources, changes in external resources, buggy code in third-parties or changes in the requirements that invalidate previous assumptions are the cause of the bug-fixing commit. It can also be confirmed that none of the antecessor commits inserted the wrong lines, thereby none of them can be blamed and only the first time that the bug manifested in the code can be identified. Also, in this case it may occur that:
+Al final del proceso, hay tres resultados posibles para cada informe de error analizado. Los resultados se basan en la identificaci\'on inequ\'ivoca del \BIC y del \FFC dado un \BFC.
+Estos resultados se encuentran explicados a continuaci\'on:
+ 
+ \begin{itemize}
+	\item Un \BFC fue inducido por un \BIC: en este caso es seguro que al menos hay un commit que introdujo las l\'inea(s) err\'onea(s) entre el conjunto de commits previos, o conjunto de commits descendientes o el conjunto de commits de ancestros. Sin embargo, durante el an\'alisis manual puede ocurrir que:
 	\begin{enumerate}
-			\item The moment was able to be identified manually or,
-			\item The moment was unable to be identified manually. 		\end{enumerate}
-	\item It is not clear whether or not a bug report has a Bug-Introducing Change: Some bug reports do not detail enough information about the failure and the bug fixing commit is not sufficient in deciding whether or not there is a \BIC. Also, some commits are very complex to understand their changes and it cannot be decided whether it inserted the bug or not.
-
+		\item El momento se pudo identificar manualmente o,
+		\item El momento no se pudo identificar manualmente.
+	\end{enumerate}
+	Adem\'as, en este escenario, el \BIC es tambi\'en el \FFC.
+	\item Un \BFC no fue inducido un \BIC: en este caso es seguro que ninguna l\'inea insertada en el c\'odigo fuente conten\'ia el error cuando se introdujo el commit, y otros factores como por ejemplo, los cambios en las necesidades internas del proyecto, o cambios en los recursos externos consumidos por el proyecto, provocan que el c\'odigo se vuelva defectuoso. Tambi\'en se puede confirmar que ninguno de los commits antecesores insert\'o las l\'ineas incorrectas, por lo que no se puede culpar a ninguno de ellos como el \BIC y solo se podr\'a identificar la primera vez que manifiesta el error en el c\'odigo. Adem\'as, en este escenario puede ocurrir que:
+	\begin {enumerate}
+		\item El momento se pudo identificar manualmente o,
+		\item El momento no se pudo identificar manualmente. 
+	\end {enumerate}
+	\item No est\'a si un \BFC due inducido por un \BIC: algunos informes de errores no detallan suficiente informaci\'on sobre el error y el \BFC no es suficiente para decidir si hay o no un \BIC. Adem\'as, algunos commits son muy complejos para comprender sus cambios y no se puede decidir si insertaron o no el error.
 \end{itemize}
 
+ 
 
 \section{Resultados}
 Hay tres secciones diferentes para discutir los resultados obtenidos en el Cap\'itulo 4, Cap\'itulo 5 y Cap\'itulo 6.
