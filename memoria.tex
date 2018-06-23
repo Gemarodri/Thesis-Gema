@@ -409,7 +409,7 @@ Finding the cause of bugs has been an important topic during the last decades. T
 \label{fig:impact}       % Give a unique label
 \end{figure}
 
-There are many studies and approaches based on tracking back the lines of a Bug-Fixing Commit to locate the origin of bugs. Nevertheless, these approaches are not using any meaningful model that researchers might use to validate the ``real" performance of the current state-of-the-art algorithms. These algorithms attempt to locate the line that ``contains the bug". And researchers cannot be sure about the meaning of  ``injecting a bug", because any previous study states the fact of introducing a bug, or the moment of when it was introduced. Consequently, researchers are not sure whether the bug was introduced in the actual moment of inserted the lines in the source code. For that reason, in this dissertation, we distinguish between bug manifestation moment (FFC) and the bug introduction moment (BIC). Because, it is possible that we have an FFC without a BIC, for example, because of external resources. There is a moment when something has manifested itself but the reason is not related to the code, but it is related to a change in the environment.
+There are many studies and approaches based on tracking back the lines of a Bug-Fixing Commit to locate the origin of bugs. Nevertheless, these approaches are not using any meaningful model that researchers might use to validate the ``real" performance of the current state-of-the-art algorithms. These algorithms attempt to locate the line that ``contains the bug". And researchers cannot be sure about the meaning of  ``injecting a bug", because any previous study states the fact of introducing a bug, or the moment of when it was introduced. Consequently, researchers are not sure whether the bug was introduced in the actual moment of inserted the lines in the source code. For that reason, in this dissertation, we distinguish between bug manifestation moment (FFC) and the bug introduction moment (BIC). Because, it is possible that we have an \FFC without a BIC, for example, because of external resources. There is a moment when something has manifested itself but the reason is not related to the code, but it is related to a change in the environment.
 
 To solve the lack of definitions and the need to validate the current algorithms. This thesis proposes a theoretical model to define which changes introduced bugs into the source code. This model assumes a perfect test which can be run indefinitely in the history of the project to find out when the failure was introduced and whether the change was responsible for the bug or it was something external. Furthermore, this model may be used as a framework to validate the performance of other approaches and researchers can compare the effectiveness of different algorithms.  Setting this framework is one of the principal values of the thesis because the previous literature is not able to compute the ``real" precision and recall of the current algorithms.
 
@@ -477,7 +477,7 @@ Finally, the Chapter~\ref{chap:conclusions} draws some conclusions and concludes
 %Automatic bug triage using semi-supervised text classification
 %An empirical study of the integration time of fixed issues
 
-%Tangled commit also introduced more noise to locate the BIC, but with the FFC we do not concerned about them, because we these modifications are not in the 'test' that we want to pass to previous versions "The Impact of Tangled Code Changes (paper to read)" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Tangled commit also introduced more noise to locate the BIC, but with the \FFC we do not concerned about them, because we these modifications are not in the 'test' that we want to pass to previous versions "The Impact of Tangled Code Changes (paper to read)" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BACKGROUND %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1485,9 +1485,6 @@ Yes & 94 & 44 & 10 & 39 \\
 \hline
 No & 93 & 143 & 177 & 148 \\
 \hline
-%\hline
-%Total & 187 & 187 & 187 & 187 \\
-%\hline
 \end{tabular}
 \end{table}
 
@@ -1506,7 +1503,6 @@ It is difficult to determine which improvement has been used when the authors do
 \end{itemize}
 
 
-%\gema{A editor says: In Table 13 it is there is clearly some overlap among counts in the categories but it is not clear where it occurs. The authors will need to work out the minimum number of non-overlapping but I would imagine they should be something like Original SZZ only, SZZ plus modifications, SZZ1 only, SZZ2 only. I am not sure whether SZZ1 \& SZZ2 can be used together (even if they can it would probably be a very small category). An alternative would be to have one category for the two enhancements that includes papers that only used one of the enhancements AND papers that used both.} \gema{SZZ-1 and SZZ-2 can be used in the same paper in the sense that the paper is comparing the performance of both algorithm ~\cite{da2016framework}}
 Table~\ref{tableSZZimproved} shows how many publications have used improvements to SZZ to mitigate the limitations of the original SZZ. The largest groups correspond to publications where authors use their own enhancements/adaptations (40\%) and the original SZZ algorithm (38\%). This suggests that researchers prefer to address the limitations of SZZ themselves instead of using enhancements proposed by others. Notice that the ``Mixed" column in Table~\ref{tableSZZimproved} refers to papers that have used either the original version, the improved versions or some adaptations of SZZ in the same study (e.g., to compare their performance in the same case study).
 \begin{table}[!t]
 % increase table row spacing, adjust to taste
@@ -1525,105 +1521,11 @@ Table~\ref{tableSZZimproved} shows how many publications have used improvements 
   & Original SZZ only & SZZ-improved only & SZZ-mod only & Mixed  \\
 \hline
 \hline
-%\# publications &  63 (36\%) & 25 (14\%) &  8 (5\%) &  96 (55\%) \\
 \# publications &  71 (38\%) & 26 (14\%)~\footnote{22 (12\%) of the papers use SZZ-1 and only 4 (2\%) of the papers use SZZ-2.} &  75 (40\%)  & 15 (8\%) \\
 \hline
 \end{tabular}
 \end{minipage}
 \end{table}
-
-%Purposes of studying at the line level 
-%The main question now is: why is this useful?. In most of the cases, the diff tool provides extra information about a specific commit. However, researchers have worked with the granularity of commit or a file. And there are few works using the granularity of a line.
-%As specified by [Canfora et al., 2007], these studies could be used for different purposes:
-%? Software evolution studies: there are plenty of studies based on the software evolution of several systems, however, with this granularity, it is possible to go a step ahead, knowing the real authorship of those lines, what could provide extra information in the terms of knowledge of the source code.
-%? Effort estimation: given a specific commit, it is easy to know, how many lines have been added, removed or modified by the author of that commit. In terms of the effort estimation, this provides extra information and could be used, for instance, to create effort estimation models in FLOSS ecosystems.
-%? Crosscutting concerns evolution: this item is related to the idea of how much has evolved a piece of source code. This is also interesting from the patch application point of view, checking how the patches deal with that piece of source code. In any case, a concern is a general idea, so almost any field of the software evolution field could be taken into account and improved with this approach.
-%? Clones evolution: this type of studies also provide specific information of the lines that were copied or moved from one file to another one. This would help to estimate the commit when the clone was undertaken.
-
-%In addition, other pieces of information have been identified that could help in the aforementioned purposes of study. Since, the Mozilla Foundation is using a distributed SCM, other attributes are also studied and can help:
-%? Real Authorship: the use of distributed SCMs provides extra pieces of information that can be mined and later studied. This is the case of the differentiation made between author and committer in Git repositories. Or the direct use of author instead of committer in the case of Mercurial repositories. However, older SCMs such as CVS or SVN do not offer this type of information. In this case, developers interested in participating in the community need to create a patch with the changes. Those changes will be later uploaded to the server.
-
-%As mentioned, communities tend to follow the onion model and the total work is not only done by the core developers, but also by people around the communities [Crowston & Howison, 2005]. The authorship of those sporadic changes to the source code are, in the case of distributed SCMs, registered. In other cases, like in CVS or SVN, this information, if provided, is found in the log message left by the committer or in the copyright or AUTHORS files.
-%This type of information is quite useful when estimating real efforts since the effect of gatekeeper is avoided. Being a gatekeeper those developers that commit changes to the source code in behalf of others that do not have commit rights.
-%? Time of commit: the use of distributed SCMs help to easily create branches and clones of the source code. Besides the registered real authorship of the changes, the time of commit (and time zone) is also registered at the moment of submitting changes to the SCM. On the contrary, centralized SCMs only keep the time of commit registered in the server. Thus, extra information related to the timezone of the developer or the actual local time of commit is totally lost.
-%This type of information is quite useful when estimating time of work of the developers and type of effort that usually carried out FLOSS communities. As an example, it is possible to determine if the effort is usually undertaken during morning, afternoon or evening timeframes.
-
-
-
-% \section{Applications}
-% \label{subsec:applications}
-%
-% The SZZ algorithm (and its \emph{successors}) have had a considerable impact in the research community. Noteworthy is the fact that the paper with original the SZZ algorithm~\cite{sliwerski2005changes} has been cited, according to Google Scholar, 593 times as of November 2017. The enhanced version of the SZZ algorithm~\cite{kim2006automatic} based on the use of the \emph{annotation graph}~\cite{zimmermann2006mining} counts with 174 citations. Hence, there is a myriad of articles that use such algorithm in an ample number of scenarios. Without trying to be exhaustive, we offer several examples.
-%
-% \textbf{Bug Detection:}
-% Yang \emph{et al.} apply SZZ to find what kind of bug-inducing changes are likely to become a great threat after being marked as bug-fixing changes~\cite{yangbug}. Kim \emph{et al.} show how to classify file changes as buggy or clean using change information features and source code terms~\cite{kim2008classifying}. Yin \emph{et al.} use SZZ to find how many fixes to bugs introduce new bugs~\cite{yin2011fixes}. Tantithamthavorn \emph{et al.} employ it to quickly identify the location of a bug~\cite{tantithamthavorn2013mining}.
-%
-% \textbf{Bug Prediction:}
-% %Zimmermann \emph{et al.} have used this algorithm in order to .... developed the ROSE prototype in order to predict locations that will be changed ~\cite{zimmermann2005mining}.
-%  Nagapan \emph{et al.} used the SZZ idea of mapping as the base to associate metrics with post-release defects, and they built a regression models to predict the likelihood of post-release defects for new entities~\cite{nagappan2006mining}. Zimmermann \emph{et al.}, also made use of the SZZ for predicting bugs in large software systems~\cite{zimmermann2007predicting}. Tan \emph{et al.} use it to predict whether a change is buggy at the time of a commit, evaluating the change classification techniques to address the incorrect evaluation presented by cross-validation~\cite{tan2015online}. Bettenburg \emph{et al.} apply it in the study of statistical models to predict in which parts of a software system future defects are likely to occur. Their findings showed that social information does not substitute, but rather augments traditional source code-based metrics used in defect prediction models~\cite{bettenburg2013studying}.
-%
-% \textbf{Software maintenance:}
-% %Kamei \emph{et al.} apply this algorithm to validate effort-aware bug-prediction models~\cite{kamei2010revisiting}. Eyolfson use the SZZ to study if time of the day and developer experience affect the probability of a commit to introduce a bug~\cite{eyolfson2011time}~\cite{eyolfson2014correlations}. Izquierdo \emph{et al.} use the SZZ algorithm to see if developers are fixing their own bugs~\cite{izquierdo2011developers}. Fejzer \emph{et al.} use it to support code review~\cite{fejzer2015supporting}. %Asaduzzaman \emph{et al.} apply the SZZ algorithm on Android to study its maintainability~\cite{asaduzzaman2012bug}. Lin Tan \emph{et al.} use it to manually study bugs in three dimension ??root causes, impacts, and components. Their findings include three relevant results: (1) semantic bugs are the dominant root cause, (2) the Linux kernel operating system (OS) has higher concurrency bugs than others; and (3) reported security bugs are increasing, and the majority of them are caused by semantic bugs~\cite{tan2014bug}.
-% \gema{La gente no usa las ultimas versiones}
-
-%\section{New Nomenclature}
-%\label{subsec:nomenclature}
-%
-%In our study, we have found that a unique terminology to name each of the concepts of the SZZ algorithm does not exist. Table~\ref{tableComparison} offers a comparison of the terminology proposed in this paper and how these concepts have been referred to in previous publications. As can be seen, we think that a common terminology when using SZZ is needed. To the best of our knowledge, no previous research has presented a comprehensive list of all the concepts and terms used and has compared if they are being used consistently.
-%\begin{table}
-%\newcommand{\specialcell}[2][c]{%
-%  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
-%% increase table row spacing, adjust to taste
-%\renewcommand{\arraystretch}{1.3}
-%% if using array.sty, it might be a good idea to tweak the value of
-%%\extrarowheight as needed to properly center the text within the cells
-%\caption{Comparison of our terminology with the one found in the research literature.}
-%\label{tableComparison}
-%\centering
-%% Some packages, such as MDW tools, offer better commands for making tables
-%%% than the plain LaTeX2e tabular which is used here.
-%\begin{tabular}{|c|c|c| }
-%\hline
-%Proposed Terminology & Found as... & References \\
-%\hline
-%Commit & \specialcell{Change\\Commit\\Revision\\Transaction} & \specialcell{\cite{da2016framework}\cite{kim2006automatic}\\\cite{izquierdo2011developers}\cite{steff2012characterizing}\cite{izquierdo2012more}\\\cite{kim2008classifying}\\\cite{sliwerski2005changes}\cite{bettenburg2013studying}\cite{kim2006properties}}\\
-%\hline
-%Previous commit & \specialcell{Earlier change\\Change immediately prior\\Last Change\\Previous commit\\Recent version\\Preceding Revision} & \specialcell{\cite{sliwerski2005changes}\\\cite{williams2008szz}\\\cite{da2016framework}\cite{cao2015investigating}\cite{bavota2015four}\\\cite{izquierdo2011developers}\\\cite{kim2008classifying}\\\cite{hata2010fault}\cite{rahman2011bugcache}\cite{guerrouj2015investigating}} \\
-%\hline
-%Fixing Commit & \specialcell{Fix for a bug\\Bug-fixing change\\Fixed revision } & \specialcell{\cite{sliwerski2005changes}\\\cite{da2016framework}\cite{kim2006automatic}\cite{williams2008szz}\cite{izquierdo2011developers}\cite{kim2008classifying}\\\cite{hata2010fault}\cite{pan2009toward}} \\
-%\hline
-%Ancestral commit & \specialcell{Revision\\Change\\Commit History} & \specialcell{\cite{sliwerski2005changes}\cite{da2016framework}\cite{kim2006automatic}\\\cite{kim2008classifying}\\\cite{meneely2013patch}}\\
-%\hline
-%Bug introducing change & \specialcell{Fix-inducing changes\\Bug-introducing change \\defect-inducing} & \specialcell{\cite{sliwerski2005changes}\cite{williams2008szz}\cite{izquierdo2012more}\\\cite{da2016framework}\cite{kim2006automatic}\cite{kim2008classifying}\\\cite{syer2015replicating}} \\
-%\hline
-%\end{tabular}
-%\end{table}
-%
-%Thus, we define as:
-%
-%\paragraph{Commit} It refers to any change in the code of the software.
-%\paragraph{Previous commit} It refers to the immediately previous commit to the lines modified by a commit.
-%\paragraph{Fixing Commit} It refers to the commit that introduces, deletes or modifies the lines to fix the bug.
-%\paragraph{Ancestral commit} It refers to any early commit in the chain of modification commits of a line.
-%\paragraph{Bug introducing change} It is the commit that introduces a bug in the source code.
-%
-%Figure~\ref{fig:example} shows a simple example to understand these concepts. Notice that boxes [1-6] are all the  changes done to a file that contains a single line of code. The bug was introduced in change \#2 and fixed afterwards in change \#5. The grey boxes correspond to non-buggy changes to the line, whereas the black ones mean that there is a bug in the line. According to our terminology, changes \#1 to \#6 are commits, where change \#5 is the \emph{fixing commit} and change \#2 is the \emph{bug introducing commit} (BIC). Furthermore, change \#4 is the \emph{previous commit} of that line and changes \#1, \#2,\#3 and \#4 are the \emph{ancestral commits}.
-%
-%\begin{figure}
-%\centering
-%\includegraphics[width=\columnwidth]{img/example.png}
-%\caption{Example of six changes done to a line to clarify the proposed, unifying terminology of SZZ concepts.}
-%\label{fig:example}       % Give a unique label
-%\end{figure}
-%
-%
-%\vspace{0.2cm}
-%\fbox{\begin{minipage}{30em}
-%\textbf{SZZ-related terminology differs from paper to paper, making it difficult to understand, and introducing confusion. Therefore we have identified the independent concepts in SZZ (following five: commit, previous commit, fixing commit, ancestral commit and bug introducing change) and propose a clear, unequivocal definition.}
-%\end{minipage}}
-%\vspace{0.1cm}
-%
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1634,24 +1536,12 @@ Table~\ref{tableSZZimproved} shows how many publications have used improvements 
 \chapter{The Theory of Bug Introduction}
 \label{chap:Theory}
 
-The proper understanding of the bug introduction process is an essential part of any research work related to the identification of the seed of a bug. The study of the changes in a Bug-Fixing Commit to locate the origin of a bug is the foundation for researchers to carry out research studies in other disciplines of Software Engineering. For example, researchers need to identify where previous bugs were inserted and obtain their characteristics in order to build models that can predict future bugs. Also, researchers should define and understand what a bug is and how it was introduced into the source code before building classification models. To detect bugs, researchers should develop algorithms based on the learning from previous bugs patterns. However, to identify the  Bug-Introducing Commit researchers rely on a common practice that only analyzes static metadata retrieved from previous changes to the modified lines in a Bug-Fixing Commit (i.e, developer experience, lines of code inserted, type of changes, etc.). When in fact, it is necessary to keep in mind that the software evolves. It is continuously evolving thereby, a clean code today may start to become buggy tomorrow due to the dependencies and requirements of the software. There could be instances where other changes in the code or third-parties are affecting the lines, thus understanding the introduction of bugs from a static point of view may lead to problems in the results. It us therefore logical to think that a more in-depth knowledge of when and how a bug is inserted will make the state-of-the-art techniques vary in accuracy accurate. %many approaches are built upon the assumption that ``a given bug was introduced by the lines of code that were modified to fix it", or variations of it. 
+The proper understanding of the bug introduction process is an essential part of any research work related to the identification of the seed of a bug. The study of the changes in a Bug-Fixing Commit to locate the origin of a bug is the foundation for researchers to carry out research studies in other disciplines of Software Engineering. For example, researchers need to identify where previous bugs were inserted and obtain their characteristics in order to build models that can predict future bugs. They should define and understand what a bug is and how it was introduced into the source code before building classification models. To detect bugs, researchers should develop algorithms based on the learning from previous bugs patterns. However, to identify the  Bug-Introducing Commit researchers rely on a common practice that only analyzes static metadata retrieved from previous changes to the modified lines in a Bug-Fixing Commit (i.e, developer experience, lines of code inserted, type of changes, etc.). When in fact, it is necessary to keep in mind that the software evolves. It is continuously evolving thereby, a clean code today may start to become buggy tomorrow due to changes in the dependencies and requirements of the software. There could be instances where other changes in the code or third-parties are affecting the lines, thus understanding the introduction of bugs from a static point of view may lead to problems in the results. It is therefore logical to think that a more in-depth knowledge of when and how a bug is inserted will make the state-of-the-art techniques vary in accuracy accurate. %many approaches are built upon the assumption that ``a given bug was introduced by the lines of code that were modified to fix it", or variations of it. 
 
-There are two primary moments that should be understood and distinguished when analyzing the origin of a bug. The bug manifestation moment and the bug introduction moment; they are different but currently there is no clear distinction between them in the software research literature on bugs. The limited knowledge of when a bug is inserted into the source code makes it difficult to distinguish between these moments, and as a consequence, researchers cannot be sure whether the line(s) identified after applying these approaches inserted the bug in the same moment of inserting the lines, or if the line only manifested the bug because of other reasons. Furthermore, the lack of a meaningful model to validate these algorithms as well as the lack of definition of what needs to validated prevents researchers from calculating what a false positive or true positive is as they unsure if the line was buggy or clean at the moment of their insertion.
+There are two primary moments that should be understood and distinguished when analyzing the origin of a bug. The bug manifestation moment and the bug introduction moment; they are different, however , currently there is no clear distinction between them in the software research literature on bugs. The limited knowledge of when a bug is inserted into the source code makes it difficult to distinguish between these moments, and as a consequence, researchers cannot be sure whether the line(s) identified after applying these approaches inserted the bug in the same moment of inserting the lines, or if the line only manifested the bug because of other reasons. Furthermore, the lack of a meaningful model to validate these algorithms as well as the lack of definition of what needs to validated prevents researchers from calculating what a false positive or true positive is as they unsure if the line was buggy or clean at the moment of their insertion.
 
-%there is little empirical evidence supporting it. But a careful examination surfaces many other possible sources for the introduction of bugs, from previous modifications to those lines, to changes completely external to the piece of code being considered.
-With the intention of better understanding the complex phenomenon of bug introduction and bug fixing, in this chapter we carefully explain the necessity of distinguishing how bugs are introduced and how they manifest in software projects. Furthermore, we include the definitions and a taxonomy which help to analyze formally the process. The taxonomy helps to understand the many different ways in which a bug is introduced, and why some of the methods proposed in the literature might fail to find many of them. Finally, we define a model for what are Bug-Introducing Commits, and how they are related to Bug-Fixing Commits in order to show how state-of-the-art algorithms can be evaluated in a comprehensive and unequivocally way, something that is missing in the current literature.
+With the intention of better understanding the complex phenomenon of bug introduction and bug fixing, this chapter carefully explains the necessity of distinguishing how bugs are introduced and how they manifest in software projects. Furthermore, we include the definitions and a taxonomy which help to analyze formally the process. The taxonomy helps to understand the many different ways in which a bug is introduced, and why some of the methods proposed in the literature might fail to find many of them. Finally, we define a model for what are Bug-Introducing Commits, and how they are related to Bug-Fixing Commits in order to show how state-of-the-art algorithms can be evaluated in a comprehensive and unequivocally way, something that is missing in the current literature.
 
-%From this observation, we have developed a comprehensive model of how bugs are introduced, including definitions and a taxonomy which help to analyze formally the process. The taxonomy helps to understand the many different ways in which a bug is introduced, and why some of the methods proposed in the literature might fail to find many of them. The model allows as well for a better framing of the comparison of automatic methods to find bug inducting changes, which we apply to analyze some of these methods. Finally, based on this comparison, we propose some method that at least in the cases considered show better results than the classical methods described in the literature.
-
-
-%\section{Bugs Taxonomy:}
-%	\subsection{Semantic Errors}
-%	\subsection{Concurrency Errors}
-%	\subsection{Memory Errors}
-%	\subsection{Environmental \& Configuration Errors}
-%	\subsection{Build Errors}
-%	\subsection{Compatibility Errors}
-%
 
 \section{Towards a Theoretical Model}
 \label{sec:TheoreticalModel}
@@ -1666,15 +1556,15 @@ The main aim of describing this model is to extend the current state-of-the-art 
 Looking for the origin of the bug is a complex task that involves a huge variety of individual elements and sets in the search. In this way, we found the necessity of formulating a terminology which is one of the valuables parts in this paper, this terminology can be applied to the modern source code management systems. The terminology defines every element and every set of elements that take place during the analysis from the fixed code to the identification of the bug introducing change or the first failing change. To avoid confusion, next we define the concepts we are going to work with:
 % \gema{Does it can be extender to all the SOurce code management systems? In the sense that, if we assume that we are ables to identify the atomic changes done by the same commiter around the same time is what we refer by commit in our terminology}
 
-\paragraph{\textbf{Atomic change \emph{(at)}:}} An operation that applies a set of distinct changes as a single operation. In this thesis, atomic change is referred to as a one line minimum change.
-\paragraph{\textbf{Previous atomic change:}} Given an atomic change $at$, we refer to $at'$ as the last modification which changed the line $l$ of a file $f$. Thus, the precedence relation between an atomic change and its previous atomic change is as follow:
+\paragraph{\textbf{Atomic Change \emph{(at)}:}} An operation that applies a set of distinct changes as a single operation. In this thesis, atomic change is referred to as a one line minimum change.
+\paragraph{\textbf{Previous Atomic Change:}} Given an atomic change $at$, we refer to $at'$ as the last modification which changed the line $l$ of a file $f$. Thus, the precedence relation between an atomic change and its previous atomic change is as follow:
 \[ at' \rightarrow at\] 
 \paragraph{\textbf{Commit \emph{(c)}:}} An observable change that records one or more atomic changes to the source code of a software system. These changes are generally summarized in a patch which is a set of lines that a developer adds, modifies or deletes in the source code. Commits update the current version of the tree directory.  
-\paragraph{\textbf{Lines changed:}} By definition, a commit may change zero\footnote{When only new lines are added in a commit, zero lines are changed.} or more lines of code; we call these \emph{lines changed} of a commit and denote them as \LC{c}.
+\paragraph{\textbf{Lines Changed:}} By definition, a commit may change zero\footnote{When only new lines are added in a commit, zero lines are changed.} or more lines of code; we call these \emph{lines changed} of a commit and denote them as \LC{c}.
 \paragraph{\textbf{Precedence between commits:}} Relation between the \emph{atomic changes} of a commit with their \emph{previous atomic changes} in the file $f$, where the previous commit of a commit is the unique previous atomic changes of an atomic changes set. We will refer to this precedence between commits as the \emph{previous commit (\pc)} of a commit in $f$ and denote it as:
 \[ pc'(c) \rightarrow pc(c)\] 
 
-\paragraph{\textbf{Previous commit set:}} Set that includes the different previous commits of a commit. Formally:% Also, can be described as the first generation of commits in ancestor change set (\ACS) of the genealogy tree for a given \BFC . We denote it as \PC{c_l}. Formally; 
+\paragraph{\textbf{Previous Commit Set:}} Set that includes the different previous commits of a commit, we refer to it as \PC{c}. Formally:% Also, can be described as the first generation of commits in ancestor change set (\ACS) of the genealogy tree for a given \BFC . We denote it as \PC{c_l}. Formally; 
 \[ \PC{c} =  \bigcup pc'(c)\]
 
 \paragraph{\textbf{Descendent Commit:}} Given a commit $c$ and a file $f$, a descendent commit of $c$ is any of the commits that belongs to the precedence commit chain of $c$ in $f$, we will refer it as $dc$.
@@ -1689,41 +1579,8 @@ Looking for the origin of the bug is a complex task that involves a huge variety
 \paragraph{\textbf{Test failing snapshot \emph{(T-S)}:}}  snapshot for which \TSB fails.
 \paragraph{\textbf{Test passing snapshot \emph{(T+S)}:}}  snapshot for which \TSB passes.
 \paragraph{\textbf{Bug-introducing snapshot (\BIS):}}  First snapshot in the longest continuous sequence of T-S, which finishes right before the \BFS. That is, there is a continuous sequence of snapshots for which the test fails, starting in the \BIS, and finishing right before the \BFS. Since the test is failing all the way from this snapshot up to the fix, we can know that the test was failing all the way in that sequence, and since this is the first snapshot with the test failing, we can say that this is the first snapshot ``with the bug present".
-\paragraph{\textbf{Bug-introducing commit(\BIC):}} A specific commit corresponding to the \BIS that introduced the buggy line(s) at the moment of their insertion, and the bug propagated through each following commit until the \BFC fixed the line(s).
+\paragraph{\textbf{Bug-introducing commit (\BIC):}} A specific commit corresponding to the \BIS that introduced the buggy line(s) at the moment of their insertion, and the bug propagated through each following commit until the \BFC fixed the line(s).
 \paragraph{\textbf{First Failing commit (\FFC):}} The first commit corresponding to the \BIS that manifest the bug but it did not introduce the buggy line(s) at the moment of their insertion.
-
-
-%\paragraph{\textbf{Atomic change:}} Represents an operation that applies a set of distinct change(s) as a single operation. In this work, we refer to an \emph{atomic change} as a one line minimum change ($at_l$), where $l$ is the label used to identify uniquely the line in a specific version of a specific file $f$.
-%
-%\paragraph{\textbf{Previous atomic change:}} Given an atomic change $at_l$, we refer to $at'_l$ as the last modification which changed the line $l$ of $f$. Thus, the precedence relation between an atomic change and its previous atomic change is as follow:
-%\[ at'_l \rightarrow at_l\] 
-%
-%\paragraph{\textbf{Commit/Change:}}It is an observable change with an unique identifier in a SCM, that gathers the set of one or more atomic changes applied by the same author at the same time. We will refer to a general commit~\footnote{Notice that in this paper we use commit and change interchangeably} as $c$.
-%
-%\paragraph{\textbf{Lines changed:}} By definition, a commit may change zero\footnote{When only new lines are added in a commit, zero lines are changed.} or more lines of code; we call these \emph{lines changed} of a commit and denote them as \LC{c}.
-%
-%%\textbf{Previous commit:} It is the commit immediately before a given commit using the lineal vision. 
-%\paragraph{\textbf{Precedence between commits:}} Relation between the \emph{atomic changes} of a commit with their \emph{previous atomic changes} in the file $f$, where the previous commit of a commit is the unique previous atomic changes of an atomic changes set. We will refer to this precedence between commits as the \emph{previous commit (\pc)} of a commit in $f$ and denote it as:
-%\[ pc'(c) \rightarrow pc(c)\] 
-%
-%\paragraph{\textbf{Previous commit set:}} Set that includes the different previous commits of a commit. Formally:% Also, can be described as the first generation of commits in ancestor change set (\ACS) of the genealogy tree for a given \BFC . We denote it as \PC{c_l}. Formally; 
-%\[ \PC{c} =  \bigcup pc'(c)\]
-%
-%\paragraph{\textbf{Descendent Commit:}} Given a commit $c$ and a file $f$, a descendent commit of $c$ is any of the commits that belongs to the precedence commit chain of $c$ in $f$, we will refer it as $dc$.
-%
-%\paragraph{\textbf{Descendent Commit Set:}} Set of descendent commits for a given commit; we refer to it as \DCSet{c}. Note that the \emph{previous commit set} contains only the previous commit to a commit, whereas the \emph{descendent commit set} contains all the commits that have modified, in somehow, the lines changed in $c$ during all the history of $f$.
-%
-%\paragraph{\textbf{Ancenstor Commit:}} Is any of the commits before of a given commit, we will refer it as $ac$.
-%
-%\paragraph{\textbf{Ancestor Commit Set:}} Set of the ancestor commits of a given commit; we refer to it as \ACSet{c}. Note that from a specific commit of the repository, the \emph{ancestor commit set} contains all the commits of that repository. 
-%
-%\paragraph{\textbf{Immediately Ancenstor Commit:}} Is the commit immediately before to a given commit in the ancestor commit set, we will refer it as $iac$.
-%
-%\paragraph{\textbf{Bug-Fixing Commit:}} Commit where a bug is fixed. As a fixed bug $b$ might require one or more commits to be fixed, we define the set of Fixing Commits (\BFC) of a bug $b$ as following set: \setBFC{b}. In general, we expect this set to be a singleton, i.e., a bug is fixed in a single commit, although several commits may be needed to fix a bug.
-%
-%\paragraph{\textbf{First Failing Change:}} The first commit of the \DCSet{c} in which the bug manifests itself in the project. We will refer to it as \FFC .
-%
-%\paragraph{\textbf{Bug Introducing Change:}} A specific commit from the \ACS{c} that erroneously wrote the buggy line(s) at the moment of their insertion, and the bug propagated through each following commit until the \BFC fixed the line(s).
 
 It is to be noted that some of these terms have been used for different concepts in the literature; and from it, it can be understood why we argue that a common terminology when investigating bug fixing activity is needed. Table~\ref{tab:tableComparison} offers a comparison of the terminology proposed in this paper and how these concepts have been referred in previous works through a diverse terminology. To our knowledge, no previous research has presented a comprehensive list of all concepts needed to have a clear and complete vision of the problem. 
 
@@ -1733,7 +1590,7 @@ It is to be noted that some of these terms have been used for different concepts
   \begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
 % increase table row spacing, adjust to taste
 \renewcommand{\arraystretch}{1.3}
-\caption{Comparison of our terminology with the one found in the bug seeding field.\gema{Add the descendent commit}}
+\caption{Comparison of our terminology with the one found in the bug seeding field.}%\gema{Add the descendent commit}}
 \label{tab:tableComparison}
 
 \begin{tabular}{lll}
@@ -1752,13 +1609,14 @@ It is to be noted that some of these terms have been used for different concepts
  &Recent version & \cite{kim2008classifying}\\
  &Preceding version & \cite{hata2010fault}\\
  \hline
+\multirow{2}{*}{Ancestor Change} &Revision & \cite{sliwerski2005changes}\cite{da2016framework}\cite{kim2006automatic}\\
+ &Changes& \cite{kim2008classifying}\\
+ &Ancestor& \cite{bird2009promises}\\
+\hline
 \multirow{3}{*}{Bug Fixing Change} &Fix for a bug & \cite{sliwerski2005changes}\\
  &Bug -fixing change& \cite{da2016framework}\cite{kim2006automatic}\cite{williams2008szz}\cite{izquierdo2011developers}\cite{kim2008classifying}\\
  &Fixed revision& \cite{hata2010fault}\\
  \hline
-\multirow{2}{*}{Ancestor Change} &Revision & \cite{sliwerski2005changes}\cite{da2016framework}\cite{kim2006automatic}\\
- &Changes& \cite{kim2008classifying}\\
-\hline
 \multirow{2}{*}{Bug Introducing Change} &Fix-inducing Change & \cite{sliwerski2005changes}\cite{williams2008szz}\\
  &Bug Introducing Change& \cite{da2016framework}\cite{kim2006automatic}\cite{kim2008classifying}\\
 \bottomrule
@@ -1772,133 +1630,102 @@ It is to be noted that some of these terms have been used for different concepts
 \subsection{The Explanation of the Model:}
 \label{subsec:explanationmodel}
 
-All too often when analyzing projects, researchers use \texttt{git} as their \textit{Source Code Management (SCM)} system. The SCM records \emph{observable changes} to a file or set of files. Observable changes are alterations of the file(s) caused by additions, deletions or modifications of one or more lines in the source code. Thanks to the SCM, researchers are able to manually or automatically track back the deletion and modification of lines from a specific moment up until its origin, they are also able to identify which lines are new additions in each commit. Navigating back into the relationship between the altered lines of each observable change and its previous one, a \emph{precedence observable change tree} or \emph{genealogy tree} can be built. Figure~\ref{fig:genealogytree} shows an example of the observable change $i$ made in a file $f$ that fixed the bug $b$. Tracking back each line modified or removed from $f$, we can draw the genealogy tree of the lines involved in $i$. It is important to notice that the new addition lines cannot be tracked, but they still remain in the model. The black boxes represent the different commits, the dots represent a hunk of only new lines, the arrows show the precedence between commits, and the colour of the lines depend on whether they are removed (red), added (green) or modified (black). 
+All too often when analyzing projects, researchers use \texttt{git} as their \textit{Source Code Management (SCM)} system. The SCM records \emph{observable changes} to a file or set of files. Observable changes are alterations of the file(s) caused by additions, deletions or modifications of one or more lines in the source code. Thanks to the SCM, researchers are able to manually or automatically track back deletion and modification of lines from a specific moment up until its origin, they are also able to identify which lines are new additions in each commit. Navigating back into the relationship between the altered lines of each observable change and its previous one, a \emph{precedence observable change tree} or \emph{genealogy tree} can be built. Figure~\ref{fig:genealogytree} shows an example of the observable change $i$ made in a file $f$ that fixed the bug $b$. Tracking back each line modified or removed from $f$, we can draw the genealogy tree of the lines involved in $i$. It is important to notice that the new addition lines cannot be tracked, but they still remain in the model. The black boxes represent the different commits, the dots represent hunks of only new lines, the arrows show the precedence between commits, and the colour of the lines depend on whether they are removed (red), added (green) or modified (black). 
 
-Using the defined terminology, we will refer to the observable change $i$ as the \BFC. From the lines changed in the \BFC, \LC{\BFC}, we might draw its genealogy tree in which, thanks to the precedence between commits, there is a genealogical relationship. Visually from this relationship, we distinguish between commits of the first generation \emph{(i-1a,i-1b,i-1c)}, second generation \emph{(i-2a, i-2b, i-2c, i-2d)}, and third generation \emph{(i-3a)} of the \BFC. By extension, the Previous Commit Set of the \BFC, are the first generation commits and the Descendent Commit Set are the first, second and thrid generation of commits. 
+Using the defined terminology, we will refer to the observable change $i$ as the \BFC. From the lines changed in the \BFC, \LC{\BFC}, we might draw its genealogy tree in which, thanks to the precedence between commits, there is a genealogical relationship. Visually from this relationship, we distinguish between commits of the first generation \emph{(i-1a,i-1b,i-1c)}, second generation \emph{(i-2a, i-2b, i-2c, i-2d)}, and third generation \emph{(i-3a)} of the \BFC. By extension, the Previous Commit Set of the \BFC, are the first generation commits and the Descendent Commit Set are the first, second and third generation of commits. 
 \[ \PC{\BFC} =  {(i-1a,i-1b,i-1c)}\]
 \[ \DCSet{\BFC} =  {(i-1a,i-1b,i-1c),(i-2a, i-2b, i-2c, i-2d),(i-3a)}\]
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=200pt,height=200pt]{img/visiontree.png}
+\includegraphics[width=300pt,height=300pt]{img/visiontree.png}
 \caption{Genealogy tree of the observable change $i$, each commit shows a precedence relationship its descendent commits .}
 \label{fig:genealogytree}       % Give a unique label
 \end{figure}
 
-%In our study we have only 
-%which form a chain of precedence built by all ancestor changes of the file. Thus when flattening the genealogy tree,
-When focusing on commits in the \emph{master} branch of a project repository we do not have a clear visual access to the genealogy tree of a given commit, but we have a flatten version of all the ancestor commits of a given commit. In this flattened version, the commits are preceded by other changes making up a lineal vision of precedence, where the commits of the genealogy can be found. An important concept is that this precedence is not set by dates, but by previous versions in the SCM. This occurs due to the way in which a decentralized source code management (DSCM) system works. Bird \emph{et al.} explained how the local repositories of two collaborating developers working with git might diverge, which causes that each repository to contain new commits that are not present in the other. Thus, in the moment of combining both local repositories, the user can select between many options regarding the sequence of commits such as to rebase, merge, remove, squash, etc. These actions may alter the natural order of commits, which inhibits them from being sorted in time~\cite{bird2009promises}. Continuing with the above example, Figure~\ref{fig:precedence} demonstartes the lineal vision of precedence of the change $i$ in the \emph{master} branch of a project repository. The commits are represented by circles, and the changes belonging to the genealogy tree of $i$ can be found in orange, based on whether they are a $pc$ in blue, or whether they are a $dc$; the remaining commits are the $ac$ where the commit before a $is$ is the immediately ancestor commit $iac$. The \ACS{i} were committed to the project; however, they do not have a precedence relationship with the lines modified in $i$.    
+
+When focusing on commits in the \emph{master} branch of a project repository we do not have a clear visual access to the genealogy tree of a given commit, but we have a flatten version of all the ancestor commits of a given commit. In this flattened version, the commits are preceded by other changes making up a lineal vision of precedence, where the commits of the genealogy can be found. An important concept is that this precedence is not set by dates, but by previous versions in the SCM. This occurs due to the way in which a decentralized source code management (DSCM) system works. Bird \emph{et al.} explained how the local repositories of two collaborating developers working with git might diverge, which causes that each repository to contain new commits that are not present in the other. Thus, in the moment of combining both local repositories, the user can select between many options regarding the sequence of commits such as to rebase, merge, remove, squash, etc. These actions may alter the natural order of commits, which inhibits them from being sorted in time~\cite{bird2009promises}. Continuing with the above example, Figure~\ref{fig:precedence} demonstrates the lineal vision of precedence of the change $i$ in the \emph{master} branch of a project repository. The commits are represented by circles, and the changes belonging to the genealogy tree of $i$ can be found in orange, based on whether they are a $pc$ in blue, or whether they are a $dc$; the remaining commits are the $ac$ where the commit before a $is$ is the immediately ancestor commit $iac$. The \ACSet{i} were committed to the project; however, they do not have a precedence relationship with the lines modified in $i$.    
 
 For those who are familiarized with \texttt{git}, we can compare the Figure~\ref{fig:genealogytree} with the \texttt{git blame} of the modified lines in a bug-fixing change and Figure~\ref{fig:precedence} with the \texttt{git log} of a given commit in the master branch of a project repository. 
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/visionlog.png}
-\caption{Lineal vision precedence in the master branch of the bug-fixing change $i$. The coloured commits belongs to the \PC{i} (orange) and \DCS{i} (blue), the black commit is the \BFC and the grey commit is the initial commit of the project. Notice that the commits are not sort in time because we are not assuming a precedence set by dates.}
+\caption{Lineal vision precedence in the master branch of the bug-fixing change $i$. The coloured commits belongs to the \PC{i} (orange) and \DCSet{i} (blue), the black commit is the \BFC and the grey commit is the initial commit of the project. Notice that the commits are not sort in time because we are not assuming a precedence set by dates.}
 \label{fig:precedence}       % Give a unique label
 \end{figure}
 
-%\begin{figure}[ht]
-%\centering
-%\includegraphics[width=\columnwidth]{git.png}
-%\caption{git merge, git rebase and SVN lineal history}
-%\label{fig:git}       % Give a unique label
-%\end{figure}
-
-%Definicion del momento del Fallo
-%When identifying a change or a set of changes in a Bug-Fixing Commit, what we would like is to understand the genealogical relationship of the fixed lines with their ancestor lines
-
 From an objective point of view, it is not important \emph{WHEN} the bug was inserted in time but, \emph{WHAT} commit inserted it. This is because after inserting the erroneous lines in a previous commit or an ancestor commit of a \BFC, the bug is in the system and furthermore, it propagates through each new change in the file. Hence, determining the first failing change that manifests the bug implies to navigate back into the genealogy tree. Thus, from a theoretical point of view, there will be one change in the lineal vision precedence that manifest the malfunction by first time. This change will be the first failing change, and will be referred as \FFC. Furthermore, the \FFC may be the bug introduction change based on whether it inserted the buggy line(s) and whether it belongs to the \ACSet{\BFC}; when there is no change that inserted the wrong line(s) the \BIC in the \ACSet{\BFC} cannot be found, as a result the \FFC is used to explain that in this precise commit, other (external/internal) changes that do not belong to the \ACSet{\BFC}, affected in somehow a line(s) of the source code caused the failure of the system and the bug manifestation.
-
-
-%\subsection{Effectiveness of the approaches in order to find the \FFC.}
-
-%Unfortunately, the vast majority of approaches for finding the Bug-Introducing Commit, or for predict future bugs, are not understood for the \emph{real} cause of the bug, forcing practitioners to apply these approaches to all the projects without regard the nature of the bug, the dependencies of the bug or even whether they use SVN or Git.
-
-%Some people may ask why CVS or git is relevant when we are using the approaches to find the BIC and the explanation is that some approaches bore to be use in SVN because of the branches are explicitly created, but this is not the case with git. A branch in git is only a pointer to some commit which can  move causing that we lose the previous states completely. In other words, as we explain before git does not keep a relationship of the changes setting in time, thus the approaches that use temporally windows to remove false positives or have faith that the lineal vision precedence is setting by dates are not suitable in git. Moreover, as we have explained before, it is not fair to blame changes as the BIC when in fact they are not the real cause of the bug, so to be more accurate in the results and can learn from the history of the projects taking into account all the factors around, we have proposed to find the \FFC instead of the BIC and, furthermore we must understand that this \FFC has dependencies which help to comprehend the origin of the bug. 
 
 
 \section{How to Find the Bug Introducing Change and the First Failing Change:}
 \label{sec:findFFCBIC}
 
-In order to discover the Bug-Introducing Change with the maximum accuracy, it is recommended to do it manually by tracking back each line of the source code of all changes until find the \emph{moment} where the bug was inserted. To ensure that it is the moment when the bug was inserted, it is necessary to use information from the code review system and version control system. If according to this information, the commit inserted the line(s) contains the bug at this moment, the change is regarded as \BIC. On the contrary, if the information gathered from these systems explains that there was a change in the \emph{environment or context} that caused the failure, it is not a \BIC, and in this case the change is the First-Failing Change. 
+In order to discover the Bug-Introducing Change with the maximum accuracy, it is recommended to do it manually by tracking back each line of the source code of all changes of a \BFC until find the \emph{moment} where the bug was inserted by first time. To ensure that it is the moment when the bug was inserted, it is necessary to use information from the code review system and version control system. If according to this information, the commit inserted the line(s) contains the bug at this moment, the change is regarded as \BIC. On the contrary, if the information gathered from these systems explains that there was a change in the \emph{environment or context} that caused the failure, it is not a \BIC, and in this case the change is the First-Failing Change. 
 
-Theoretically and under optimal conditions, this process can be fully automatic relying on the Test Signaling a Bug (\TSB) which flags as \emph{True} when the test is passed and \emph{False} when the test fails in the analyzed snapshots of the project. Despite the high complexity of automatization, there us an easy way to find the \BIC or \FFC in this model, which can be achieved through looking manually for the first snapshot when the \TSB fails. This snapshot contains the commit that is the perfect candidate to be the \BIC or the \FFC.
+Theoretically and under optimal conditions, this process can be fully automatic relying on the Test Signalling a Bug (\TSB) which flags as \emph{True} when the test is passed and \emph{False} when the test fails in the analyzed snapshots of the project. Despite the high complexity of automatization, there is an easy way to find the \BIC or \FFC in this model, which can be achieved through looking manually for the first snapshot in the lineal vision precedence when the \TSB fails. This snapshot submitted the commit that is the perfect candidate to be the \BIC or the \FFC. 
 
-This model focuses on the cases when a \BIC for a BFC can be found or the cases when it is sure that a \BIC for a \BFC does not exist. To show how the model works, the definitions of \BIC and \BFC based on the existence of a \TSB are applied. The \TSB is applied in all the snapshots of the lineal vision precedence of a \BFC to identify whether there is a Bug-Introducing Commit. Considering that the \TSB  has a coverage of 100\% and that it can run indefinitely across the history of the source code, the proposed model is able to find out the \BIC or the \FFC of a bug report by analyzing the changes that fixed the bug. This \TSB will be passed into all the descendent commit set of the lines modified in the Bug-Fixing Commit. Thus, when the \TSB test is passed to all the snapshots, it looks for the snapshot that fails; if found, the model will consider it as a candidate for the \BIC. 
+This model focuses on the cases when a \BIC for a \BFC can be found or the cases when it is sure that a \BIC for a \BFC does not exist. To simplify, we assume that there is only the master branch in the repository of a project. To show how the model works, the definitions of \BIC and \BFC based on the existence of a \TSB are applied. The \TSB is applied in all the snapshots of the lineal vision precedence of a \BFC to identify whether there is a Bug-Introducing Commit. Considering that the \TSB  has a coverage of 100\% and that it can run indefinitely across the history of the source code, the proposed model is able to find out the \BIC or the \FFC of a bug report by analyzing the changes that fixed the bug. This \TSB will be passed into all the ancestor commit set of the Bug-Fixing Commit. Thus, when the \TSB test is passed to all the snapshots, it looks for the snapshot that fails; if found, the model will consider it as a candidate for the \BIC. 
 
 To be noted, in previous studies the researchers used software testing to locate faults, however, they were not looking at the origins of the faults by understanding their reasons and their dependencies that may cause the problem that a clean line can become to be buggy in the future. They usually are focused on minimize the cost that a fault may cause in the system by guiding developers to the faulty location, and they do not try to rebuild the complete history of the system in each moment to know what was happening at that moment as our model proposes. Thus, to our knowledge, this is the first time that this idea is presented, where the software testing can be used to find the \BIC and the \FFC using the \TSB.
 
-
-%For instance, a similar notion to locate the \FFC would be to use the \emph{Oracle} as a conceptual idea, which is used in testing to determine whether the result of executing a program using a test is correct~\cite{staats2011programs}. Therefore we can take this concept to find the \FFC asking to the \emph{Oracle} whether after a specific change the result of the program is correct. The oracle is only a part of specifications related to the expected output (when it exists) and, contains information about the input ranges, about non-functional properties, etc. As example, a test suite will be a specification, that contains test cases, which themselves contain assertions (oracles).
-
-
-
-%\gema{To show the model working, we find a set of BFCs in two projects, and find out (manually) their BICs, or ensure that there is no BIC at all. For this, we apply our definitions of BIC and BFC based on the existence of a TSB, that we could declare in English (so that we can be more precise if we agree or not on which one is the BIC for a BFC). If we cannot find the BIC (or agree on it, or be sure that there is no BIC), we could consider excluding the corresponding BFC from the study, since we're focused in the cases when BIC can be found or we're sure it does not exist (we can see through an Aleph). The main contribution of this part is showing that in a real case, the ``gold standard" idea can be put in practice, at least to some extent (I hope to a large fraction of the BFCs in our dataset, but that's what we need to explore further, since the preliminary exploration didn?t work that way).}
-
-%\gema{Given a certain BFC, the algorithm should be able of finding the corresponding BIC, or showing that no BIC exists. If a certain commit is identified as the BIC, but it is not (maybe because there is no BIC), that's a false positive. If no commit is found to be the BIC, but there is one, that's a false negative. Of course, this assumes we can see through the Aleph, and we have perfect knowledge of which one is the BIC corresponding to any BFC (if it does exist), or that it does not exist}
-
-%\gema{I can think of several reasons: 
-%The snapshot is the first snapshot when the test can be applied. Depending on how ``perfect" we consider our hypothetical test, this would be the first snapshot of the code, or the first snapshot when it is reasonable to try to apply the test (eg, when the function or feature tested starts to be present). Since our hypothetical tests are, well, hypothetical, we could just consider that we can run them all the way to the first snapshot, and maybe that is cleaner. In reality, any sensible test could be applied for the first time to a certain snapshot, and it wouldn't make sense to try to run it before that (as said above, for example before the tested function or feature is present).
-%An special case is when the test fails in all the sequence up to the first snapshot with a given environment (eg, external APIs, etc.), but passes in all the sequence snapshots up to the first snapshot with a different environment (eg, the current environment). That would be an indicator of the bug being due to changes in the environment, not in the code. Of course, we need to define environment.
-%}
-
-%Figure~\ref{fig:testrecursive} naive shows how the outcomes of hypothetical test. 
-
-\subsection{Outcome of the TSB:}
+\subsection{Outcome of the Test Signalling a Bug:}
 \label{subsec:outcomeTSB}
+
+As mention earlier, the Test Signalling a Bug (\TSB) checks for the functionalities and features of a project with coverage of the 100\%.  Currently,  a common practice in the bug fixing process is to add a test case that checks the behavior of the bug fixed when submitting the \BFC. Thus, the proposed model may use this information from the test case to build the Test Signalling a Bug.
 
 The outcome of the \TSB varies depending on each snapshot, there are three different outcomes:
 \begin{enumerate}
-	\item {\textbf{Pass}} : The function or feature tested is present in the snapshot and it works as the test anticipated according to the BFC, there is no \BIC.
-	\item {\textbf{Fails}} : The function or feature tested is present in the snapshot but it does not work as the test anticipated according to the BFC. This snapshot is considered as candidate to be the \BIC.
+	\item {\textbf{Pass}} : The function or feature tested is present in the snapshot and it works as the test anticipated according to the \BFC. The snapshot do not present a \BIC.
+	\item {\textbf{Fail}} : The function or feature tested is present in the snapshot but it does not work as the test anticipated according to the BFC. This snapshot is considered as candidate to be the \BIC.
 	\item {\textbf{Not-Runnable}} : The function or feature tested is not present in the snapshot, thereby the test cannot run in this snapshot. 
 \end{enumerate}
 
-%\begin{figure}[ht]
-%\centering
-%\includegraphics[width=200pt,height=170pt]{img/testrecursive.png}
-%\caption{Omnipotent view of a test that automatically locates the \FFC}
-%\label{fig:testrecursive}       % Give a unique label
-%\end{figure}
 There are three different scenarios to illustrate how to apply the hypothetical test into a lineal vision of precedence for the \setBFC{i} in order to identify whether the Bug-Introducing Commit exists. In these scenarios it is considered that the \TSB have 100\% of coverage and that it can run indefinitely across the history of the source code. Thus, the \TSB is passed to all the snapshots (ancestral commit set) in search for the one that fails; if found, it will be consider it as a candidate for the \BIC. %Furthermore, we will be sure if this snapshot is the \BIC by using some heuristics that check that the line(s) inserted by this commit was (were) buggy, otherwise it cannot be considered as the $BIC$.
 
-Figure~\ref{fig:snapshot1} shows how to apply the hypothetical test into the genealogy tree when there is a \BIC and the \TSB can be run in all the snapshots. To locate the \BIC, the \TSB is passed into all the snapshots of the descendent commit set, and the \BIS will be the first that fails (i-1b). It can be known that the \BIS is a \BIC because the snapshot before (i-2c) passes. 
+Figure~\ref{fig:example1} shows how to apply the hypothetical test to the lineal vision precedence when there is a \BIC and the \TSB can be run in all the snapshots. To locate the \BIC, the \TSB is passed into all the snapshots of the antecesor commit set, and the \BIS will be the first that fails (i-1b). It can be known that the \BIS is a \BIC because the snapshot before (i-2c) passes. 
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/snapshot1.png}
 \caption{The Bug Introducing Snapshot is the \BIC}
-\label{fig:snapshot1}       % Give a unique label
+\label{fig:example1}       % Give a unique label
 \end{figure}
 
-Figure~\ref{fig:snapshot2} shows how  the hypothetical test is applied to the genealogy tree when there is a \BIC but the \TSB test cannot be run after a snapshot. This is because the tested function or feature is not present in that moment. Here, the first \BIS identified is the \BIC because when it introduced the function or feature tested, it was buggy.
+Figure~\ref{fig:example2} shows how  the hypothetical test is applied to the lineal vision precedence when there is a \BIC but the \TSB test cannot be run after a snapshot. This is because the tested function or feature is not present in that moment. Here, the first \BIS identified is the \BIC because when it introduced the function or feature tested, it was buggy.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/snapshot2.png}
 \caption{The Bug Introducing Snapshot is the the \FFC }
-\label{fig:snapshot2}       % Give a unique label
+\label{fig:example2}       % Give a unique label
 \end{figure}
 
-Figure~\ref{fig:snapshot3} 5 shows how the hypothetical test is applied to the genealogy tree when there is not BIC and the \TSB can be run indefinitely across the history of the source code. . The \TSB always fails with the BFS environment the snapshots, but if the older environment is set, it will pass in the descendent snapshot. Thus, the first \BIS before the \BFC will be the \FFC, there was not \BIC in the descendent commit set.
+Figure~\ref{fig:example3} shows how the hypothetical test is applied to the lineal vision precedence when there is not \BIC and the \TSB can be run indefinitely across the history of the source code. The \TSB always fails with the \BFS environment the snapshots, but if the older environment is set, it will pass in the descendent snapshot. Thus, the first \BIS before the \BFC will be the \FFC, there was not \BIC in the antecesor commit set.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/snapshot3.png}
 \caption{The Bug Introducing Snapshot is the the \FFC }
-\label{fig:snapshot3}       % Give a unique label
+\label{fig:example3}       % Give a unique label
 \end{figure}
 
 
-\subsection{Criterion to apply to the test Signalling a Bug:}
+\subsection{Criterion to apply to the Test Signalling a Bug:}
 \label{subsec:criterion}
 
- \gema{Write some intro here. que tenemos que hacer cuando no hay una vision linear si no que tenemos branches. Decir que la idea de test se va a aplicar a todos los ancestor commits }
- \gema{Explicar porque algunas veces no encontraremos el FFC cuando tiene sentido hablar de FFC, explicar que otras veces no vamos a estar seguros ....}
+As mention earlier, when the history of a project is linear, researchers can test the \ACSet{i} one by one and run the \TSB.  On the opposite, when the history of the project is not linear, it may have multiple branches to be tested. Furthermore, as the failure might be present in some simultaneously existing branches and absent from other branches the concept of the First-Failing Commit may be uncertain. However, at first glance, and assuming that theoretically the test can be run for all snapshots in the \ACSet{i}, the outcomes of the \TSB still find sections in one or more branches where the test would fail. Thus, the model is still able to find suspicious snapshots to be the \FFC and \BIC. 
+
+It may be possible that in some scenarios, the proposed model should define the \BIC as the one which is topological ``the first one" in the faction of continuously failing snapshots. It also may occur that, the presence of multiple parallel branches cause two or more commits in parallel start to fail until the \BFC. However, it may be an indication that the bug was introduced into the source code, independently, in several branches or it was copied (or written equally by chance) in several branches. Our hypothesis is that these scenarios are not common, however, we need to include them in the theoretical model.
+
+Thus, to accommodate this case, we could extend the notion of \BIC to ``the set of \BIC", which would be those ``commits corresponding to the first snapshot to fail, continuously until the \BFC, in several branches that lead to the \BFC".
+
+Furthermore, depending how the \TSB fails there may be different situations, the researchers should decide whether the \BIS is a \BIC, a \FFC, both, or undecided.
+
  \begin{enumerate}
-	\item Undecidable \FFC : When we cannot find the \FFC. In this class, we will not find the \FFC between all the \ACSet{b} using the test, because the test may not be implemented due to some factors. Thus, the \FFC will be the first change that manifests the bug in the lineal vision precedence under analysis.
-	\item \FFC in external dependencies: When the bug is not caused by a change committed into the ancestral tree under analysis but, another external factors cause the failure such as: (1) There is a bug in the dependencies of the project; (2) There is a bug in API's used in the project. In this class, we will find the \FFC between all the \ACSet{b} using the test, but this \FFC is not the cause of the bug, this \FFC will be the first time that the malfunction manifests in my lineal vision precedence.
-	\item \FFC : When we can find the \FFC between all the \ACSet{b} using the test and furthermore, this \FFC is the cause of the bug.
+	\item \textbf{Undecidable}: When we cannot be sure to find the \FFC or the \BIC. In this class, we may not find the \FFC between all the \ACSet{b} using the hypothetical test because the lack of information.
+	\item \textbf{The \FFC is the \BIC}: When we can find the \FFC between all the \ACSet{i} using the hypothetical test and furthermore, this \FFC is the cause of the bug because it inserted the buggy lines to the source code.
+	\item \textbf{There is only \FFC}: When the bug was not caused by a change belonging to  the \ACSet{i} but, another external factors cause the failure such as: (1) There is a change in the dependencies of the project; (2) There is a change in the requirements of the project; (3) There is a bug in APIs used in the project. In this class, we will find the \FFC using the hypothetical test and it will be the first time that the malfunction manifests in the project.
+	
 \end{enumerate}
 
 Nevertheless, it would appear that automatizing this process is tedious and complex, because all the external dependencies used in the project makes it more complicated to build an isolated test to run in each previous change. However, we still rely this can be possible thanks to studies such as the one performed by Bowes~\emph{et al.}, which provides a core list of testing principles that focuses on different quality aspects other than effectiveness or coverage. For our research, the most interesting principle is the test (in)dependency which describes that a test should be able to run in any order and in isolation. In addition, the test should  not  rely  on other tests in anyway. Allowing practitioners to add new tests without keeping in mind dependencies or effects they might have on existing tests~\cite{bowes2017good}.
@@ -1921,31 +1748,9 @@ Figure~\ref{fig:algoritmo} presents the decision tree in order find the \BIC, wh
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/algoritmo.png}
-\caption{Decision tree }
-\label{fig:Decision tree to identify the BIC and the FFC}       % Give a unique label
+\caption{Decision tree to identify the BIC and the FFC }
+\label{fig:algoritmo}       % Give a unique label
 \end{figure}
-
-%To be more precise: we consider bugs that are considered bugs at the moment of bug fixing. There is a (hypotetical) test that fails right before the commit fixing the bug, and does not fail right after the commit fixing the bug. In the case of Elasticsearch, we rely (to a great extent) in developers labelling it as bug. In the case of OpenStack, it is more that Gema did an analysis, using info that developers annotated in the bug report.
-
-%Yes, we should exclude those bugs, because we're interested in how bugs are introduced in the code. This said, in some cases the line may be fuzzy, but I would suggest excluding cases which are not clear bugs (at least in a first round). Because if it is not cleary a bug fixed, there is (maybe) no bug introduction to look for.
-
-% Question: What if bug fixing has been incomplete and spread over several commits (whether or not in a temporal proximity to each other?
-%I think this has to do with how we define a bug. Again, if we consider the test-based definition described above, the important thing is that for each Bug-Fixing Commit we will have a test, that will fail or not. If it happens that some fixes were not complete, the several Bug-Fixing Commits will still point to the same Bug-Introducing Commit (except if it was really several bugs "together", that can be addressed separately). Since our problem is how to locate those Bug-Introducing Commits, I think that should not be a problem.
-
-%I think this is only relevant when evaluating a certain SZZ-like algorithm. That should be discussed once we agree on our model for deciding which one is the BIC (see definitions after the text by Alexander), and how we find it in our exploratory cases.
-
-%The task would be, in general terms:
-%* Identify a certain number of BFC, being sure they are really bug-fixing.
-%* For each of them, find the corresponnding BIC, or decide it does not exist
-%(see definitions below).The best way to find out the above is something we need to discuss: as much as possible we should find a well defined procedure for that.
-
-%Question: Previous commit is not necessarily unique (merges, different commits modifying different lines) or even not necessaily existing (bug fixing has been carried out solely by adding new lines of code; the lines that have been modified only by the original import, i.e., no modifications have been recorded in the version control system). How do we address these situations?
-
-%We would be looking for the BIS, which is unique (If I'm not wrong in its definition, see below). If we need to define an order, that could be git log order (which is what I assume in the definitions below).
-
-%I wouldn't focus "in the previous commit". We need to find the BIC, be it the previous commit or not. Once we have BICs identified for all BFC, we can compare with SZZ (where the previous commit is relevant), or with other algorithms.
-
-%\gema{(Dada esta situacion de incertidumbre, nosotros proponemos un modelo donde enmarcarlo todo)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2080,7 +1885,7 @@ Figure~\ref{fig:diagram} provides an overview of each step involved in our study
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/diagram.png}
-\caption{Overview of the steps involved in our analysis \gema{I need to modify the steps, writing the FFC instead of BIC} }
+\caption{Overview of the steps involved in our analysis \gema{I need to modify the steps, writing the \FFC instead of BIC} }
 \label{fig:diagram}       % Give a unique label
 \end{figure}
 
@@ -2246,7 +2051,7 @@ In the dataset of ElasticSearch, from the 60 \FFC and 45 \BIC, 49 \FFC and 34 \B
 	\centering
 	\begin{tabular}{|c|c|c|c|}
 		\hline
-  		&  BIC & FFC & Undecided \\
+  		&  BIC & \FFC & Undecided \\
 		\hline
 		\hline
 		Nova & 25 (66\%) & 40 (69\%) & 18 (31\%)\\
@@ -2539,7 +2344,7 @@ Many researchers have based their methods in locating  Bug-Introducing Commit in
 The SZZ is currently the best-known and easiest algorithm used to identify the \BIC. As a results, some studies may have used datasets to feed their bug prediction or classification models with results obtained from the SZZ such as Ray \emph{et al.} that used a dataset from \cite{rahman2014comparing} which was gathered using the SZZ algorithm to study the naturalness of buggy code. Massacci \emph{et al.} evaluated most existing vulnerabilities of discovery models on web browsers and took many datasets where at least the built in \cite{massacci2014empirical} used the SZZ approach. And, Abreu \emph{et al.} uses the data set obtained in \cite{abreu2009practical} to study how the frequency of communication between developers affects the fact to introduce a bug in the source code.
 
 	
-In general, this new method is able to distinguish between two relevant moments given a Bug-Fixing Commit, the Bug-Introduction moment and the First-Failing moment.The first moment do not always exists, because there could be external changes or the instance whereby the internal requirements could have evolved which may have caused the failure. However, there is always a First-Failing moment which indicates when the project manifested the bug fix with a Bug-Fixing Commit.To be able to obtain credible results in the models used in areas such as bug prediction, bug categorization and bug detection, the models should be able to distinguish between these two moments,  the FFC and the BIC. Since our empirical case of study states that the current state-of-the-art approaches only identify from 26\% and up to 38\% of ``real" false positives. Thus, these results are promising to start thinking about implementing new methods based on the theoretical model proposed in this dissertation, or at least, to consider re-formulating correctly the definition of  a bug insertion into the source code. This process cannot be considered as a static problem; the methods proposed might be able to distinguish between buggy lines and clean lines at the moment of its insertion. This dissertation has demonstrated that other external and internal reasons rather than buggy lines are causing the failure of the systems and that it is not fair to blame a change as the cause when in fact, it was correct at that time it was submitted because it fulfilled with the functionalities, environments, necessities and requirements of the project. Although more  lights have been given to the problem of emulating software faults realistically, to achieve greater bug location automation, a more concerted effort is needed in testing to find ways or techniques to address the re-built problem and to build a test that can be automated or partially automated to find the \BIC or \FFC.
+In general, this new method is able to distinguish between two relevant moments given a Bug-Fixing Commit, the Bug-Introduction moment and the First-Failing moment.The first moment do not always exists, because there could be external changes or the instance whereby the internal requirements could have evolved which may have caused the failure. However, there is always a First-Failing moment which indicates when the project manifested the bug fix with a Bug-Fixing Commit.To be able to obtain credible results in the models used in areas such as bug prediction, bug categorization and bug detection, the models should be able to distinguish between these two moments,  the \FFC and the BIC. Since our empirical case of study states that the current state-of-the-art approaches only identify from 26\% and up to 38\% of ``real" false positives. Thus, these results are promising to start thinking about implementing new methods based on the theoretical model proposed in this dissertation, or at least, to consider re-formulating correctly the definition of  a bug insertion into the source code. This process cannot be considered as a static problem; the methods proposed might be able to distinguish between buggy lines and clean lines at the moment of its insertion. This dissertation has demonstrated that other external and internal reasons rather than buggy lines are causing the failure of the systems and that it is not fair to blame a change as the cause when in fact, it was correct at that time it was submitted because it fulfilled with the functionalities, environments, necessities and requirements of the project. Although more  lights have been given to the problem of emulating software faults realistically, to achieve greater bug location automation, a more concerted effort is needed in testing to find ways or techniques to address the re-built problem and to build a test that can be automated or partially automated to find the \BIC or \FFC.
 
 \subsection{Discussion of the Empirical Study Results}
 \label{subsec:implicationsES}
@@ -2760,7 +2565,7 @@ Buscar el origen del error es una tarea compleja que implica una gran variedad d
 \paragraph {\textbf{First Failing commit (\FFC):}} El primer commit correspondiente al \BIS que manifiest\'o el error pero que no introdujo l\'ineas err\'oneas en el momento de su inserci\'on.
 
 \subsection{Explicaci\'on del modelo propuesto:}
-Con demasiada frecuencia, cuando se analizan proyectos, los investigadores usan \texttt{git} como sistema de gesti\'in de c\'odigo fuente \textit{(SCM)}. El SCM registra \emph{cambios observables} en un archivo o conjunto de archivos. Los cambios observables son alteraciones de archivo(s) causados por adiciones, eliminaciones o modificaciones de una o m\'as l\'ineas en el c\'odigo fuente. Gracias al SCM, los investigadores pueden rastrear de forma manual o autom\'atica la eliminaci\'on y modificaci\'on de l\'ineas desde un momento espec\'ifico hasta su origen, y tambi\'en pueden identificar qu\'e l\'ineas son nuevas adiciones en cada commit. Navegando hacia atr\'as en la relaci\'on entre las l\'ineas alteradas de cada cambio observable y su cambio anterior, se puede construir un \emph{\'arbol de precedencia de cambios observables} o \emph{\'arbol geneal\'ogico}. La figura~\ref{fig:genealogytree} muestra un ejemplo del cambio observable $i$ realizado en un ficherp $f$ que corrigi\'o el error $b$. Rastreando cada l\'inea modificada o eliminada de $f$, podemos dibujar el \'arbol geneal\'ogico de las l\'ineas involucradas en $i$. Es importante saber que las nuevas l\'ineas a\~nadidas no se pueden rastrear, pero se tiene en cuenta en el modelo. Los recuadros negros representan los diferentes commits, los puntos representan un conjunto de solo nuevas l\'ineas, las flechas muestran la precedencia entre commits, y el color de las l\'ineas se relaciona con la acci\'on realizada, eliminar (rojo), a\~nadir (verde) o modificar (negro )
+Con demasiada frecuencia, cuando se analizan proyectos, los investigadores usan \texttt{git} como sistema de gesti\'in de c\'odigo fuente \textit{(SCM)}. El SCM registra \emph{cambios observables} en un archivo o conjunto de archivos. Los cambios observables son alteraciones de archivo(s) causados por adiciones, eliminaciones o modificaciones de una o m\'as l\'ineas en el c\'odigo fuente. Gracias al SCM, los investigadores pueden rastrear de forma manual o autom\'atica la eliminaci\'on y modificaci\'on de l\'ineas desde un momento espec\'ifico hasta su origen, y tambi\'en pueden identificar qu\'e l\'ineas son nuevas adiciones en cada commit. Navegando hacia atr\'as en la relaci\'on entre las l\'ineas alteradas de cada cambio observable y su cambio anterior, se puede construir un \emph{\'arbol de precedencia de cambios observables} o \emph{\'arbol geneal\'ogico}. La figura~\ref{fig:genealogyarbol} muestra un ejemplo del cambio observable $i$ realizado en un ficherp $f$ que corrigi\'o el error $b$. Rastreando cada l\'inea modificada o eliminada de $f$, podemos dibujar el \'arbol geneal\'ogico de las l\'ineas involucradas en $i$. Es importante saber que las nuevas l\'ineas a\~nadidas no se pueden rastrear, pero se tiene en cuenta en el modelo. Los recuadros negros representan los diferentes commits, los puntos representan un conjunto de solo nuevas l\'ineas, las flechas muestran la precedencia entre commits, y el color de las l\'ineas se relaciona con la acci\'on realizada, eliminar (rojo), a\~nadir (verde) o modificar (negro )
 
 Usando la terminolog\'ia definida anteriormente, nos vamos a referir al cambio observable $i$ como el \BFC. A partir de las l\'ineas cambiadas en el \BFC, \LC{\BFC}, podr\'iamos dibujar su \'arbol geneal\'ogico en el que, gracias a la precedencia entre los commits, hay una relaci\'on geneal\'ogica. Visualmente a partir de esta relaci\'on, distinguimos entre commits de la primera generaci\'on \emph{(i-1a, i-1b, i-1c)}, segunda generaci\'on \emph{(i-2a, i-2b, i-2c, i -2d)}, y tercera generaci\'on \emph{(i-3a)} del \BFC. Por extensi\'on, el conjunto de commits previos del \BFC es la primera generaci\'on de commits y el conjunto de commits descendientes es la primera, segunda y tercera generaci\'on de los commits.
 
@@ -2771,18 +2576,18 @@ Usando la terminolog\'ia definida anteriormente, nos vamos a referir al cambio o
 \centering
 \includegraphics[width=200pt,height=200pt]{img/visiontree.png}
 \caption{\'Arbol geneal\'ogico del cambio observable $i$, cada confirmaci\'on muestra una relaci\'on de precedencia con sus compromisos descendentes.}
-\label{fig:genealogytree}       % Give a unique label
+\label{fig:genealogyarbol}       % Give a unique label
 \end{figure}
 
 Cuando se observan los commits en la rama \emph{master} de un repositorio de proyectos, es posible que no se tenga un acceso visual claro al \'arbol geneal\'ogico de una commit determinada, pero se tiene una visi\'on aplanada de todas los ancestor commits  de un commit determinado. En esta visi\'on plana, los commits van precedidos por otros cambios que conforman una visi\'on lineal de precedencia, donde se pueden encontrar los commits geneal\'ogicos. Un concepto importante a tener en cuenta, es que esta precedencia no est\'a establecida por fechas, sino por versiones anteriores en el SCM. Esto ocurre debido a la forma en que funciona un sistema descentralizado de gesti\'on de c\'odigo fuente (DSCM). Bird \emph{et al.} Explic\'o c\'omo podr\'ian divergir los repositorios locales de dos desarrolladores que colaboran a la vez en un proyecto que usa git, lo que hace que cada repositorio contenga commits que pueden no est\'an presentes en el otro repositorio. Por lo tanto, en el momento de combinar ambos repositorios locales, el usuario puede seleccionar entre muchas opciones relacionadas con la secuencia de commits, tales como rebase, merge, remove, squash, etc. Estas acciones pueden alterar el orden natural de los commits, lo que las inhibe de ser ordenados cronol\'ogicamente en el tiempo~\cite{bird2009promises}. Continuando con el ejemplo anterior, La Figura~\ref{fig: precedence} muestra la visi\'on lineal de precedencia del commit $i$ en la rama \emph{master} del repositorio de un proyecto. Los commits est\'an representados por c\'irculos, y los cambios que pertenecen al \'arbol geneal\'ogico de $i$ se pueden encontrar en naranja si son $pc$ o en azul o si son $dc$; los commit restantes son los $ac$ d\'onde el commit anterior al $i$ es el inmediatamente ancestor commit $iac$. El conjunto de \ACS{i} fueron a\~nadidos al proyecto; sin embargo, no tienen una relaci\'on de precedencia con las l\'ineas modificadas en $i$ y no aparecen representados en la figura.
 
-Para aquellos que est\'an familiarizados con \texttt{git}, podemos comparar la Figura~\ref{fig:genealogytree} con el resultado obtenido tras usar \texttt{git blame} en las l\'ineas modificadas en \BFC y la Figura~\ref{fig:precedence} se correspoder\'ia con el resultado de usar \texttt{git log} en una confirmaci\'on espec\'ifica de la rama principal de un repositorio en un proyecto.
+Para aquellos que est\'an familiarizados con \texttt{git}, podemos comparar la Figura~\ref{fig:genealogyarbol} con el resultado obtenido tras usar \texttt{git blame} en las l\'ineas modificadas en \BFC y la Figura~\ref{fig:precedencia} se correspoder\'ia con el resultado de usar \texttt{git log} en una confirmaci\'on espec\'ifica de la rama principal de un repositorio en un proyecto.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\columnwidth]{img/visionlog.png}
 \caption{Visi\'on de precedencia lineal en la rama master del commit que arregla el error. Los commits coloreados pertenecen a \PC{i} (naranja) y \DCS{i} (azul), el commit negro es \BFC y el commit gris es el commit inicial del proyecto. Se debe tener en cuenta que los commits no se ordenan en orden cronol\'ogico porque no asumimos una prioridad establecida por fechas.}
-\label{fig:precedence}       % Give a unique label
+\label{fig:precedencia}       % Give a unique label
 \end{figure}
 
 Desde un punto de vista objetivo, no es importante saber \emph{CU\'ANDO} se insert\'o el error en el tiempo, sino \emph{QU\'E} lo insert\'o. Esto se debe a que despu\'es de insertar las l\'ineas err\'oneas en commit previo o una ancestral commit de un \BFC, el error permanece en el sistema y, adem\'as, se propaga a trav\'es de cada cambio nuevo en el fichero. Por lo tanto, determinar el primer cambio que manifiesta el error implica navegar en las l\'ineas del \'arbol geneal\'ogico y desde un punto de vista te\'orico, habr\'a un cambio en la. visi\'on lineal de precedencia que manifiesta el error en el sistema por primera vez. Este cambio ser\'a el primer cambio que falla y se denominar\'a \FFC. Adem\'as, el \FFC puede ser el cambio que introdujo el error en funci\'on de si  la(s) l\'inea(s) insertadas conten\'ian el error. Cuando ning\'un cambio insert\'o la(s) l\'inea(s) err\'oneamente, no se puede encontrar el \BIC y como resultado, solo se puede identificar el \FFC para explicar en que commit fall\'o por primera vez el sistema. Algunos ejemplos son cuando cambios (externo/interno) afectaron de alguna manera las l\'inea(s) del c\'odigo fuente caus\'ando el error del sistema y su manifestaci\'on.
