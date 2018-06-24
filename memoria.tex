@@ -1973,10 +1973,25 @@ The first part presents the results after applying the model to the data set. Th
 
 The second part presents the effectiveness of a SZZ-like algorithm. Once we have the ``gold standard", how SZZ-like algorithms ``really" perform  can be evaluated which is an important contribution to the current literature because as far as can be known, any researcher have carried out this empirical analysis. 
 
+\subsection{Explanation of the DataSets:}
+\label{subsec:Explanation}
+This section explains the datasets of Nova and ElasticSearch that were manually analyzed to identify the \BIC and the \FFC.
+
+The datasets of Nova and ElasticSearch contains 58 bug reports linked to 58 Bug-Fixing Commit. In Nova there are 9 Bug-Fixing Commits with only new lines added to fix the bug, almost the same number that ElasticSearch which has 8 Bug-Fixing Commit with only new additions. The total number of previous commits identified in Nova was 137 and, 120 in ElasticSearch.   
+
+Figure~\ref{fig:statistic} presents the mean of previous commits, files and test files in each bug report of Nova and ElasticSearch. The mean of previous commits in both projects are around 2, although it is slightly higher in Nova with 2.36 previous commit per \BFC. However, the mean of files touched by the \BFC is higher in ElasticSearch, with a mean of 3.18 files\footnote{the test files are not included here} per bug Report. The mean of test files modified in a \BFC is almost the same in both projects with 1.53 in Nova and 1.60 in ElasticSearch.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\columnwidth]{img/statistics.png}
+\caption{Mean of previous commits, files and test files per Bug Report in Nova and ElasticSearch }
+\label{fig:statistic}       % Give a unique label
+\end{figure}
+
 \subsection{ RQ1:What is the frequency for a Bug-Fixing Commit being induced by a Bug-Introducing Commit?}
 \label{subsec:RQ1}
 
-Table~\ref{tableBugNoBug} shows the number of Bug-Fixing Commit that have been induced by a Bug-Introducing Commit and the number of Bug-Fixing Commit that have not been induced by a Bug-Introducing Commit.
+Table~\ref{tableBugNoBug} shows the number of Bug-Fixing Commit that have been induced by a Bug-Introducing Commit and the number of Bug-Fixing Commit that have not been induced by a Bug-Introducing Commit in the datasets.
 The trend in the results of both projects was similar as both present higher percentage of Bug-Fixing Commits induced by a  Bug-Introducing Commit. However, the percentage of \BFC that were not induced by a \BIC is more representative in Nova with 24\% of the \BFC being fixing a bug that was not introduced in the system. On the contrary, this percentage is lower in ElasticSearch, where only the 10\% of the \BFC were not induced by a \BIC. Then from the 38 \BFC induced by a \BIC in Nova, 66\% of them were able to be manually located. Whereas from the 45 \BFC induced by a \BIC in ElasticSearch,  80\% of them were able to be manually located. In both projects, the percentage of doubt between where the bug was located is high, with 17\% in ElasticSearch and  31\% in Nova, illustrating the difficulty of the task. 
 
 \begin{table}[!t]
@@ -1996,29 +2011,7 @@ The trend in the results of both projects was similar as both present higher per
 	\end{tabular}
 \end{table}
 
-\subsubsection{RQ1.1: Could the location of a bug be modeled on the bug-introducing moment and first failing moment?}
-
-Table~\ref{tableBICFFC} shows the percentage of \BIC and \FFC that have been manually identified by using the model. By definition, in theory our model is able to identify the \FFC and the \BIC and whether it exists, but in practice, since the identification needs to be done manually, sometimes the \BIC or the \FFC cannot be identified. Thus, for the 58 \FFC and 38 \BIC belonging to the Nova dataset, 40 \FFC and 25 \BIC were successfully identified.
-In the dataset of ElasticSearch, from the 60 \FFC and 45 \BIC, 49 \FFC and 34 \BIC were successfully identified.
-
-\begin{table}[!t]
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Percentage of Bug-Introduced Commit and First Failing Commits identified after applying the theoretical model.}
-	\label{tableBICFFC}
-	\centering
-	\begin{tabular}{|c|c|c|c|}
-		\hline
-  		&  BIC & \FFC & Undecided \\
-		\hline
-		\hline
-		Nova & 25 (66\%) & 40 (69\%) & 18 (31\%)\\
-		\hline
-		ES & 36 (80\%) &  48 (83\%) & 10 (17\%)\\
-		\hline
-	\end{tabular}
-\end{table}
-
-\subsubsection{RQ1.2: Which reasons may cause that a Bug-Fixing Commit is not induced by a  Bug-Introducing Commit?}
+\subsubsection{RQ1.1: Which reasons may cause that a Bug-Fixing Commit is not induced by a  Bug-Introducing Commit?}
 Additionally, in those cases where the bug report does not present a \BIC, we have looked for its root cause. Table~\ref{tablereasosNoBIC} shows the main reasons for a bug not having a \BIC. 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
@@ -2042,15 +2035,36 @@ Additionally, in those cases where the bug report does not present a \BIC, we ha
 \end{table}
 Furthermore, they are explained below:
 \begin{itemize}
- 	\item \textit{Co-evolution Internal}: Changes in the source code related to satisfy the new requirements of the project. Since internal resources have been modified (directory structure and permissions) or requirements have changed invalidating previous assumptions.  	
-	\item \textit{Co-evolution External}: Bugs are caused by some external change. External resources have been modified without a previous notification and the source code of the project starts to fail.
+ 	\item \textit{Co-evolution Internal}: Changes in the source code related to satisfy the new requirements of the project. Since internal resources have been modified (directory structure and permissions) or requirements have changed invalidating previous assumptions. The bugs caused by the co-evolution internal can be explained from the point of view that the code is not reflecting a new change or requirement of the project and the source code is manifesting the failure.
+	\item \textit{Co-evolution External}: Bugs are caused by some external change. External resources have been modified without a previous notification and the source code of the project starts to fail. The bugs caused by the co-evolution external are easiest to understand than the previous ones, because they can be explained from the point of view that a change/update in the source code of an external artifact that the project is using has caused the bug.
   	\item \textit{Compatibility}: Bugs are caused by an incompatibility between software and hardware or an incompatibility with some operating systems.
   	\item \textit{Bug in External API}: A change in the API of a third-party code caused a bug in the source code of the project.
 \end{itemize}
 
-\gema{maybe make an inclusion list of all the scenarios}
-
 These reasons explain why the \BFC was not induced by a \BIC. In Nova the principal reason with a 50\% occurrence rate was the \emph{Co-evolution} of the lines changed to fix the bug with the internal requirements of the projects. The second reason with a 22\% of the cases where the presence of bugs in external APIs that are consumed in Nova. Then,  third most frequent reason is the \emph{Co-evolution} of the lines changed to fix the bug that is related to third-parties code or external artefacts. Finally, the \emph{Compatibility} reasons explain why in 11\% of the cases the \BFC was not induced by a \BIC. On the other hand, in ElasticSearch the percentages are equally distributed with a 33\% occurrence rate in the categories, with the exception that bug caused by the incompatibility of hardware and software were not found. 
+
+
+\subsubsection{RQ1.2: Could the location of a bug be modeled on the Bug-Introducing moment and First-Failing moment?}
+
+Table~\ref{tableBICFFC} shows the percentage of \BIC and \FFC that have been manually identified by using the model. By definition, and in theory, our model is able to identify the \FFC and the \BIC and whether it exists, but in practice, since the identification needs to be done manually, sometimes the \BIC or the \FFC cannot be identified. To be noticed, these \BFC that were classified into ``Undecided" in Table~\ref{tableBugNoBug} are not considered in Table~\ref{tableBICFFC} since researcher were not sure whether they have a \BIC or not. Thus, for the 52 \FFC and 38 \BIC belonging to the Nova dataset, 40 \FFC and 25 \BIC were successfully identified.
+In the dataset of ElasticSearch, from the 60 \FFC and 45 \BIC, 49 \FFC and 34 \BIC were successfully identified.
+
+\begin{table}[!t]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Percentage of Bug-Introduced Commit and First Failing Commits identified after applying the theoretical model.}
+	\label{tableBICFFC}
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+  		&  BIC & \FFC & Undecided \\
+		\hline
+		\hline
+		Nova & 25 (66\%) & 40 (77\%) & 12 (23\%)\\
+		\hline
+		ES & 36 (80\%) &  48 (94\%) & 3 (6\%)\\
+		\hline
+	\end{tabular}
+\end{table}
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{30em}
@@ -2103,56 +2117,56 @@ In the literature there is no clear heuristic that is followed by researchers wh
 	\end{tabular}
 \end{table}
 
-\subsubsection{RQ2.1: Which reasons caused the false Positives?}
-Additionally, in those cases where the commit identified by the algorithm was not the \BIC, we have looked for its cause. Table~\ref{tablereasosNoBIC} shows the main reasons for a commit identified by the algorithm not being a \BIC. 
-
-\begin{table}[!t]
-	\renewcommand{\arraystretch}{1.3}
-	\caption{ Reasons why a commit identified by the algorithms is not the Bug-Introducing Commit }
-	\label{tablereasosNoBIC}
-	\centering
-	\begin{tabular}{|c|c|c|}
-		\hline
-  		& ES & Nova  \\
-		\hline
-		\hline
-		Variable Renaming & 4 (7\%) & 17 (27\%) \\
-		\hline
-		Changes done by the \BFC &  9 (16\%) & 25 (39\%)\\
-		\hline
-		Optimization &  4(7\%) &  2 (3\%)\\
-		\hline
-		API changes &  8 (14\%) &  13 (20\%)\\
-		\hline
-		Obsoleted Code & 13  (22\%) &  7 (11\%)\\
-		\hline
-		Others & 20 (34\%) &  0 (0\%) \\
-		\hline
-		\hline
-		Total & 58  & 64 \\
-		\hline
-	\end{tabular}
-\end{table}
-
-Furthermore, they are explained below:
-\begin{itemize}
- 	\item \textit{Variable Renaming}: .  	
-	\item \textit{Changes done by the \BFC}: 
-  	\item \textit{Optimization}: 
-  	\item \textit{API changes}: 
-	\item \textit{Obsoleted Code}:
-	\item \textit{Others}:
-\end{itemize}
-
-
-
-%\gema{el estudio de tokens para los falsos positivos que encontramos en nova y en ES??}
-
 \vspace{0.2cm}
 \fbox{\begin{minipage}{30em}
 \textbf{RQ2: In the best scenario when applying the heuristics of SZZ-1, Nova computes 26\% of false positives with a precision of 0.72 and a recall of 0.91. ElasticSearch presents higher percentage of false positives (38\%) than Nova, and lower precision (0.73) and recall (0.54).}
 \end{minipage}}
 \vspace{0.1cm}
+
+\subsubsection{RQ2.1: Which reasons caused that a previous commit identified by the algorithms was not the \BIC?}
+Additionally, in those cases where the previous commit identified by the algorithm was not the \BIC, we have looked for its cause. And without being exhaustive, we have identified some of the most common reasons why the previous commits analyzed were not the \BIC, this reasons are following explained:
+%Table~\ref{tablereasosNoBIC} shows the main reasons for a commit identified by the algorithm was not the the \BIC. 
+%
+%\begin{table}[!t]
+%	\renewcommand{\arraystretch}{1.3}
+%	\caption{ Reasons why a commit identified as previous commit by the algorithms is not the Bug-Introducing Commit }
+%	\label{tablereasosNoBIC}
+%	\centering
+%	\begin{tabular}{|c|c|c|}
+%		\hline
+%  		& Nova & ES  \\
+%		\hline
+%		\hline
+%		Variable Renaming & 4 (7\%) & 17 (27\%) \\
+%		\hline
+%		Optimization &  4(7\%) &  2 (3\%)\\
+%		\hline
+%		API changes &  8 (14\%) &  13 (20\%)\\
+%		\hline
+%		Obsoleted Code & 13  (22\%) &  7 (11\%)\\
+%		\hline
+%		Changes done by the \BFC &  9 (16\%) & 25 (39\%)\\
+%		\hline
+%		Others & 20 (34\%) &  0 (0\%) \\
+%		\hline
+%		\hline
+%		Total & 58  & 64 \\
+%		\hline
+%	\end{tabular}
+%\end{table}
+%
+%Furthermore, they are explained below:
+\begin{itemize}
+ 	\item \textit{Variable Renaming}: It is a modification in the source code that changed the names of variables. When the algorithms identify a previous commit like this, it means that the line was already buggy or that this change is not related to the bug.
+  	\item \textit{Optimization}: It is a modification of the source code to improve code quality and efficiency. When algorithms identify a previous commit commit like this, it means that the bug was already in the logic of the program because the code optimization did not changed the behavior.
+  	\item \textit{API changes}: It is a modification in the APIs of the program, normally an the addition of a new argument. When algorithms identify a previous commit like this, and it is not the \BIC, it means that the lines did not contain the bug, but the evolution and necessities of the project make that the line manifested the bug.
+	\item \textit{Obsoleted Code}: It is source code that have been useful in the past, but is no longer used. When algorithms identify a previous commit like this, it means that it is not the \BIC because it was removing obsolete code.
+	\item \textit{Changes done by the \BFC}: The \BFC may decide to change some parts of the code that are not related to the bug although these lines were clean. 
+\end{itemize}
+
+
+
+%\gema{el estudio de tokens para los falsos positivos que encontramos en nova y en ES??}
 
 %{RQ sobre como afecta TTN y el BFT y developer en la grand verdad ? }
 
@@ -2258,7 +2272,7 @@ In Chapter~\ref{chap:credibility}  of this dissertation, we have detailed the sy
 
 During the SLR, it was observed that the limitations of SZZ are well known and documented. Improvements have been proposed, with unequal success up to this moment. The first part of the limitations --related to linking fix commits and bug tracking issues -- has been improved significantly, the enhancements for the second part that has to do with finding the bug introducing change are still limited and accuracy has room for improvement.
 
-Even if limitations have been widely documented, from our study it can be observed that this has not made ESE practices stronger. From the detailed study of the threats to validity of publications using SZZ, SZZ-1 and SZZ-2, it is clear that most publications are not reporting the limitations, and interestingly enough, limitations to the first part --which have shown to be less relevant-- are discussed more often than the second part. The fact that 37\% of the publications use the \emph{original} SZZ is indicative to this regard. It us therefore recommended for researchers who develop modifications on the SZZ algorithm, to publish the software implementation in development sites such as \texttt{GitHub}, so other researchers can \emph{fork} the project. These \emph{forks} can be easily traced, and the authors will be able to ask for a specific citation to their solution if other researchers make use of it.
+Even if limitations have been widely documented, from our study it can be observed that this has not made ESE practices stronger. From the detailed study of the threats to validity of publications using SZZ, SZZ-1 and SZZ-2, it is clear that most publications are not reporting the limitations, and interestingly enough, limitations to the first part --which have shown to be less relevant-- are discussed more often than the second part. The fact that 38\% of the publications use the \emph{original} SZZ is indicative to this regard. It us therefore recommended for researchers who develop modifications on the SZZ algorithm, to publish the software implementation in development sites such as \texttt{GitHub}, so other researchers can \emph{fork} the project. These \emph{forks} can be easily traced, and the authors will be able to ask for a specific citation to their solution if other researchers make use of it.
 
 The reproducibility of the publications is discovered to be limited, and replication packages are seldomly offered. The results presented in our research are in line with previous research~\cite{amann2015software}, although not as \emph{bad} as the ones found for MSR in 2010~\cite{robles2010replicating}. In any case, we think they are not satisfactory enough, and some reflexions should be raised on scientific methods used in our discipline.
 
@@ -2285,7 +2299,7 @@ Thanks to the SLR and the in-depth-analysis on the origin of bugs, the limitatio
 		\item Multiple modifications over a line: In our model, it does not matter how many times a line has been modified since it does not blame the last change as the \BIC. The test looks for the first time that the bug was inserted in the line being tested.
 		\item Weak semantic level: As in the example above, the proposed model deals with the weak semantic level because it is not focused on identifying the last change; it instead tests the behavior of the code.
 		\item Scenarios when a Bug-Fixing Commit fixed more than one bug: In these cases, our model can design a specific test for each bug, looking for the first time that the test fails when testing a bug.
-		\item Compatibility reasons: 
+		\item Compatibility reasons: The model identifies the first time that the bug was manifested in the source code using the \TSB to identifies the \BIS.
 		\item Dormant bugs: The model identifies the first time that the bug was inserted into the source code using the \TSB, thus it does not matter how long the buggy code has been in the project.
 	\end{enumerate}
 	
@@ -2347,7 +2361,7 @@ Regarding the initial set of research goals and contributions of this thesis int
 
 In this dissertation to understand the current problem in the literature,  we have performed a case study of ESE practice by means of conducting a SLR on the use of the well-known SZZ algorithm to identify \BIC. Our sample of publications consists of 187 publications that make use of the complete SZZ algorithm, out of 458 publications that cite the seminal paper. This SLR sheds some light on some of the problems that ESE research faces when assumptions, as it is the case in SZZ, are made in research methods: publications are primarily non-reproducible, limitations are only occasionally reported, improved versions are seldom used and difficult to identify and researchers prefer to use their own enhancements. In addition, the SLR also helps to quantify the limitations and problems that affects this particular algorithm when identifying Bug-Introducing Commits: (1) Identification of more than one previous commit, (2) Consideration of scenarios when only new lines are used to fix the bug, (3) Consideration of changes in the environment or configuration, (4) Consideration of multiple modifications over a line, (5) Weak in semantic level, (6) Consideration of scenarios when a Bug-Fixing Commit fixed more than one bug, (7) Compatibility reasons and (8) Dormant bugs.
 
-Another key element of this dissertation is the proposed theoretical model to resolves the limitations of the SZZ-like approaches. This thesis defines  a bug and how practitioners identify the moment of its insertion by assuming that there exists a hypothetical test that can check the correct behavior of the project in different snapshots. It also provides a criterion that has to be used to apply this model. In addition, the empirical experiment that was performed in Nova and ElasticSearch in order to apply the theoretical model demonstrates that a large fraction of the analyzed bug reports have to be identified as whether the \BFC is caused by a \BIC. When a \BFC is caused by a \BIC, 66\% and 80\% of the commits that inserted the bug was manually identified. Also, up to 69\% and 83\% of the \FFC in Nova and ElasticSearch was identified. Furthermore, the most common reasons why a \BFC does not have a \BIC was listed. Furthermore, this thesis presents a terminology of different elements and concepts that need to be understood in order to identify the bug-introduction moment. As far as known, this is the first time that a detailed terminology to identify the \BIC given a \BFC is formulated.
+Another key element of this dissertation is the proposed theoretical model to resolves the limitations of the SZZ-like approaches. This thesis defines  a bug and how practitioners identify the moment of its insertion by assuming that there exists a hypothetical test that can check the correct behavior of the project in different snapshots. It also provides a criterion that has to be used to apply this model. In addition, the empirical experiment that was performed in Nova and ElasticSearch in order to apply the theoretical model demonstrates that a large fraction of the analyzed bug reports have to be identified as whether the \BFC is caused by a \BIC. When a \BFC is caused by a \BIC, 66\% and 80\% of the commits that inserted the bug was manually identified. Also, up to 77\% and 94\% of the \FFC in Nova and ElasticSearch was identified. Furthermore, the most common reasons why a \BFC does not have a \BIC was listed. Furthermore, this thesis presents a terminology of different elements and concepts that need to be understood in order to identify the bug-introduction moment. As far as known, this is the first time that a detailed terminology to identify the \BIC given a \BFC is formulated.
 
 To summarize, this thesis focuses on describing and contextualizing the current problem on locating the origin of a bug. To deal with this problem we have quantify the limitations of the most used algorithm, and a solution was proposed based on a new theoretical model to unequivocally locate the Bug-Introducing commits. The model was applied to two cases  studies: Nova and ElasticSearch in order to identify the ``real" Bug-Introducing Changes and the First-Failing Commits.  We have built the ``gold standard" dataset and was used to compute the real performance of the SZZ approaches.  
 
@@ -2710,7 +2724,6 @@ Estos resultados se encuentran explicados a continuaci\'on:
 \end{itemize}
 
  
-
 \section{Resultados}
 
 Hay tres secciones diferentes para discutir los resultados obtenidos en el Cap\'itulo 4, Cap\'itulo 5 y Cap\'itulo 6.
@@ -2718,21 +2731,111 @@ Hay tres secciones diferentes para discutir los resultados obtenidos en el Cap\'
 \subsection{Reproducibilidad y credibilidad del algoritmo SZZ  }
 \label{subsec:resultadosSLR}
 
-En el Cap\'itulo 4 de esta tesis se detalla el estudio de la revisi\'on sistem\'atica de la literatura (\emph{SLR}) sobre el uso del algoritmo SZZ en los estudios de ingenier\'ia emp\'irica del software (\emph{ESE}). Durante este estudio se ha demostrado que el algoritmo es ampliamente usado en los estudios de ESE. Adem\'as se ha demostrado que que el algoritmo tiene una alta relevancia y no se limita solamente a una audiencia espec\'ifica, si no que se ha difundido por numerosas publicaciones en revistas y conferencias importantes en varias areas de la Ingenier\'ia del Software.
+En el Cap\'itulo 4 de esta tesis se detalla el estudio de la revisi\'on sistem\'atica de la literatura (\emph{SLR}) sobre el uso del algoritmo SZZ en estudios emp\'iricos de ingenier\'ia del software (\emph{ESE}).La SLR demost\'o que el algoritmo es ampliamente usado en la ESE y que posee una alta relevancia, no se limita solamente a una audiencia espec\'ifica, si no que se ha difundido por numerosas publicaciones en revistas y conferencias importantes en varias areas de la Ingenier\'ia del Software. 
+Tabla~\ref{tablaMedia} muestra los diferentes medios de publicaci\'ion que han usado el algoritmo SZZ. Hay cuatro diferentes medios: Tesis universitarias, art\'iculos en workshops, art\'iculos en conferencias y symposiums, y art\'iculos en revistas.
 
-Durante la SLR se ha observado que las limitaciones del algoritmo SZZ son bien conocidas y documentadas. Se han propuesto mejoras para mitigar las limitaciones que presentan, pero no han llegado a tener demasiado \'exito hasta el momento. Adem\'as, mientras que las limitaciones de la primera parte del algoritmo, relacionadas con enlazar los fixing-commits con lo bug reports, han obtenido significantes mejoras. Sin embargo, las propuestas para mitigar las limitaciones de la segunda parte, relacionadas con encontrar el Bug-Introducing Commit, todav\'ia tiene espacio para mejorar.   
 
-La SLR ha demostrado que la mayor\'ia de las publicaciones que usan el algoritmo SZZ, o sus versiones mejoradas: SZZ-1 y SZZ-2, no mencionan las limitaciones, y lo que resulta mas interesante es que las limitaciones de la primera parte del algoritmo resultan ser mas discutidas que las de la segunda parte a pesar de ser menos relevantes para la veracidad de los resultados obtenidos. Adem\'as, solamente el 37\% de las publicaciones analizadas usan la versi\'on \emph{original} SZZ.  Por tanto, para aumentar la reproducibilidad y credibilidad de los resultados, recomendamos que los investigadores que desarrollen modificaciones del algoritmo SZZ, publiquen el software implementado en sitios como \texttt{GitHub}, de este modo otros investigadores pueden \emph{fork} el proyecto. Esos \emph{forks} pueden ser f\'acilmente trazados, y los autores pueden preguntar por una espec\'ifica citaci\'on a su soluci\'on si otros autores hacen uso de ella. Adem\'as otra de las ventajas que posee el publicar el software implementado es que la reproducibilidad es m\'as espec\'ifica, debido a que en ocasiones los autores por falta de espacio no mencionan como funciona o como se implant\'o el algoritmo que han usado y es posible que este hecho esconda errores al reproducir el estudio.
+%\alex{Refer to core rankings to justify why you believe MSR, ICSE, ICSME etc to be good conferences. At the same time you can argue .... the impact of SZZ is limited to people conducting empirical studies  ....... }\gema{Almost done}
+\begin{table}
+% increase table row spacing, adjust to taste
+\renewcommand{\arraystretch}{0.8}
+% if using array.sty, it might be a good idea to tweak the value of
+%\extrarowheight as needed to properly center the text within the cells
+\caption{ Los tipos o publicaciones m\'as frecuentes que utilizan completamente el algoritmo SZZ (N = 187). \emph{\#diferentes} cuenta los diferentes lugares en cada grupo, \emph{\#publications} cuenta el n\'umero total de publicaciones en ese tipo de lugares.}
+\label{tablaMedia}
+\centering
+% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{|l|r|r|}
+\hline
+Tipo & \# Diferentes & \# publicaciones  \\
+\hline
+\hline
+ Revistas & 21 & 42\\
+\hline
+ Conferencias \& Simposiums & 40 & 102\\
+\hline
+Workshops & 13 & 13\\
+\hline
+Tesis universitarias & 20 & 30 \\
+\hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
 
-Hemos encontrado que la reproducibilidad de las publicaciones es limitada, y los paquetes de r\'eplica se ofrecen muy raramente. The resultados presentados en nuestra investigaci\'on concuerdan con otros trabajos de investigaci\'on previa~\cite{amann2015software}, aunque no son tan alarmantes como los resultados obtenidos para MSR en el a\~no 2010~\cite{robles2010replicating}. De cualquier modo, pensamos que los resultados obtenidos relacionados con la reproducibilidad no son suficientemente satisfactorios y deber\'ian aumentar las reflexiones sobre los m\'etodos cient\'ificos usados en nuestra disciplina.  
+Durante la SLR se ha observado que las limitaciones del algoritmo SZZ son bien conocidas y documentadas. Se han propuesto mejoras para mitigar las limitaciones que presenta, pero hasta el moment no han llegado a tener demasiado \'exito. Adem\'as, mientras que las limitaciones de la primera parte del algoritmo, relacionadas con enlazar los Bug-Fixing Commits (\BFC) con lo bug reports, han obtenido significantes mejoras. Las propuestas para mitigar las limitaciones de la segunda parte, relacionadas con encontrar el Bug-Introducing Commit (\BIC), todav\'ia tiene espacio para mejorar.   
 
-A pesar de que usar las versiones mejoradas del algoritmo SZZ ayuda a aumentar la precisi\'on del algoritmo como se\~nala~\cite{rahman2012clones}: ``Accuracy in identifying  Bug-Introducing Commit may be increased by using advanced algorithms (Kim et al. 2006, 2008)'', raramente se usan -- s\'ole el 22\% de las publicaciones usan una de las dos mejoras propuestas para el algoritmo SZZ. Parece que los investigadores prefieren reinventar la rueda, el 49\% de los art\'iculos analizados usan una versi\'on modificada o ``ad-hoc" por ellos mismos del SZZ, en vez de utilizar las mejoras propuestas en otros art\'iculos. Una posible raz\'on para explicar este comportamiento poor\'ia ser que los art\'iculos que describen el SZZ o cualquiera de sus mejoras propuestas, SZZ-1 y SZZ-2, no aportan el c\'odigo software de la implementaci\'on. Por ello, los investigadores tienen que implementar el software desde cero para poder usarlo en sus investigaciones. Nuestros resultados muestran que en dicha situaci\'on, lo que se hacer es usar el concepto general que describe el algoritmo SZZ y a\~nadir algunas modificaciones con el prop\'osito de mitigar algunas de las limitaciones presentes en el SZZ original. Para todos las soluciones identificadas como ``ad-hoc", no se ha encontrado ninguna raz\'on que explique el por qu\'e no se implementaron las otras mejoras del  SZZ. Otro problema importante es el etiquetado del las mejores de SZZ, ya que no han sido ni etiquetadas ni enumeradas. Cuando una versi\'on mejorada del SZZ es usada en los art\'iculos, a menudo lo autores se refieren a ella como SZZ, dificultando el seguimiento, la reproducci\'on y la r\'aplica de sus resultados.
+La SLR ha demostrado que la mayor\'ia de las publicaciones que usan el algoritmo SZZ, o sus versiones mejoradas: SZZ-1~\cite{kim2006automatic} y SZZ-2~\cite{williams2008szz}, no mencionan las limitaciones, y lo que resulta mas interesante es que las limitaciones de la primera parte del algoritmo resultan ser m\'as discutidas que las de la segunda parte a pesar de ser menos relevantes para la veracidad de los resultados obtenidos. La Tabla~\ref{tableSZZmejorado} muestra cu\'antas publicaciones han utilizado mejoras en el algoritmo SZZ para mitigar las limitaciones del original. Tenga en cuenta que la columna ``Mixed '' de la Tabla~\ref{tableSZZmejorado} se refiere a los documentos que han utilizado la versi\'on original, y alguna de las versiones mejoradas en el mismo estudio. En la Tabla~\ref{tableSZZmejorado} se puede observar que solamente el 38\% de las publicaciones analizadas usan la versi\'on \emph{original} SZZ.  Por tanto, para aumentar la reproducibilidad y credibilidad de los resultados, recomendamos que los investigadores que desarrollen modificaciones del algoritmo SZZ, publiquen el software implementado en sitios como \texttt{GitHub}, de este modo otros investigadores pueden \emph{fork} el proyecto. Esos \emph{forks} pueden ser f\'acilmente trazados, y los autores pueden preguntar por una espec\'ifica citaci\'on a su soluci\'on si otros autores hacen uso de ella. Adem\'as otra de las ventajas que posee el publicar el software implementado es que la reproducibilidad es m\'as espec\'ifica, debido a que en ocasiones los autores por falta de espacio no mencionan como funciona o como se implant\'o el algoritmo que han usado y es posible que este hecho esconda errores al reproducir el estudio.
 
-Por otro lado, en esta tesis se ofrece una simple manera de medir la facilidad de reproducci\'on y credibilidad en los art\'iculos de investigaci\'on. A pesar de que esta medida ha sido creada para los estudios que utilizan el algoritmo SZZ, pensamos que puede ser f\'acilmente adaptada a otros art\'iculos de investigaci\'on en ESE. As\'i, los autores pueden f\'acilmente evaluar si sus art\'iculos son reproducibles y ofrecen resultados confiables (por ejemplo, cuando la puntuaci\'on obtenida es igual a 5 o superior). Aunque a menudo nos dirigimos a los autores directamente, no debemos olvidar que los revisores ejercen una responsabilidad importante en el proceso cient\'ifico. Hemos visto que los autores a menudo son detallistas al presentar sus investigaciones, pero los revisores deben tener la visi\'on requerida para evaluar los estudios teniendo en cuenta esos detalles, y ayudando a los autores a aumentar el nivel de sus investigaciones. Por tanto, recomendamos a los revisores preguntarse las preguntas propuestas en la secci\'on \ref{subsec:overview}, adaptadas al contexto de la investigaci\'on, cuando lleven a cabo revisiones de art\'iculos que usen heur\'sticks y asunciones. 
+\begin{table}[!t]
+% increase table row spacing, adjust to taste
+\renewcommand{\arraystretch}{0.8}
+\begin{minipage}{\textwidth} 
 
-Adem\'as, durante el an\'alisis tambi\'en hemos observado que raramente se encuentran informes exhaustivos completos de la reproducibilidad, solamente se han clasificado un 15\% de los art\'iculos como \emph{buena y excelente calidad con respecto a la reproducibilidad}. La comunidad de  investigaci\'on debe poner mayor atenci\'on a estos aspectos; nosotros creemos que se est\'a otorgando demasiada atenci\'on a los resultados finales (el \emph{producto} de la investigaci\'on: nuevo conocimiento ) en comparaci\'on con el proceso de investigaci\'on. Como investigadores en el campo de la ingenier\'ia del software sabemos que ambas partes -- una alta calidad del producto y una alta calidad del proceso -- son esenciales para obtener progresos exitosos a lo largo del tiempo~\cite{kan2002metrics}.
+% if using array.sty, it might be a good idea to tweak the value of
+%\extrarowheight as needed to properly center the text within the cells
+\caption{N\'umero de art\'iculos que han utilizado el algoritmo SZZ original, las versiones mejoradas del SZZ o algunas adaptaciones para mitigar las amenazas de validaci\'on.}
+\label{tableSZZmejorado}
+\centering
+% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+  & Original SZZ only & SZZ-mejorado only & SZZ-modificado & Mezcla  \\
+\hline
+\hline
+\# art\'iculos &  71 (38\%) & 26 (14\%)~\footnote{22 (12\%) de los art\'iculos usan el SZZ-1 y solo 4 (2\%) de los art\'iculos usan el SZZ-2.} &  75 (40\%)  & 15 (8\%) \\
+\hline
+\end{tabular}
+\end{minipage}
+\end{table}
 
-Para resumir, consideramos importante resaltar algunas de all lecciones aprendidas despu\'es de llevar a cabo la SLR. El algoritmo SZZ est\'a basado en heur\'isticos y asunciones, por tanto para aportar unos resultados m\'as creoles, recomendamos que los investigadores especifiquen y argumenten el uso de esos m\'etodos y algoritmos cuyo fin es mitigar las limitaciones presentes en el SZZ en sus estudios. Ser consciente del riesgo de cada asunci\'on usada y si es necesario, validar manualmente una porci\'on de los resultados obtenidos. Adem\'as, para llevar a cabo estudios emp\'iris, los autores deben ser conscientes que para permitir la reproducci\'on de sus publicaciones, el mejor m\'etodo es incluir un paquete de reproduci\'on que puede estar p\'ublicamente disponible junto con su piblicaci\'on (idealmente para siempre). Por otro lado, ellos tambi\'en tiene que ser consciente de que algunas caracter\'isticas en sus estudios pueden cambiar, por ejemplo los entornos del software, causando que programa y los datos se encuentren obsoletos, por lo que es necesario detallar y describir con precisi\'on cada uno de los elementos, m\'todos t software used durante el estudio.
+Hemos encontrado que la reproducibilidad de las publicaciones es limitada, y los paquetes de r\'eplica se ofrecen muy raramente.  La Tabla~\ref{tableReplica} ofrece el n\'umero de estudios que a)contiene un paquete de reproducci\'on, b) han detallado cuidadosamente la metodolog\'ia para permitir las reproducciones de sus estudios. Hemos clasificado las publicaciones en cuatro grupos: i) publicaciones que ofrecen un paquete de reproducci\'on (\emph{paquete}), ii) publicaciones que detallan la metodolog\'ia y los datos utilizados (\emph{Environment}), iii) publicaciones que tienen ambos \emph{Ambos}) y iv) Ninguno (\emph{Ninguno}).
+
+De las 187 publicaciones, 43 ofrecen un paquete de reproducci\'on y 96 cuidadosamente detallan los pasos seguidos y los datos utilizados. Adem\'as, solo 24 de los art\'iculos proporcionan tanto el paquete de replicación como la metodología y los datos detallados. 72 de los documentos no ofrecen un paquete de reproducci\'on o una descripci\'on detallada de la metodolog\'ia y los datos usados. 
+
+\begin{table}[!t]
+% increase table row spacing, adjust to taste
+\renewcommand{\arraystretch}{0.8}
+% if using array.sty, it might be a good idea to tweak the value of
+%\extrarowheight as needed to properly center the text within the cells
+\caption{Publicaciones por su reproducibilidad: Filas: \emph{Si} significa el n\'umero de trabajos que cumplen cada columna, mientras que su complemento es \emph{No}. Columnas: \emph{Paquete} es cuando ofrecen un paquete de reproducci\'on, \emph{Environment} cuando proporcionan la metodolog\'ia detallada y un conjunto de datos usados. Tenga en cuenta que \emph{Both} es la intersecci\'on de \emph{Paquete} y \emph{Environment}. (N = 187)}
+\label{tableReplica}
+\centering
+% Some packages, such as MDW tools, offer better commands for making tables
+%% than the plain LaTeX2e tabular which is used here.
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+    & Solo paquete  & Solo Environment  & Ambos & Ninguno \\
+\hline
+\hline
+Si & 19 & 72 & 24 & 72 \\
+\hline
+No & 168 & 96 & 163 & 115 \\
+\hline
+\end{tabular}
+\end{table}
+
+A pesar de que usar las versiones mejoradas del algoritmo SZZ ayuda a aumentar la precisi\'on del algoritmo como se\~nala~\cite{rahman2012clones}: ``Accuracy in identifying  Bug-Introducing Commit may be increased by using advanced algorithms (Kim et al. 2006, 2008)'', raramente se usan -- s\'ole el 22\% de las publicaciones usan una de las dos mejoras propuestas para el algoritmo SZZ. Parece que los investigadores prefieren reinventar la rueda, el 49\% de los art\'iculos analizados usan una versi\'on modificada o ``ad-hoc" por ellos mismos del SZZ, en vez de utilizar las mejoras propuestas en otros art\'iculos. Una posible raz\'on para explicar este comportamiento poor\'ia ser que los art\'iculos que describen el SZZ o cualquiera de sus mejoras propuestas, SZZ-1 y SZZ-2, no aportan el c\'odigo software de la implementaci\'on. Por ello, los investigadores tienen que implementar el software desde cero para poder usarlo en sus investigaciones. Nuestros resultados muestran que en dicha situaci\'on, lo que se hacer es usar el concepto general que describe el algoritmo SZZ y a\~nadir algunas modificaciones con el prop\'osito de mitigar algunas de las limitaciones presentes en el SZZ original. Para todos las soluciones identificadas como ``ad-hoc", no se ha encontrado ninguna raz\'on que explique el por qu\'e no se implementaron las otras mejoras del  SZZ. Otro problema importante es el etiquetado del las mejores de SZZ, ya que no han sido ni etiquetadas ni enumeradas. Cuando una versi\'on mejorada del SZZ es usada en los art\'iculos, a menudo lo autores se refieren a ella como SZZ, dificultando el seguimiento, la reprodureproci\'on y la r\'aplica de sus resultados.
+
+Por otro lado, en esta tesis se ofrece una simple manera de medir la facilidad de reproducci\'on y credibilidad en los art\'iculos de investigaci\'on. Esta medida se basa en puntuar cinco caracter\'isticas que se analizaron en los art\'iculos. Si las preguntas fueron respondidas positivamente, el art\'iculo fue marcado con un puntaje positivo, de lo contrario con un 0:
+ 
+\begin{enumerate}
+\item ¿El estudio informa de las limitaciones del SZZ? (puntaje = 1 punto)
+  \item ¿Los autores llevan a cabo una inspecci\'on manual de sus resultados? (puntaje = 1 punto)
+  \item ¿El estudio aporta un paquete de reproducibilidad? (puntaje = 2 puntos)
+  \item ¿El estudio proporciona una descripci\'on detallada de los m\'etodos y datos utilizados? (puntaje = 1 punto)
+  \item ¿Utiliza el estudio una versi\'on mejorada de SZZ? (puntaje = 2 puntos)
+\end{enumerate}
+
+Los art\'iculos que sumen puntos del  0 al 1 se consideran \emph{Pobres} de ser reproducibles y poseer resultados cre\'ibles. Los art\'iculos que sumen puntos del 2 al 4 se consideran \emph{Justos} de ser reproducibles y poseer resultados cre\'ibles. Aquellos art\'iculos que sumen puntos del  5 al 6 se consideran \emph{Buenos} de ser reproducibles y poseer resultados cre\'ibles. Finalmente los art\'iculos que sumen 7 puntos  se consideran \emph{Excelentes} de ser reproducibles y poseer resultados cre\'ibles
+
+%A pesar de que esta medida ha sido creada para los estudios que utilizan el algoritmo SZZ, pensamos que puede ser f\'acilmente adaptada a otros art\'iculos de investigaci\'on en ESE. As\'i, los autores pueden f\'acilmente evaluar si sus art\'iculos son reproducibles y ofrecen resultados confiables (por ejemplo, cuando la puntuaci\'on obtenida es igual a 5 o superior). Aunque a menudo nos dirigimos a los autores directamente, no debemos olvidar que los revisores ejercen una responsabilidad importante en el proceso cient\'ifico. Hemos visto que los autores a menudo son detallistas al presentar sus investigaciones, pero los revisores deben tener la visi\'on requerida para evaluar los estudios teniendo en cuenta esos detalles, y ayudando a los autores a aumentar el nivel de sus investigaciones. Por tanto, recomendamos a los revisores preguntarse estas preguntas, adaptadas al contexto de la investigaci\'on, cuando lleven a cabo revisiones de art\'iculos que usen heur\'sticos y asunciones. 
+
+Durante el an\'alisis tambi\'en hemos observado que raramente se encuentran informes exhaustivos completos de la reproducibilidad, solamente se han clasificado un 15\% de los art\'iculos como \emph{buena y excelente calidad con respecto a la reproducibilidad}. La comunidad de  investigaci\'on debe poner mayor atenci\'on a estos aspectos; nosotros creemos que se est\'a otorgando demasiada atenci\'on a los resultados finales (el \emph{producto} de la investigaci\'on: nuevo conocimiento ) en comparaci\'on con el proceso de investigaci\'on. Como investigadores en el campo de la ingenier\'ia del software sabemos que ambas partes -- una alta calidad del producto y una alta calidad del proceso -- son esenciales para obtener progresos exitosos a lo largo del tiempo~\cite{kan2002metrics}.
+
+Para resumir, consideramos importante resaltar algunas de las lecciones aprendidas despu\'es de llevar a cabo la SLR. El algoritmo SZZ est\'a basado en heur\'isticos y asunciones, por tanto para aportar unos resultados m\'as cre\'ibles, recomendamos que los investigadores especifiquen y argumenten el uso de esos m\'etodos y algoritmos cuyo fin es mitigar las limitaciones presentes en el SZZ en sus estudios. Ser consciente del riesgo de cada asunci\'on usada y si es necesario, validar manualmente una porci\'on de los resultados obtenidos. Adem\'as, para llevar a cabo estudios emp\'iricos, los autores deben ser conscientes que para permitir la reproducci\'on de sus publicaciones, el mejor m\'etodo es incluir un paquete de reproducci\'on que puede estar p\'ublicamente disponible junto con su publicaci\'on (idealmente para siempre). Por otro lado, ellos tambi\'en tiene que ser conscientes de que algunas caracter\'isticas en sus estudios pueden cambiar, por ejemplo los entornos del software, causando que programa y los datos se encuentren obsoletos, por lo que es necesario detallar y describir con precisi\'on cada uno de los elementos, m\'todos y software usados durante el estudio.
 
 \subsection{Teor\'ia de Inserci\'on del error}
 \label{subsec:teoriaresultado}
@@ -2764,13 +2867,68 @@ En general, este nuevo modelo propuesto, es capaz de distinguir entre dos moment
 
 El estudio emp\'irico detallado en el Cap\'itulo 6 respalda la necesidad de b\'usqueda de un nuevo modelo para identificar inequ\'ivocamente los cambios que introducen errores, ya que no siempre es obvio identificar y entender c\'omo se introducen los errores en el c\'odigo fuente con los m\'etodos actuales. Esta tesis presenta en el Cap\'itulo 5 un nuevo modelo que resuelve esta necesidad y su implementaci\'on se ha estudiado emp\'iricamente en el Cap\'itulo 6. D\'onde el modelo propuesto se ha utilizado para llevar a cabo un estudio cualitativo de un conjunto de informes de errores para identificar, si existe, el cambio que introdujo el error (\BIC) dado un cambio que arregl\'o el error (\BFC). 
 
-Identificar las l\'ineas que contienen un error en el c\'odigo fuente de un proyecto no es un proceso tan sencillo como se podr\'ia pensar en un primer momento. De los 120 informes de errores extra\'idos de Nova y ElasticSearch en la primera fase, 116 informes pasaron a la segunda fase, cada uno de los informes de error se encuentra enlazado con el cambio que arregl\'o el error. En la segunda fase, los investigadores analizaron manualmente si el \BFC fue inducido por un \BIC. La tendencia en los resultados de ambos proyectos fue similar, ya que ambos resultados presentan un mayor porcentaje de \BFC que fueron inducidos por un \BIC en lugar de ser inducidos por otras razones. Sin embargo, el porcentaje de \BFC que no fue inducido por un \BIC es m\'as representativo en Nova con un 24\% de los \BFC que arregl\'o un error que no se introdujo en las l\'ineas del sistema. Por el contrario, este porcentaje es menor en ElasticSearch, donde s\'olo el 10\% de los \BFC no fueron inducidos por un \BIC. Adem\'as, de los 38 \BFC inducidos por un \BIC en Nova, fuimos capaces de localizar manualmente el 66\% de ellos. Mientras que en ElasticSearch ese porcentaje fue mayor, de los 45 \BFC inducidos por un \BIC  fuimos capaces de localizar manualmente el 80\% de ellos. En ambos proyectos se puede observar la dificultad en la tarea de identificar manualmente el origen del error, ya que el porcentaje de duda entre los \BFC analizados alcanza un 17\% en ElasticSearch y el 31\% en Nova.
+Identificar las l\'ineas que contienen un error en el c\'odigo fuente de un proyecto no es un proceso tan sencillo como se podr\'ia pensar en un primer momento. De los 120 informes de errores extra\'idos de Nova y ElasticSearch en la primera fase, 116 informes pasaron a la segunda fase, cada uno de los informes de error se encuentra enlazado con el cambio que arregl\'o el error. En la segunda fase, los investigadores analizaron manualmente si el \BFC fue inducido por un \BIC los resultados se presentan en la Tabla \ref{tablaBugNoBug}. La tendencia en los resultados de ambos proyectos fue similar, ya que ambos resultados presentan un mayor porcentaje de \BFC que fueron inducidos por un \BIC en lugar de ser inducidos por otras razones. Sin embargo, el porcentaje de \BFC que no fue inducido por un \BIC es m\'as representativo en Nova con un 24\% de los \BFC que arregl\'o un error que no se introdujo en las l\'ineas del sistema. Por el contrario, este porcentaje es menor en ElasticSearch, donde s\'olo el 10\% de los \BFC no fueron inducidos por un \BIC. Adem\'as, de los 38 \BFC inducidos por un \BIC en Nova, fuimos capaces de localizar manualmente el 66\% de ellos. Mientras que en ElasticSearch ese porcentaje fue mayor, de los 45 \BFC inducidos por un \BIC  fuimos capaces de localizar manualmente el 80\% de ellos. En ambos proyectos se puede observar la dificultad en la tarea de identificar manualmente el origen del error, ya que el porcentaje de duda entre los \BFC analizados alcanza un 17\% en ElasticSearch y el 31\% en Nova.
 
-Durante el an\'alisis manual, se descubrieron algunas razones que explican por qu\'e un \BFC no es inducido por un \BIC que se han presentado en forma de una clasificaci\'on anecd\'otica. En el proyecto Nova, con un porcentaje de ocurrencia del 50\% la raz\'on principal fue la \emph{Co-evoluci\'on} de las l\'ineas que se cambiaron para corregir el error con los requisitos internos del proyecto. Es decir, debido a la evoluci\'on del proyecto, las l\'ineas que fueron insertadas en un momento puede que no tengan sentido o no cumplan las necesidades actuales del proyecto y se ha manifestado un error en esas l\'ineas, sin embargo, este error no significa que las l\'ineas fuesen err\'oneas en el momento que fueron insertadas, si no que debido a las nuevas necesidades del proyecto han pasado a manifestar el error. El segundo motivo, con un porcentaje de ocurrencia del 22\% es la presencia de errores en APIs externas que son consumidas por nuestro c\'odigo. La tercera raz\'on m\'as frecuente es la \emph{Co-evoluci\'on} de las l\'ineas que se modificando para corregir el error con el terceras partes, por ejemplo, cuando cambios inesperados o sin previo aviso en APIs externas provocan que nuestro c\'odigo falle, Por otro lado, en ElasticSearch los porcentajes se distribuyen por igual con un 33\% de ocurrencia en todas las categor\'ias, con la \'unica excepci\'on de que en este proyecto no encontramos ning\'un error causado por la incompatibilidad de hardware y software. Esta clasificaci\'on anecd\'otica que explica las razones por las cuales un \BFC no es inducido por un \BIC deber\'ia investigarse con mayor profundidad, ya que puede ayudar a los investigadores a identificar patrones diferentes y quiz\'as ocultos, que ayuden a explicar y entender mejor c\'omo se insertan y se manifiestan los errores en el c\'odigo fuente. El prop\'osito de esta tesis no es establecer una \'unica clasificaci\'on que explique los motivos por los cuales un \BFC no es inducido por un \BIC o que esta clasificaci\'on se pued aextender a otros proyectos, si no que el motivo inicial de la clasificaci\'on es alertar e informar sobre el hecho de que hay otras razones donde una l\'inea que cuando no se insert\'o no era defectuosa  est\'a causando/manifestando un error. Por tanto, creemos que estos casos deber\'ian analizarse en profundidad para mejorar las clasificaciones actuales basadas en el origen del error.  
+\begin{table}[!t]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Porcentaje de  Bug-Fixing Commit que han sido inducidos por un Bug-Introducing commit \emph{BIC}, que no han sido inducidos a Bug-Introducing Commit \emph{NO\_BIC} e Indecisos.}
+	\label{tablaBugNoBug}
+	\centering
+	\begin{tabular}{|c|c|c|c| }
+		\hline
+  		&  BIC & NO\_BIC & Indecisos \\
+		\hline
+		\hline
+		Nova & 38 (65\%) & 14 (24\%) & 6 (10\%)\\
+		\hline
+		ES & 45 (77\%) &  6 (10\%) & 7 (12\%)\\
+		\hline
+	\end{tabular}
+\end{table}
+
+Durante el an\'alisis manual, se descubrieron algunas razones que explican por qu\'e un \BFC no es inducido por un \BIC que se han presentado en forma de una clasificaci\'on anecd\'otica. La Tabla \ref{tablareasosNoBIC} muestra las razones m\'as comunes en ambos proyectos. En Nova, con un porcentaje de ocurrencia del 50\% la raz\'on principal fue la \emph{Co-evoluci\'on} de las l\'ineas que se cambiaron para corregir el error con los requisitos internos del proyecto. Es decir, debido a la evoluci\'on del proyecto, las l\'ineas que fueron insertadas en un momento puede que no tengan sentido o no cumplan las necesidades actuales del proyecto y se ha manifestado un error en esas l\'ineas, sin embargo, este error no significa que las l\'ineas fuesen err\'oneas en el momento que fueron insertadas, si no que debido a las nuevas necesidades del proyecto han pasado a manifestar el error. El segundo motivo, con un porcentaje de ocurrencia del 22\% es la presencia de errores en APIs externas que son consumidas por nuestro c\'odigo. La tercera raz\'on m\'as frecuente es la \emph{Co-evoluci\'on} de las l\'ineas que se modificando para corregir el error con el terceras partes, por ejemplo, cuando cambios inesperados o sin previo aviso en APIs externas provocan que nuestro c\'odigo falle, Por otro lado, en ElasticSearch los porcentajes se distribuyen por igual con un 33\% de ocurrencia en todas las categor\'ias, con la \'unica excepci\'on de que en este proyecto no encontramos ning\'un error causado por la incompatibilidad de hardware y software. Esta clasificaci\'on anecd\'otica que explica las razones por las cuales un \BFC no es inducido por un \BIC deber\'ia investigarse con mayor profundidad, ya que puede ayudar a los investigadores a identificar patrones diferentes y quiz\'as ocultos, que ayuden a explicar y entender mejor c\'omo se insertan y se manifiestan los errores en el c\'odigo fuente. El prop\'osito de esta tesis no es establecer una \'unica clasificaci\'on que explique los motivos por los cuales un \BFC no es inducido por un \BIC o que esta clasificaci\'on se pued aextender a otros proyectos, si no que el motivo inicial de la clasificaci\'on es alertar e informar sobre el hecho de que hay otras razones donde una l\'inea que cuando no se insert\'o no era defectuosa  est\'a causando/manifestando un error. Por tanto, creemos que estos casos deber\'ian analizarse en profundidad para mejorar las clasificaciones actuales basadas en el origen del error.  
+
+\begin{table}[!t]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{ Razones por las cuales un Bug-Fixing Commit no es inducido por un Bug-Introducing Commit}
+	\label{tablareasosNoBIC}
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+  		& Nova & ElasticSearch  \\
+		\hline
+		\hline
+		Co-evoluci\'on Interna & 9 (50\%) & 2 (33\%) \\
+		\hline
+		Co-evoluci\'on Externa  & 3 (17\%) & 2 (33\%)\\
+		\hline
+		Compatibilldad & 2 (11\%) & 0 (0\%)\\
+		\hline
+		Error en API Externa & 4 (22\%) & 2 (33\%)\\
+		\hline
+	\end{tabular}
+\end{table}
 
 Despu\'es de analizar varios errores durante el estudio emp\'irico, se ha observado que alcanzar un acuerdo en la clasificaci\'on de la causa ra\'iz de un error es tedioso y muchas veces se basa en la subjetividad de los investigadores. Cabe se\~nalar que, aunque el an\'alisis manual fue realizado principalmente por el autor de esta tesis, otros investigadores se involucraron para discutir y analizar la causa del error, en caso de dudas. Por lo tanto, esta disertaci\'on sugiere una clasificaci\'on inicial, sin tratar de hacer ninguna afirmaci\'on al respecto, pero se observa a partir de los resultados que del 10\% al 24\% de los \BFC analizados no fueron inducidos por \BIC y esta clasificaci\'on puede ayudar a entender mejor los principales motivos. Es posible que si otros investigadores repliquen nuestro trabajo, puedan obtener leves diferencias en la clasificaci\'on, puesto que en algunos casos sin una gu\'ia detallada, el an\'alisis puede ser subjetivo.  Y por ello, actualmente estamos trabajando en minimizar lo m\'aximo posible la subjetividad en la clasificaci\'on.
 
-Esta tesis discute un amplio abanico de opciones en t\'erminos de lo que puede ser y no puede ser un \BIC y tambi\'en, c\'omo el algoritmo SZZ fallar\'a dependiendo de la implementaci\'on/versi\'on espec\'ifica que se use del algoritmo SZZ. Un elemento esencial del estudio emp\'irico es la obtenci\'on del ``est\'andar de oro", ya que tiene las caracterizaciones de los \BIC. Por lo tanto, el estudio puede cuantificar el n\'umero ``real" de falsos positivos, falsos negativos y verdaderos positivos en el rendimiento de el algoritmo SZZ, que hasta donde sabemos, nadie ha intentado cuantificar anteriormente. En base a los resultados presentados en el Cap\'itulo 6, Secci\'on 3.4, en el mejor escenario, el SZZ calcula el 26\% de falsos positivos en Nova con una recall y precisi\'on de 0.91 y 0.72. Mientras que en ElasticSearch, el n\'umero de falsos positivos aument\'o hasta un 38\% y como consecuencia la precisi\'on y el recall disminuyeron con un resultado de 0.73 y 0.54. Estos resultados pueden parecer contradictorios con los resultados anteriores donde ElasticSearch tiene un menor porcentaje de \BFC que no son inducidos por un \BIC y esto puede hacer que el n\'umero de falsos positivos sea menor que en Nova. Sin embargo, la raz\'on por la cu\'al ElasticSearch computa m\'as falsos positivos se debe a que el n\'umero de \BFC con conjunto commits previos mayor que uno es superior en ElasticSearch que en Nova. Este hecho provoc\'o que la heur\'istica del algoritmo SZZ fallase con m\'as frecuencia en ElasticSearch, y casi en la mitad de estos casos se asumi\'o que el commit mas antiguo en el tiempo perteneciente al conjunto \PC era el \BIC y en realidad, esta heur\'istica no se cumpli\'o en la mayor\'ia de los casos. Otra raz\'on que explica por qu\'e Nova calcula una recall más alta que ElasticSearch es el n\'umero de \BFC con solamente nuevas l\'ineas a\~nadidas, esto caus\'o que la cantidad de falsos negativos aumentase ya que SZZ no incluye estos \BFC en su an\'alisis.
+Esta tesis discute un amplio abanico de opciones en t\'erminos de lo que puede ser y no puede ser un \BIC y tambi\'en, c\'omo el algoritmo SZZ fallar\'a dependiendo de la implementaci\'on/versi\'on espec\'ifica que se use del algoritmo SZZ. Un elemento esencial del estudio emp\'irico es la obtenci\'on del ``est\'andar de oro", ya que tiene las caracterizaciones de los \BIC. Por lo tanto, el estudio puede cuantificar el n\'umero ``real" de falsos positivos, falsos negativos y verdaderos positivos en el rendimiento de el algoritmo SZZ, que hasta donde sabemos, nadie ha intentado cuantificar anteriormente. En base a los resultados presentados en la Tabla \ref{realSZZes} (mas detalles en el Cap\'itulo 6, Secci\'on 3.4,), en el mejor escenario, el SZZ calcula el 26\% de falsos positivos en Nova con una recall y precisi\'on de 0.91 y 0.72. Mientras que en ElasticSearch, el n\'umero de falsos positivos aument\'o hasta un 38\% y como consecuencia la precisi\'on y el recall disminuyeron con un resultado de 0.73 y 0.54. Estos resultados pueden parecer contradictorios con los resultados anteriores donde ElasticSearch tiene un menor porcentaje de \BFC que no son inducidos por un \BIC y esto puede hacer que el n\'umero de falsos positivos sea menor que en Nova. Sin embargo, la raz\'on por la cu\'al ElasticSearch computa m\'as falsos positivos se debe a que el n\'umero de \BFC con conjunto commits previos mayor que uno es superior en ElasticSearch que en Nova. Este hecho provoc\'o que la heur\'istica del algoritmo SZZ fallase con m\'as frecuencia en ElasticSearch, y casi en la mitad de estos casos se asumi\'o que el commit mas antiguo en el tiempo perteneciente al conjunto \PC era el \BIC y en realidad, esta heur\'istica no se cumpli\'o en la mayor\'ia de los casos. Otra raz\'on que explica por qu\'e Nova calcula una recall más alta que ElasticSearch es el n\'umero de \BFC con solamente nuevas l\'ineas a\~nadidas, esto caus\'o que la cantidad de falsos negativos aumentase ya que SZZ no incluye estos \BFC en su an\'alisis.
+
+\begin{table}[!t]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Resultados de true positivos, verdaderos negativos, falsos negativos, recall y precisi\'on para el algoritmo SZZ-1 suponiendo que el algoritmo solo marca uno los compromisos anteriores del conjunto de \PC{b} como \BIC.}
+	\label{realSZZes}
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+ 	 	&  True Positivos & Falsos Positivos & False Negatives & Recall & Precisi\'on \\
+		\hline
+		\hline
+		Nova & 21 (68\%) & 8 (26\%) & 2 (6\%) & 0.91 & 0.72\\
+		\hline
+		ES &  19 (45\%) & 16 (38\%) & 7 (17\%)& 0.73 & 0.54 \\
+		\hline
+	\end{tabular}
+\end{table}
 
 Otros estudios como Kim~\emph{et al.}~\cite{kim2006automatic}, Williams y Spacco~\cite{williams2008szz} y Da Costa \emph{et al.}~\cite{da2016framework} tambi\'en analizaron manualmente muestras de datos usando el algoritmo SZZ. Sin embargo, esto autores obtuvieron porcentajes mucho m\'as altos de precisi\'on y recall en los resultados del SZZ que los que se han obtenido en esta tesis. Esto se debe a que estos estudios no estaban comparando sus resultados con ning\'un ``est\'andar de oro", y por tanto no distingu\'ian entre \BIC y \FFC, y no defin\'ian qu\'e era un error. Como consecuencia, estos estudios no contemplaron otros posibles escenarios donde la causa del error era debiada a otras razones distintas a la actual premisa, por ejemplo, cambios eb APIs externas o cambios de co-evoluci\'on. Mientras que en esta tesis analizamos todo el contexto de un \BFC, estos estudios solo se enfocan en verificar si dado un \BFC el algoritmo es capaz de encontrar un posible \BIC, sin la necesidad de que este \BIC sea la verdadera raz\'on, como consecuencia esta verificaci\'on puede omitir cambios en las APIs o cambios debidos a la evoluci\'on del c\'odigo. Por otro lado, puede ocurrir que debido a los proyectos seleccionados en estos estudios, el porcentaje de falsos negativos disminuya debido a casos muy diferentes de introducci\'on de errores por commit previos. Esta es uno de las razones por las cuales proponemos una l\'inea de trabajo futuro con el fin de extender nuestro an\'alisis a un mayor conjunto de proyectos.
 
@@ -2780,28 +2938,28 @@ En cualquier caso, nuestra investigaci\'on muestra evidencia de que asumir que e
 Este cap\'itulo recapitula los objetivos iniciales de investigaci\'on y las contribuciones establecidas en el Cap\'itulo 1. Adem\'as describe las conclusiones principales de esta tesis as\'i como las posibles l\'ineas de investigaci\'on futura.
 \section{Conclusiones}
 
-Las conclusiones de esta tesis se presentan en relaci\'on co el conjunto de objetivos y contribuciones introducidos en las secci\'ones 1.2 y 1.3 del Cap\'itulo 1 de esta tesis.  En primer lugar se presentan las conclusiones obtenidas tras estudiar a trav\'es de una revisi\'on sistem\'atica de la literatura el uso del algoritmo SZZ y el problema actual de identificar el momento en el que se introdujo un error en el c\'digo fuente de un proyecto. Este estudio adem\'as proporcion\'o una cuantificaci\'on de las limitaciones del algoritmo SZZ. Despu\'es, se presentan las conclusiones relacionadas con la soluci\'on propuesta en esta tesis para identificar con mayor precisi\'on e inequ\'ivocamente el momento de introdcuci\'on de un error, en caso de que este momento exista. Esta soluci\'on se trata de un modelo te\'orico que  distingue entre el momento de introduci\'on y el momento de manifestaci\'on del error, para ello utiliza un hipot\'etico test que comprueba la funcionalidad que ha sido arreglada en otros momentos previos. Por \'ultimo, se presentan las conclusiones relacionadas con el estudio emp\'rico sobre la aplicaci\'on del modelo te\'orico propuesto para identificar los \BIC en dos casos de estudio Nova y ElasticSearch.
+Las conclusiones de esta tesis se presentan en relaci\'on con el conjunto de objetivos y contribuciones introducidos en las secci\'ones 1.2 y 1.3 del Cap\'itulo 1 de esta tesis.  En primer lugar se presentan las conclusiones obtenidas tras estudiar a trav\'es de una revisi\'on sistem\'atica de la literatura el uso del algoritmo SZZ y el problema actual de identificar el momento en el que se introdujo un error en el c\'digo fuente de un proyecto. Este estudio adem\'as proporcion\'o una cuantificaci\'on de las limitaciones del algoritmo SZZ. Despu\'es, se presentan las conclusiones relacionadas con la soluci\'on propuesta en esta tesis para identificar con mayor precisi\'on e inequ\'ivocamente el momento de introdcuci\'on de un error, en caso de que este momento exista. Esta soluci\'on se trata de un modelo te\'orico que  distingue entre el momento de introduci\'on y el momento de manifestaci\'on del error, para ello utiliza un hipot\'etico test que comprueba la funcionalidad que ha sido arreglada en otros momentos previos. Por \'ultimo, se presentan las conclusiones relacionadas con el estudio emp\'rico sobre la aplicaci\'on del modelo te\'orico propuesto para identificar los \BIC en dos casos de estudio Nova y ElasticSearch.
 
-Para comprender el problema actual sobre d\'donde se introdujo el error, se ha realizado una revisi\'on sistem\'atica de la literatura (SLR) en el uso de uno de los algoritmos m\'as conocidos para identificar el bu-introducing commit \BIC, el algoritmo SZZ. La muestra analizada en la revisi\'on sistem\'atica fue 187 publicaciones que usaban las dos partes del algoritmo de las 458 publicaciones que citan el algoritmo. La SLR ayuda a entender los problemas de investigaci\'on presentes en la ingenier\'ia del software cuando se asumen premisas err\'oneas, como ocurre con el uso del algoritmo SZZ. Los resultados de la SLR demostraron que las publicaciones que usan el SZZ son en su mayor\'ia no reproducibles, adem\'as no es com\'un que los art\'iculos mencionen las limitaciones del uso de \'este algoritmo y finalmente, que los autores prefieren usar sus propias mejoras del algoritmo antes que las mejoras propuestas por otros autores. Adem\'as, la SLR sirvi\'o para cuantificar las limitaciones y los problemas que afectan a este particular algoritmo cuando se trata de identificar el \BIC:
-\begin{enumerate}
-	\item Identificaci\'on de m\'as de un commit previo en las l\'ineas que han arreglado el error.
-	\item Exclusi\'on de escenarios donde se introducen solamente l\'ineas nuevas para arreglar el error.
-	\item Cambios en el entorno o la configuraci\'on del proyecto pueden causar falsas alarmas cuando identificamos el \BIC.
-	\item M\'ultiples cambios sobre una l\'inea, que ha sido modificada para arreglar el error, puede ocultar el verdadero momento de la introduci\'on.
-	\item N\'ivel sem\'antico de comparaci\'on que posee el algoritmo es d\'ebil.
-	\item Identificaci\'on de un Bug-Fixing Commit que arregla m\'as de un error.
-	\item Problemas de compatibilidad entre software y hardware pueden disparar errores inesperados.
-	\item La existencia de errores durmientes puede alterar los resultados del SZZ.
-\end{enumerate}
+Para comprender el problema actual sobre d\'donde se introdujo el error, se ha realizado una revisi\'on sistem\'atica de la literatura (SLR) en el uso de uno de los algoritmos m\'as conocidos para identificar el bu-introducing commit \BIC, el algoritmo SZZ. La muestra analizada en la revisi\'on sistem\'atica fue 187 publicaciones que usaban las dos partes del algoritmo de las 458 publicaciones que citan el algoritmo. La SLR ayuda a entender los problemas de investigaci\'on presentes en la ingenier\'ia del software cuando se asumen premisas err\'oneas, como ocurre con el uso del algoritmo SZZ. Los resultados de la SLR demostraron que las publicaciones que usan el SZZ son en su mayor\'ia no reproducibles, adem\'as no es com\'un que los art\'iculos mencionen las limitaciones del uso de \'este algoritmo y finalmente, que los autores prefieren usar sus propias mejoras del algoritmo antes que las mejoras propuestas por otros autores. Adem\'as, la SLR sirvi\'o para cuantificar las limitaciones y los problemas que afectan a este particular algoritmo cuando se trata de identificar el \BIC.
+%:
+%\begin{enumerate}
+%	\item Identificaci\'on de m\'as de un commit previo en las l\'ineas que han arreglado el error.
+%	\item Exclusi\'on de escenarios donde se introducen solamente l\'ineas nuevas para arreglar el error.
+%	\item Cambios en el entorno o la configuraci\'on del proyecto pueden causar falsas alarmas cuando identificamos el \BIC.
+%	\item M\'ultiples cambios sobre una l\'inea, que ha sido modificada para arreglar el error, puede ocultar el verdadero momento de la introduci\'on.
+%	\item N\'ivel sem\'antico de comparaci\'on que posee el algoritmo es d\'ebil.
+%	\item Identificaci\'on de un Bug-Fixing Commit que arregla m\'as de un error.
+%	\item Problemas de compatibilidad entre software y hardware pueden disparar errores inesperados.
+%	\item La existencia de errores durmientes puede alterar los resultados del SZZ.
+%\end{enumerate}
 
-Despu\'es de entender y cuantificar el problema actual sobre la identificaci\'on del Bug-Introducing Commit. Se propuso un modelo te\'orico que da soluci\'on a las limitaciones cuantificadas anteriormente en el uso del algoritmo SZZ o algoritmos basados en el SZZ. Importantes aportaciones en esta tesis son: la definici\'on de qu\'e es un error, c\'omo identificar el momento de inserci\'on de un error usando nuestro modelo y el criterio que debe aplicarse para usar el modelo. Como ya se ha comentado anteriormente, el modelo propuesto se basa en la idea de un test hipot\'etico que conoce en cada momento c\'omo debe comportarse el proyecto en un momento espec\'ifico. El modelo propuesto contempla todos los escenarios que limitan el correcto funcionamiento del SZZ ya que ejecuta un test que comprueba en cada uno de los momentos previos al \BFC, la funcionalidad que se ha arreglado en el \BFC y no s\'solo se tiene en cuenta el an\'alisis de las l\'ineas que han sido modificadas par identificar el origen del error. Por tanto, el momento en el que el test falle por primera vez, es el momento en el que se introdujo el error.
+Despu\'es de entender y cuantificar el problema actual sobre la identificaci\'on del Bug-Introducing Commit. Se propuso un modelo te\'orico que da soluci\'on a las limitaciones cuantificadas en el uso del algoritmo SZZ o algoritmos basados en el SZZ. Importantes aportaciones en esta tesis son: la definici\'on de qu\'e es un error, c\'omo identificar el momento de inserci\'on de un error usando nuestro modelo y el criterio que debe aplicarse para usar el modelo. Como ya se ha comentado anteriormente, el modelo propuesto se basa en la idea de un test hipot\'etico que conoce en cada momento c\'omo debe comportarse el proyecto en un momento espec\'ifico. El modelo propuesto contempla todos los escenarios que limitan el correcto funcionamiento del SZZ ya que ejecuta un test que comprueba en cada uno de los momentos previos al \BFC, la funcionalidad que se ha arreglado en el \BFC y no s\'solo se tiene en cuenta el an\'alisis de las l\'ineas que han sido modificadas par identificar el origen del error. Por tanto, el momento en el que el test falle por primera vez, es el momento en el que se introdujo el error.
 
-Por \'ultimo, se presentas las conclusiones sobre el experimento emp\'irico que estudia la aplicaci\'on pr\'actica del modelo propuesto en dos casos de estudio: Nova y ElasticSearch. \'Este estudio ha demostrado que para una larga fracci\'on de los errores analizados se puede identificar si un \BFC ha sido causado por un \BIC o no usando la teor\'ia del modelo propuesto. Cuando un \BFC es causado por un \BIC, hemos identificado manualmente el 66\% de los commits que insertaron el error en Nova y el 80\% de en ElasticSearch. Adem\'as, hemos sido capaces de identificar hasta una 69\% de los \FFC en Nova y hasta un 83\% en ElasticSearch. Adem\'as, esta tesis tambi\'en propone una terminolog\'ia para entender e identificar cada uno de los elementos que forman parte del an\'alisis para localizar el origen del error. Hasta donde sabemos, esta es la primera vez que se detalla una terminog\'ia con el f\'in de explicar e identificar el \BIC dado un \BFC.
+Por \'ultimo, se presentas las conclusiones sobre el experimento emp\'irico que estudia la aplicaci\'on pr\'actica del modelo propuesto en dos casos de estudio: Nova y ElasticSearch. \'Este estudio ha demostrado que para una larga fracci\'on de los errores analizados se puede identificar si un \BFC ha sido causado por un \BIC o no usando la teor\'ia del modelo propuesto. Cuando un \BFC es causado por un \BIC, hemos identificado manualmente el 66\% de los commits que insertaron el error en Nova y el 80\% de en ElasticSearch. Adem\'as, hemos sido capaces de identificar hasta una 77\% de los \FFC en Nova y hasta un 94\% en ElasticSearch. Adem\'as, esta tesis tambi\'en propone una terminolog\'ia para entender e identificar cada uno de los elementos que forman parte del an\'alisis para localizar el origen del error. Hasta donde sabemos, esta es la primera vez que se detalla una terminog\'ia con el f\'in de explicar e identificar el \BIC dado un \BFC.
 
 
 Para resumir, esta tesis se centra en describir y contextualizar el problema actual de identificar el origen de un error. Para tratar este problema, hemos estudiado y cuantificado las limitaciones que afectan al algoritmo m\'as usado, y hemos propuesto una soluci\'on basada en un nuevo modelo te\'orico que localiza inequ\'ivocamente el \BIC. Hemos aplicado este modelo a dos casos de estudio para localizar el origen del error creando un conjunto que contempla ``la gran verdad" y que ha sido usado para comparar el rendimiento real de algoritmos basados en el SZZ.
 
-% All in all, we have observed that the result is a situation with a lot of room for improvement as excellence in reproducibility is seldom found, and where factors that undermine the credibility of the results are common. We finish by offering some advice in how this situation could be improved in the future, sharing our reflections and stressing the importance of reviewers.
 
 Esta tesis puede presentar modificaciones menores comparadas con la \'ultima versi\'on presentada y revisada por el comit\'e evaluado del Ph.D. para mejorar el lenguaje usado y la presentaci\'on de los resultados. Por esa raz\'on, si quer\'seis acceder a la \'ultima versi\'on disponible de esta tesis, por favor, visitar \url{http://gemarodri.github.io/Thesis-Gema}.
 
