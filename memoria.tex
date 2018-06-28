@@ -2218,24 +2218,24 @@ Additionally, in those cases where the previous commit identified by the algorit
 
 This chapter aims to summarize the main results obtained in Chapter~\ref{chap:credibility} and Chapter~\ref{chap:application}. The threats to validity and the potential automation of the theoretical model presented in Chapter~\ref{chap:Theory} is also discussed in this Chapter. 
 
-The threats to validity are first discussed; it will raise potential questions that are discussed in the following sections. The discussion of the results is divided into four subsections that present the discussion on  the objectives of this thesis.
+We first discuss the threats to validity which raise potential questions to answer in the following sections. Then, there are three subsections which present the results and the objectives of this dissertation.
 
-The first discussion point of the study is based on the credibility and reproducibility of studies that use the SZZ algorithm. This algorithm has been cited more than 600 times since its publication 10 years before, however there are few studies that provide a replication package even though the researchers of the paper are aware of the limitations and shortcomings of the algorithm.
+The first subsection presents the results and discussion of the SLR on the credibility and reproducibility of the SZZ algorithm. The importance of this discussion lies on the impact of this algorithm in the empirical software engineering as it has been cited more than 600 times since its publication in 2005.
 
-Secondly, thanks to the previously mentioned SLR and the in-depth study on why and how the SZZ flags clear changes as  Bug-Introducing Commits, the SZZ was quantified. Thus, in this part the discussion is based on how this quantification helps to formulate new models to locate the origin of the bugs.
+The second subsection uses the results from the SLR to discuss a theoretical model to identify the change that introduced a bug. This model is mainly motivated by the shortcomings of the SZZ previously identified.
 
-Finally, the last two points to discuss focus on the applicability of the theoretical model proposed and the implications of the results from the empirical study where this model was applied. The model identifies unequivocally the bug-introduction commit and whether it exists for Bug-Fixing Commits based on the assumption of a hypothetical test that can be run indefinitely through the entire history of the software project.  
+Finally, the subsection discusses the applicability of the theoretical model proposed as well as the implications of the results from the study where this model was applied. The model identifies the Bug-Introducing commit and whether it exists for a given Bug-Fixing Commits based on the assumption of a hypothetical test that can be run indefinitely through the entire history of the software project.  
 
 \section{Threats to validity}
 \label{sec:threats}
 
 Wohlin \emph{et al.} claims that there are four main types of validity threats in Empirical Software Engineering research: construct, internal, external and conclusion \cite{wohlin2012experimentation}.
 
-\paragraph{Construct validity}:  This type of threat is in regards to the validity of the metrics used in the empirical research method and whether they claim to be measurable. In the context of this thesis, this validity aspect will focus on the metrics and concepts used and the potential problems that may cause bias in the result of the metrics during retrieval.
+\paragraph{Construct validity}:  This type of threat is in regards to the validity of the metrics used in the empirical research method and whether they claim to be measurable. In the context of this thesis, this validity aspect will focus on the measures and concepts used and the potential problems that may cause bias in the results of the metrics during retrieval.
 
-\paragraph{Internal validity}: Internal validity is the degree by which a causal conclusion based on a study is warranted, which is determined by the extent a study minimizes systematic errors. An attempt was made to minimize this threat by following the procedures for performing SLRs described in ~\cite{madeyski2017would} and by reducing as much as possible the interaction with tools that can introduce bias in the results. Furthermore, replications packages are offered so that third parties can inspect our sources.
+\paragraph{Internal validity}: Internal validity is the degree to which a causal conclusion based on a study is warranted, which is determined by the extent a study minimizes systematic errors. An attempt was made to minimize this threat by following the procedures for performing SLRs described in ~\cite{madeyski2017would} and by reducing as much as possible the interaction with tools that can introduce bias in the results. Furthermore, replications packages are offered thereby that third parties can inspect our sources.
 
-\paragraph{External validity}: External validity is the extent results can be generalized to other contexts. In the empirical study of this thesis, we have selected two single case study, Nova and ElasticSearch, with its particularities. Thus, this thesis cannot claim that our results can be generalized to other projects. However, the value of these case studies should not be undermined.
+\paragraph{External validity}:External validity is the degree to which results in this dissertation can be generalized to other contexts. In the empirical study, we selected two case studies: Nova, and ElasticSearch; with its particularities. Thus, this thesis cannot claim that our results can be generalized to other projects. However, researchers should not undermine the value of these case studies.
  
  \paragraph{Conclusion validity}: Conclusion validity is related to how sure the conclusions reached in regards to the relationships in our data are reasonable; this does not affect our approach. 
  
@@ -2252,13 +2252,13 @@ Construct validity is the degree to which a research work represents what it is 
 		\end{itemize}
 	 \item In the Empirical Study: 
 	 	\begin{itemize}
-			\item The Bug-Fixing Commits are the commits that have fixed a bug that was described in a bug report. As mentioned before, there may be cases where commits detected as bug fixing turn out to be false because the bug report was not describing a real bug. To mitigate this threat, the bug reports extracted from Nova were analyzed by two researchers to ensure that they described real bug reports. Then in a second round, all the dataset was again reviewed in order to filter out some borderline case. 
+			\item TheBug-Fixing Commit is a change that fixed a bug described in a bug report. As mentioned before, there may be cases where commits detected as the fix of a bug turn out to be false because the bug report did not describe a real bug. To mitigate this threat, in Nova the bug reports were analyzed by two researchers to ensure their description was a real bug. Then, in a second round, the obtained dataset was again reviewed to filter out some borderline cases. 
 			\item The Bug-introducing commits are the commits that involuntary introduced a bug in the source code. To mitigate the erroneous identification of Bug-introducing commit, they were manually selected by tracking back the fixed lines in a Bug-Fixing Commit. In case of doubt whether a commit is a \BIC or not, it was directly rejected from the final ``gold standard''. 
-			\item The First Failing Commits are the commits that manifest a failure by first time. They were identified manually and based on a hypothetical test. However there is a possibility that the theory will not work in practice based on whether the implementation of the test is reached. To mitigate this, a commit is rejected from the ``gold standard'' in case there are doubts on whether or not a commit is a \FFC. 
+			\item First-Failing Commits are changes that manifest the failure by the first time. They are identified manually and based on the hypothetical test. However, there may be a possibility where the proposed theory will not work in practice to identify the \FFC. Thus, to mitigate this, in case of doubt, a commit is rejected from the ``gold standard''. 
 		\end{itemize}
 \end{enumerate}
 
-In addition, hundreds of papers were manually analyzed during the SLR as well as in the empirical study, thus human errors might have occurred. The replication packages provided in this thesis do not remove the human errors, but researchers have the possibility to improve and check the work of this thesis. 
+Hundreds of papers were manually analyzed during the SLR and in the empirical study, thereby human errors might have occurred. The replication packages provided in this thesis do not remove the human errors, but researchers have the possibility to improve and check the work of this thesis.
 
 \subsection{Internal validity}
 \label{subsec:internalvalidity}
@@ -2273,11 +2273,11 @@ The internal threats to validity are:
 		\end{itemize}
 	\item {In the Empirical Study}: 
 		\begin{itemize}
-   			\item The limited sample size of bug reports used in this research is the major threat to its validity. There is the possibility that with only 120 seemingly random bug reports, there may be a prior unknown tendency. The probability is relatively high, but there is a long way to obtain a representative sample from a variety of free/open source systems, or software projects at large. Our analysis requires a lot of manual human effort, so increasing meaningfully the number of tickets is difficult. However, it should be noted that our numbers are in the order of magnitude of similar studies: for instance, Hindle's \emph{et al.} ~\cite{hindle2008large} article on large commits considered 100 commits, Da Costa~\textit{et al.} ~\cite{da2016framework} article considered to manually analyze 160 bugs as a whole and 80  Bug-Introducing Commits. Finally, Williams y Spacco~\cite{williams2008szz} manually analyzed 25 Bug-Fixing Commits that contained a total of 50 changed lines which were mapped back to a fix-inducing commit.
+   			\item The limited sample size of bug reports used in this research is the main threat to its validity. There is the possibility that with only 120 seemingly random bug reports, there may be a prior unknown tendency. The probability is relatively high, but there is a long way to obtain a representative sample from a variety of free/open source systems or software projects at large. Our analysis requires a lot of manual human effort, so meaningfully increasing the number of tickets is difficult. However, it should be noted that our numbers are in the order of magnitude of similar studies: for instance, Hindle's \emph{et al.} ~\cite{hindle2008large} article on large commits considered 100 commits, Da Costa~\textit{et al.} ~\cite{da2016framework} article considered to manually analyze 160 bugs as a whole and 80  Bug-Introducing Commits. Finally, Williams y Spacco~\cite{williams2008szz} manually analyzed 25 Bug-Fixing Commits that contained a total of 50 changed lines which were mapped back to a fix-inducing commit.
 			\item We are not experts in OpenStack and ElasticSearch projects, and our inexperience may have influenced the results of the analysis when identifying whether a bug was been in the system from the very beginning or whether the code has always been clean. 
 			\item A random script was used to extract the tickets from Launchpad and GitHub that have been reported during 2015. There could be unintended bias in the data throughout the course of this year, for instance the phase of the project.
-			\item There could be some lax criteria involving the subjective opinion of the researchers. To mitigate this, the Bug-Fixing Commit that were not known for certain was discussed. Furthermore an ``Undecided'' category was added to mitigate possible false positives from our dataset.
-			\item Commits classified into Undecided were rejected. There may be the possibility that those commits could have relevant information, and as a consequence, some data that would vary the results.
+			\item There could be some lax criteria involving the subjective opinion of researchers. To mitigate this, the Bug-Fixing Commit that was not sure was discussed. Furthermore, the ``Undecided'' category was added to mitigate possible false positives from our dataset.
+			\item Commits classified into ``Undecided'' group were rejected. There may be the possibility that those commits could have relevant information, and as a consequence, some data that would vary the results.
 		\end{itemize}
 \end{enumerate}
 
@@ -2292,9 +2292,9 @@ The most important external threats, most of them related to peculiarities of th
 		\end{itemize}
 	\item {In the Empirical Study}: 
 		\begin{itemize}
-    			\item The use of diff: this is the most extended way of providing diff information when looking for the difference between two files and. Since it works in Git and is implemented in GitHub we use it in this thesis. However, other ways of providing diff information are possible.
-   			 \item Programming languages: this thesis selected only two programming languages, Java and Python. With other programming languages the results could be totally different.
-			 \item Number of projects analyzed: the use of the Nova and ElasticSearch as the cases study implies a better understanding of how bugs are injected in these projects. However, Nova and ElasticSearch are projects with a very rapid evolution, and a very active community of developers. it could be possible that other projects with less commits per year have results that are totally different.. A higher number of projects would enrich the study.
+    			\item The use of diff is the most extended way of providing diff information when looking for the difference between two files. However, other ways of providing diff information are possible.%The use of diff: this is the most extended way of providing diff information when looking for the difference between two files and. Since it works in Git and is implemented in GitHub we use it in this thesis. However, other ways of providing diff information are possible.
+   			 \item This thesis only has selected two different programming languages, Java and Python. It is possible that the study of different programming languages turns out in different results.
+			 \item The use of the Nova and ElasticSearch as the case of studies implies a better understanding of how bugs appear in these projects. However, Nova and ElasticSearch are projects with a very rapid evolution and a very active community of developers. It could be possible that other projects with fewer commits per year have different results. A higher number of projects would enrich the study.
 		\end{itemize}
 \end{enumerate}
 
@@ -2305,7 +2305,7 @@ There are three different discussions, based on what has been presented in Chapt
 
 \subsection{Discussion: Reproducibility and Credibility of the SZZ }
 \label{subsec:implicationsSZZ}
-
+%This algorithm has been cited more than 600 times since its publication 10 years before, however, there are few studies that provide a replication package even though the researchers of the paper are aware of the limitations and shortcomings of the algorithm.
 Chapter~\ref{chap:credibility} detailes the systematic literature review on the use of reproducibility and credibility on the use of SZZ algorithm. It was demonstrated to be a widely used algorithm in Empirical Software Engineering research. The SZZ is proven to be significantly relevant, and that it is not limited to a niche audience. However, it has become an important component of publications in top journals and prominent conferences in many different topics of Software Engineering. 
 
 During the SLR, it was observed that the limitations of SZZ are well known and documented. Improvements have been proposed, with unequal success up to this moment. The first part of the limitations --related to linking fix commits and bug tracking issues -- has been improved significantly, the enhancements for the second part that has to do with finding the bug introducing change are still limited and accuracy has room for improvement.
