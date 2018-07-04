@@ -1984,35 +1984,35 @@ These outcomes are explained in the following list:  %\subsubsection{Tickets}
 
 \section{Results}
 \label{sec:results}
-This section presents the results of the empirical analysis in order to locate the \BIC and the \FFC in two cases study, Nova and ElasticSearch. Furthermore, there is a comparison between the results obtained after applying the proposed model with the results obtained with the traditional SZZ algorithm found in the current literature.
+This section presents the results of the empirical analysis in order to locate the \BIC and the \FFC in two case studies, Nova and ElasticSearch. Furthermore, there is a comparison between the results obtained after applying the proposed model with the results obtained after applying an enhancement of the SZZ algorithm ~\cite{kim2008classifying}.
 
 \subsection{First Stage}
 \label{subsec:resultsFS}
 
-From the 120 bug reports that were classified as bug reports in both projects, 58 from Nova and 58 from ES were considered in the next stage. The main reason was the discordance between the developers to classify them as bug. For example, there are some comments in the bug \#1185290\footnote{\url{https://bugs.launchpad.net/nova/+bug/1185290}} where this discordance is obvious:
+During the first stage, 4 bug reports were removed from the initial set of 120 bug reports. Then, there are 58 bug reports in Nova and 58 bug reports in ElasticSearch that are considered into the next stage. The reason to removed the bug report  \#1185290\footnote{\url{https://bugs.launchpad.net/nova/+bug/1185290}} was the discordances in the comments between the developers of Nova. These are the comments where the discordance is obvious:
 	\begin{itemize}
 		\item ``I am not sure that I consider this a bug. Without --all-tenants=1, the code operates under your own tenant. That means that --all-tenants=1 foo should really be a no-op without --all-tenants=1.'' 
 		\item ``I disagree, mainly because the structure of the requests and code path should largely be transparent to the user. I would suggest that specifying --tenants should imply you are doing a query across --all-tenants=1unless the --tenants specified is the same as what is contained in OS\_TENANT\_NAME (the unless part is debatable)''
 	\end{itemize}
 
-Nevertheless, other reasons were also discovered, for instance the bug \#1431571\footnote{\url{https://bugs.launchpad.net/nova/+bug/1431571}} reported a bug in a test file. It was removed from removed  because a bug in a test file does not mean that the source code of the project may contain a bug. It was also discovered that some bug reports such as \#1814\footnote{\url{https://github.com/elastic/elasticsearch/issues/1814}}, \#7740\footnote{\url{https://github.com/elastic/elasticsearch/issues/7740}} and \#1448075\footnote{\url{https://bugs.launchpad.net/nova/+bug/1448075}} are describing hypothetical scenarios. In these cases, the bug description details a possible bug in the future, and they needed to be  removed from the analysis because despite that developers described them to be as bug report, it is understood that at the moment of submitting the Bug-Fixing Commit, the bug was not present in the project. 
+Furthermore, other reasons were also discovered, for instance the bug \#1431571\footnote{\url{https://bugs.launchpad.net/nova/+bug/1431571}} reported a bug in a test file. It was removed  because a bug in a test file does not mean that the source code of the project may contain a bug. It was also discovered that some bug reports such as \#1814\footnote{\url{https://github.com/elastic/elasticsearch/issues/1814}}, \#7740\footnote{\url{https://github.com/elastic/elasticsearch/issues/7740}} and \#1448075\footnote{\url{https://bugs.launchpad.net/nova/+bug/1448075}} are describing hypothetical scenarios. In these cases, the bug report details a possible bug in the future. These bugs reports needed to be  removed from the analysis because despite that developers described them to be as bug report, it is understood that at the moment of submitting the \BFC, the bug was not present in the project. 
 
 \subsection{Second Stage}
 \label{subsec:resultsSS}
 
-The main goal of this chapter is to apply the proposed model described in Chapter~\ref{chap:Theory} to identify what are Bug-Introducing Commits, and how they are related to Bug-Fixing Commits. This model enables the ``gold standard'' to be defined where the \BIC in Nova and ElasticSearch correspond with the \BFC. This chapter answers two different questions:
+In this stage we identify the \emph{BICs}, and how they are related to \emph{BFCs} by applying the proposed model. This model enables the ``gold standard'' to be defined where the \emph{BICs} in Nova and ElasticSearch caused the \emph{BFCs}. This chapter answers two different questions:
 
-The first part presents the results after applying the model to the data set. Thus, to demonstrate how the model works, we gathered a set of \BFC from two projects, and used to manually identify their \BIC when it exists. As mentioned before, the definitions of \BIC and \BFC were applied based on the existence of a \TSB. In case the \BIC cannot be found, the corresponding \BFC were considered to be removed from the study, since the empirical study is focused in the cases when \BIC can be found or when it is not for certain that it exists.  
+The first part presents the results after applying the model to the datasets. Thus, to demonstrate how the model works, we gathered a set of \emph{BFCs} from two projects, and used to manually identify their \emph{BICs} when they exist. As mentioned before, the definitions of \BIC and \BFC were applied based on the existence of a \TSB. In case we were unsure wether the \BIC, the corresponding \BFC were considered to be removed from the study, since the empirical study is focused in the cases when \BIC can be found or when it do not exist for certain.  
 
 The second part presents the effectiveness of a SZZ-like algorithm. Once we have the ``gold standard'', how SZZ-like algorithms ``really'' perform  can be evaluated which is an important contribution to the current literature because as far as can be known, any researcher have carried out this empirical analysis. 
 
-\subsection{Explanation of the Data Sets}
+\subsection{Explanation of the DataSets}
 \label{subsec:Explanation}
 This section explains the datasets of Nova and ElasticSearch that were manually analyzed to identify the \BIC and the \FFC.
 
-The datasets of Nova and ElasticSearch contains 58 bug reports linked to 58 Bug-Fixing Commit. In Nova there are 9 Bug-Fixing Commits with only new lines added to fix the bug, almost the same number that ElasticSearch which has 8 Bug-Fixing Commit with only new additions. The total number of previous commits identified in Nova was 137 and, 120 in ElasticSearch.   
+The datasets of Nova and ElasticSearch contain 58 bug reports linked to 58 \BFC. In Nova there are 9 \emph{BFCs} with only new added lines to fix the bug, almost the same number that ElasticSearch which has 8 \emph{BFCs}t with only new additions. The total number of previous commits identified in Nova was 137 and, 120 in ElasticSearch.   
 
-Figure~\ref{fig:statistic} presents the mean of previous commits, files and test files in each bug report of Nova and ElasticSearch. The mean of previous commits in both projects are around 2, although it is slightly higher in Nova with 2.36 previous commit per \BFC. However, the mean of files touched by the \BFC is higher in ElasticSearch, with a mean of 3.18 files\footnote{the test files are not included here} per bug Report. The mean of test files modified in a \BFC is almost the same in both projects with 1.53 in Nova and 1.60 in ElasticSearch.
+Figure~\ref{fig:statistic} presents the mean of previous commits, files and test files in each bug report of Nova and ElasticSearch. The mean of previous commits in both projects are around 2, although it is slightly higher in Nova with 2.36 previous commit per \BFC. However, the mean of files touched by the \BFC is higher in ElasticSearch, with a mean of 3.18 files\footnote{the test files are not included here} per bug \BFC. The mean of test files modified in a \BFC is almost the same in both projects with 1.53 in Nova and 1.60 in ElasticSearch.
 
 \begin{figure}[ht]
 \centering
@@ -2021,15 +2021,15 @@ Figure~\ref{fig:statistic} presents the mean of previous commits, files and test
 \label{fig:statistic}       % Give a unique label
 \end{figure}
 
-\subsection{RQ1: What is the frequency for a Bug-Fixing Commit being induced by a Bug-Introducing Commit?}
+\subsection{RQ1: What is the frequency for a Bug-Fixing Commit \emph{BFCs}being caused by a Bug-Introducing Commit?}
 \label{subsec:RQ1}
 
-Table~\ref{tableBugNoBug} shows the number of Bug-Fixing Commit that have been induced by a Bug-Introducing Commit and the number of Bug-Fixing Commit that have not been induced by a Bug-Introducing Commit in the datasets.
-The trend in the results of both projects was similar as both present higher percentage of Bug-Fixing Commits induced by a  Bug-Introducing Commit. However, the percentage of \BFC that were not induced by a \BIC is more representative in Nova with 24\% of the \BFC being fixing a bug that was not introduced in the system. On the contrary, this percentage is lower in ElasticSearch, where only the 10\% of the \BFC were not induced by a \BIC. Then from the 38 \BFC induced by a \BIC in Nova, 66\% of them were able to be manually located. Whereas from the 45 \BFC induced by a \BIC in ElasticSearch,  80\% of them were able to be manually located. In both projects, the percentage of doubt between where the bug was located is high, with 17\% in ElasticSearch and  31\% in Nova, illustrating the difficulty of the task. 
+Table~\ref{tableBugNoBug} shows the number of \emph{BFCs} that have been caused by \emph{BICs} and the number of \emph{BFCs} that have not been caused by a \emph{BICs} in the datasets.
+The trend in the results of both projects was similar as both present higher percentage of \emph{BFCs} caused by a \BIC. However, the percentage of \BFC that were not caused by a \BIC is more representative in Nova with 24\% of the \emph{BFCs} being fixing a bug that was not introduced in the system. On the contrary, this percentage is lower in ElasticSearch, where only the 10\% of the \emph{BFCs} were not caused by a \BIC. Then from the 38 \emph{BFCs} caused by a \BIC in Nova, 66\% of them were able to be manually located. Whereas from the 45 \emph{BFCs} caused by a \BIC in ElasticSearch,  80\% of them were able to be manually located. In both projects, the percentage of doubt between where the bug was located is high, with 6\% in ElasticSearch and  23\% in Nova, illustrating the difficulty of the task. 
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Percentage of Bug-Fixing Commit with a Bug-Introducing commit \emph{BIC}, without a Bug-Introducing Commit \emph{NO\_BIC} and Undecided..}
+	\caption{Percentage of Bug-Fixing Commit (\BFC) with a Bug-Introducing commit \emph{BIC}, without a Bug-Introducing Commit \emph{NO\_BIC} and Undecided in Nova and ElasticSearch (\emph{ES}).}
 	\label{tableBugNoBug}
 	\centering
 	\begin{tabular}{|c|c|c|c| }
@@ -2037,18 +2037,18 @@ The trend in the results of both projects was similar as both present higher per
   		&  BIC & NO\_BIC & Undecided \\
 		\hline
 		\hline
-		Nova & 38 (65\%) & 14 (24\%) & 6 (10\%)\\
+		Nova & 38 (66\%) & 14 (24\%) & 6 (10\%)\\
 		\hline
-		ES & 45 (77\%) &  6 (10\%) & 7 (12\%)\\
+		ES & 45 (78\%) &  6 (10\%) & 7 (12\%)\\
 		\hline
 	\end{tabular}
 \end{table}
 
-\subsubsection{RQ1.1: Which reasons may cause that a Bug-Fixing Commit is not induced by a  Bug-Introducing Commit?}
+\subsubsection{RQ1.1: Which reasons may explain that a Bug-Fixing Commit is not caused by a  Bug-Introducing Commit?}
 Additionally, in those cases where the bug report does not present a \BIC, we have looked for its root cause. Table~\ref{tablereasosNoBIC} shows the main reasons for a bug not having a \BIC. 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{ Reasons why a Bug-Fixing Commit is not induced by a bug-introduced commit }
+	\caption{ Reasons why a Bug-Fixing Commit is not caused by a Bug-Introducing Commit }
 	\label{tablereasosNoBIC}
 	\centering
 	\begin{tabular}{|c|c|c|}
@@ -2056,35 +2056,35 @@ Additionally, in those cases where the bug report does not present a \BIC, we ha
   		& Nova & ElasticSearch  \\
 		\hline
 		\hline
-		Co-evolution Internal & 9 (50\%) & 2 (33\%) \\
+		Co-evolution Internal & 7 (50\%) & 2 (33\%) \\
 		\hline
-		Co-evolution External  & 3 (17\%) & 2 (33\%)\\
+		Co-evolution External  & 2 (14\%) & 2 (33\%)\\
 		\hline
-		Compatibility & 2 (11\%) & 0 (0\%)\\
+		Compatibility & 1 (7\%) & 0 (0\%)\\
 		\hline
-		Bug in External API & 4 (22\%) & 2 (33\%)\\
+		Bug in External API & 4 (29\%) & 2 (33\%)\\
 		\hline
 	\end{tabular}
 \end{table}
 Furthermore, they are explained below:
 \begin{itemize}
  	\item \textit{Co-evolution Internal}: Changes in the source code related to satisfy the new requirements of the project. Since internal resources have been modified (directory structure and permissions) or requirements have changed invalidating previous assumptions. The bugs caused by the co-evolution internal can be explained from the point of view that the code is not reflecting a new change or requirement of the project and the source code is manifesting the failure.
-	\item \textit{Co-evolution External}: Bugs are caused by some external change. External resources have been modified without a previous notification and the source code of the project starts to fail. The bugs caused by the co-evolution external are easiest to understand than the previous ones, because they can be explained from the point of view that a change/update in the source code of an external artifact that the project is using has caused the bug.
+	\item \textit{Co-evolution External}: A bug is caused by some external change. External resources have been modified without a previous notification and the source code of the project starts to fail. The bugs caused by the co-evolution external are easiest to understand than the previous ones, because they can be explained from the point of view that a change/update in the source code of an external artifact used in the project has caused the bug.
   	\item \textit{Compatibility}: Bugs are caused by an incompatibility between software and hardware or an incompatibility with some operating systems.
-  	\item \textit{Bug in External API}: A change in the API of a third-party code caused a bug in the source code of the project.
+  	\item \textit{Bug in External API}: A bug in the API of a external library to the project has caused a bug in the source code of the project.
 \end{itemize}
 
-These reasons explain why the \BFC was not induced by a \BIC. In Nova the principal reason with a 50\% occurrence rate was the \emph{Co-evolution} of the lines changed to fix the bug with the internal requirements of the projects. The second reason with a 22\% of the cases where the presence of bugs in external APIs that are consumed in Nova. Then,  third most frequent reason is the \emph{Co-evolution} of the lines changed to fix the bug that is related to third-parties code or external artefacts. Finally, the \emph{Compatibility} reasons explain why in 11\% of the cases the \BFC was not induced by a \BIC. On the other hand, in ElasticSearch the percentages are equally distributed with a 33\% occurrence rate in the categories, with the exception that bug caused by the incompatibility of hardware and software were not found. 
+These reasons explain why the \BFC was not caused by a \BIC. In Nova the principal reason with a 50\% occurrence rate was the \emph{Co-evolution} of the lines changed to fix the bug with the internal requirements of the projects. The second reason with a 29\% of the cases where the presence of bugs in external APIs that are used in Nova. Then, the third most frequent reason is the \emph{Co-evolution} of the lines changed to fix the bug that is related to third-parties code or external artefacts. Finally, the \emph{Compatibility} reasons explain why in 7\% of the cases the \BFC was not induced by a \BIC. On the other hand, in ElasticSearch the percentages are equally distributed with a 33\% occurrence rate in the categories, with the exception that bug caused by the incompatibility of hardware and software were not found. 
 
 
-\subsubsection{RQ1.2: Could the location of a bug be modeled on the Bug-Introducing moment and First-Failing moment?}
+\subsubsection{RQ1.2: Could the location of a bug be modeled on the Bug-Introducing Commit and First-Failing Moment?}
 
 Table~\ref{tableBICFFC} shows the percentage of \BIC and \FFC that have been manually identified by using the model. By definition, and in theory, our model is able to identify the \FFC and the \BIC and whether it exists, but in practice, since the identification needs to be done manually, sometimes the \BIC or the \FFC cannot be identified. To be noticed, these \BFC that were classified into ``Undecided'' in Table~\ref{tableBugNoBug} are not considered in Table~\ref{tableBICFFC} since researcher were not sure whether they have a \BIC or not. Thus, for the 52 \FFC and 38 \BIC belonging to the Nova dataset, 40 \FFC and 25 \BIC were successfully identified.
-In the dataset of ElasticSearch, from the 60 \FFC and 45 \BIC, 49 \FFC and 34 \BIC were successfully identified.
+In the dataset of ElasticSearch, from the 51 \FFC and 45 \BIC, 48 \FFC and 36 \BIC were successfully identified.
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Percentage of Bug-Introduced Commit and First Failing Commits identified after applying the theoretical model.}
+	\caption{Percentage of Bug-Introducing Commit and First Failing Moments identified after applying the theoretical model.}
 	\label{tableBICFFC}
 	\centering
 	\begin{tabular}{|c|c|c|c|}
@@ -2101,18 +2101,18 @@ In the dataset of ElasticSearch, from the 60 \FFC and 45 \BIC, 49 \FFC and 34 \B
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{30em}
-\textbf{RQ1: A Bug-Fixing Commit is not always induced by a Bug-Introducing Commit. The main reasons why a Bug-Introducing Commit is not present in a Bug-Fixing Commit is the co-evolution internal.}
+\textbf{RQ1: A Bug-Fixing Commit is not always caused by a Bug-Introducing Commit. The main reasons why a Bug-Introducing Commit did not introduce a bug in the lines is the co-evolution internal.}
 \end{minipage}}
 \vspace{0.1cm}
 
 \subsection{ RQ2: What are the specifications that define the effectiveness of an algorithm used to locate the origin of a bug? }
 \label{subsec:RQ2}
 
-After applying the model and identifying the number of \BIC and \FFC in our dataset, we obtained the ``gold standard'' where the number of Bug-Fixing Commit with a  Bug-Introducing Commit and without a  Bug-Introducing Commit can be known for certain. For that reason, we are able to compute the true/false positives/negatives for an algorithm, and for that purpose the SZZ-1 algorithm~\cite{kim2008classifying} was selected, an enhancement proposed by Kim~\textit{et al.} of the SZZ. 
+After applying the model and identifying the number of \emph{BICs} and \emph{FFMs} in our datasets, we obtained the ``gold standard'' where the number of \emph{BFCs} with a  \BIC and without a  \BIC can be known for certain. For that reason, we are able to compute the true/false positives/negatives for an algorithm, and for that purpose the SZZ-1 algorithm~\cite{kim2008classifying} was selected, it is an enhancement proposed by Kim~\textit{et al.} of the SZZ. 
 
-The SZZ-1 algorithm does not compute bug-fixing changes with only new lines added, and in the ``gold standard'' of Nova there are three \BFC with only new lines whereas in ElasticSearch there are seven. These cases are the false negatives of SZZ-1. Furthermore, in some \BFC's, the SZZ-1 algorithm identifies more than one possible bug-introduction change. In this case if the \BFC was induced by a \BIC and the SZZ-1 is able to identify it, one true positive and the rest of possible  Bug-Introducing Commit are computed as false negatives. On the contrary, if the SZZ-1 is not able to identify the \BIC between the set of possible  Bug-Introducing Commit, all of them are computed as false positives.  
+The SZZ-1 algorithm does not compute \BFC with only new lines added, and in the ``gold standard'' of Nova there are three \BFC with only new lines whereas in ElasticSearch there are seven. These cases are the false negatives of SZZ-1. Furthermore, in some \emph{BFCs}, the SZZ-1 algorithm identifies more than one possible \BIC. In this case if the \BFC was caused by a \BIC and the SZZ-1 is able to identify it, there is one true positive and the rest of possible \emph{BICs} are computed as false negatives. On the contrary, if the SZZ-1 is not able to identify the \BIC between the set of possible \BIC, all of them are computed as false positives.  
 
-The ``gold standard'' of Nova consists of 25 Bug-Fixing commits with a  Bug-Introducing Commit and six Bug-Fixing Commits without a  Bug-Introducing Commit. While the ``gold standard'' of ElasticSearch is made up of 36 Bug-Fixing Commit with a  Bug-Introducing Commit and six Bug-Fixing Commits without a  Bug-Introducing Commit. When applying the SZZ-1 algorithm to the set 31 \BFC of Nova, it returns a set of 63 possible  Bug-Introducing Commit. When the algorithm is applied to the 42 \BFC of ElasticSearch, it returns a set of 73 possible  Bug-Introducing Commits. Table~\ref{realSZZ} presents the percentage of true/false positives/negatives for the SZZ-1 as well as the precision and recall.
+The ``gold standard'' of Nova consists of 25 \emph{BFCs} with a  \BIC and 14 \emph{BFCs} without a  \BIC. While the ``gold standard'' of ElasticSearch is made up of 36 \emph{BFCs} with a  \BIC and six \emph{BFCs} without a \BIC. When applying the SZZ-1 algorithm to the set 39 \emph{BICs} of Nova, it returns a set of 63 possible \emph{BICs}. When the algorithm is applied to the 42 \BFC of ElasticSearch, it returns a set of 73 possible \emph{BICs}. Table~\ref{realSZZ} presents the percentage of true/false positives/negatives for the SZZ-1 as well as the precision and recall.
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
@@ -2131,7 +2131,7 @@ The ``gold standard'' of Nova consists of 25 Bug-Fixing commits with a  Bug-Intr
 	\end{tabular}
 \end{table}
 
-In the literature there is no clear heuristic that is followed by researchers when the SZZ identifies a set of possible  Bug-Introducing Commit for a Bug-fixing commit. In Table~\ref{realSZZ} it is assumed that regardless of whether the case occurs, the researchers flag all of the commits belonging to that set as a possible  Bug-Introducing Commit. However, some researchers in the literature state that regardless of whether the case exists, the bug-introduction change is the earlier one in time. With this assumption, the number of true/false positives/negatives of the SZZ-1 is once again computed using the ``gold standard'' of Nova and ElasticSearch. Now, when applying the SZZ-1 to the 31 \BFC of Nova, it returns a set of 28 possible  Bug-Introducing Commit. Furthermore, when SZZ-1 is applied to the 42 \BFC of ElasticSearch, it returns a set of 35 possible  Bug-Introducing Commit. Table~\ref{realSZZ2} presents the percentage of true/false positives/negatives for SZZ-1 as well as the precision and recall in this scenario.
+In the literature there is no clear heuristic that is followed by researchers when the SZZ identifies a set of possible \emph{BICs} for a \BFC. In Table~\ref{realSZZ} it is assumed that regardless of whether the case occurs, the researchers flag all of the commits belonging to that set as possible \emph{BICs}. However, some researchers in the literature state that regardless of whether the case exists, the \BIC is the earlier one in time. With this assumption, the number of true/false positives/negatives of the SZZ-1 is once again computed using the ``gold standard'' of Nova and ElasticSearch. Now, when applying the SZZ-1 to the 39 \BFC of Nova, it returns a set of 29 possible \emph{BICs}. Furthermore, when SZZ-1 is applied to the 42 \BFC of ElasticSearch, it returns a set of 35 possible \emph{BICs}. Table~\ref{realSZZ2} presents the percentage of true/false positives/negatives for SZZ-1 as well as the precision and recall in this scenario.
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
@@ -2191,10 +2191,10 @@ Additionally, in those cases where the previous commit identified by the algorit
 %Furthermore, they are explained below:
 \begin{itemize}
  	\item \textit{Variable Renaming}: It is a modification in the source code that changed the names of variables. When the algorithms identify a previous commit like this, it means that the line was already buggy or that this change is not related to the bug.
-  	\item \textit{Optimization}: It is a modification of the source code to improve code quality and efficiency. When algorithms identify a previous commit commit like this, it means that the bug was already in the logic of the program because the code optimization did not changed the behavior.
-  	\item \textit{API changes}: It is a modification in the APIs of the program, normally an the addition of a new argument. When algorithms identify a previous commit like this, and it is not the \BIC, it means that the lines did not contain the bug, but the evolution and necessities of the project make that the line manifested the bug.
-	\item \textit{Obsoleted Code}: It is source code that have been useful in the past, but is no longer used. When algorithms identify a previous commit like this, it means that it is not the \BIC because it was removing obsolete code.
-	\item \textit{Changes done by the \BFC}: The \BFC may decide to change some parts of the code that are not related to the bug although these lines were clean. 
+  	\item \textit{Optimization}: It is a modification of the source code to improve code quality and efficiency. When the algorithm identifies a previous commit commit like this, it means that the bug was already in the logic of the program because the code optimization did not changed the behavior.
+  	\item \textit{API changes}: It is a modification in the APIs of the program, normally the addition of a new argument. When the algorithm identifies a previous commit like this, and it is not the \BIC, it means that the lines did not contain the bug, but the evolution and necessities of the project make that the line manifested the bug.
+	\item \textit{Obsoleted Code}: It is source code that have been useful in the past, but is no longer used. When the algorithm identifies a previous commit like this, it means that it is not the \BIC because it removed obsolete code.
+	\item \textit{Changes done by the \BFC}: The \BFC may decide to change some parts of the code that are not related to the bug. 
 \end{itemize}
 
 
