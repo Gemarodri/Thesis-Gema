@@ -1,0 +1,20 @@
+{
+	"Id" : "5021",
+	"num_pc_L" : 1,
+	"LA" : 1,
+	"LM" : 1,
+	"LD" : 0,
+	"Files" : 2,
+	"pcSET_L": ["c76c521"],
+	"ONL_L" : "No",
+	"BIC_L" : "No" ,
+	"BICinpcSET_L" : "No",
+	"idBIC_L" : "",
+	"num_pc_T" : 0,
+	"pcSET_T": [],
+	"newLines_T" : "Yes",
+	"BIC_T" : "No" ,
+	"BICinpcSET_T" : "No",
+	"idBIC_T" : "",
+	"Match": []
+}

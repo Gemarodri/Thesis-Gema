@@ -1,0 +1,21 @@
+{
+	"Id" : "1626",
+	"num_pc_L" : 1,
+	"LA" : 2,
+	"LM" : 7,
+	"LD" : 0,
+	"Files" : 5,
+	"pcSET_L": ["4180a7f"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : "4180a7f",
+	"num_pc_T" : 1,
+	"pcSET_T": ["c8f339e"],
+	"newLines_T" : "No",
+	"BIC_T" : "Yes" ,
+	"BICinpcSET_T" : "Yes",
+	"idBIC_T" : "8f339e",
+	"Match": ["4180a7f-c8f339e"],
+	"MatchBIC_T_BIC_L": "Yes"
+}

@@ -73,25 +73,23 @@ TESIS DOCTORAL
 \vspace{0.4cm}
 
 \LARGE
-\emph{Towards an Empirical Model to Identify When Bugs are Introduced}
+\emph{Towards an Empirical Model to Identify \\ When Bugs are Introduced}
 \vspace{0.8cm}
 
 \textbf{\Large
-Author :\\
-\underline{Gema Rodr\'iguez P\'erez}}
+Autor :\\
+Gema Rodr\'iguez P\'erez}
 
 \textbf{\Large
-Director:\\
-\underline{Dr. Jes\'us M. Gonz\'alez Barahona}}
+Co-directores:\\
+Dr. Jes\'us M. Gonz\'alez Barahona\\
+Dr. Gregorio Robles}
 
-\textbf{\Large
-Subdirector :\\
-\underline{Dr. Gregorio Robles}}
 
 \vspace{1.5cm}
 
 \large
-\textbf{Programa de Doctorado en Tecnolog\'ias de la Comunicaci\'on}\\
+\textbf{Programa de Doctorado en Tecnolog\'ias de la Informaci\'on \\ y las Comunicaciones}\\
 
 \textbf{Escuela Internacional de Doctorado}
 
@@ -109,55 +107,55 @@ Subdirector :\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Para firmar
-\clearpage
-\pagenumbering{gobble}
-\chapter*{}
-
-\vspace{-4cm}
-\begin{center}
-\LARGE
-\textbf{Doctoral Thesis}
-
-\vspace{1cm}
-\large
-Towards an Empirical Model to Identify When Bugs are Introduced
-
-\textbf{Author :} Gema Rodr\'iguez P\'erez \\
-\textbf{Director :} Dr. Jes\'us M. Gonz\'alez Barahona\\
-\textbf{Subdirector :} Dr. Gregorio Robles
-
-\end{center}
-
-\vspace{1cm}
-The committee named to evaluate the Thesis above indicated, made up of the following doctors
-
-\vspace{0.5cm}
-\textbf{President:}
-
-\vspace{0.5cm}
-\textbf{Member:}
-
-\vspace{0.5cm}
-\textbf{Member:}
-
-\vspace{0.5cm}
-\textbf{Member:}
-
-\vspace{0.5cm}
-\textbf{Secretary:}
-
-
-\vspace{1.2cm}
-has decided to grant the qualification of:
-
-
-
-\vspace{1cm}
-\begin{flushright}
-Fuenlabrada,  \qquad$\;\,$  \qquad\qquad\qquad\qquad  2018\\
-\vspace{0.5cm}
-The secretary of the committee.
-\end{flushright}
+%\clearpage
+%\pagenumbering{gobble}
+%\chapter*{}
+%
+%\vspace{-4cm}
+%\begin{center}
+%\LARGE
+%\textbf{Doctoral Thesis}
+%
+%\vspace{1cm}
+%\large
+%Towards an Empirical Model to Identify When Bugs are Introduced
+%
+%\textbf{Author :} Gema Rodr\'iguez P\'erez \\
+%\textbf{Director :} Dr. Jes\'us M. Gonz\'alez Barahona\\
+%\textbf{Subdirector :} Dr. Gregorio Robles
+%
+%\end{center}
+%
+%\vspace{1cm}
+%The committee named to evaluate the Thesis above indicated, made up of the following doctors
+%
+%\vspace{0.5cm}
+%\textbf{President:}
+%
+%\vspace{0.5cm}
+%\textbf{Member:}
+%
+%\vspace{0.5cm}
+%\textbf{Member:}
+%
+%\vspace{0.5cm}
+%\textbf{Member:}
+%
+%\vspace{0.5cm}
+%\textbf{Secretary:}
+%
+%
+%\vspace{1.2cm}
+%has decided to grant the qualification of:
+%
+%
+%
+%\vspace{1cm}
+%\begin{flushright}
+%Fuenlabrada,  \qquad$\;\,$  \qquad\qquad\qquad\qquad  2018\\
+%\vspace{0.5cm}
+%The secretary of the committee.
+%\end{flushright}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2086,14 +2084,13 @@ This section presents the results of the empirical analysis in order to locate t
 \subsection{First Stage}
 \label{subsec:resultsFS}
 
-During the first stage, 4 bug reports were removed from the initial set of 120 bug reports. Then, there are 58 bug reports in Nova and 58 bug reports in ElasticSearch that are considered into the next stage. The reason to removed the bug report  \#1185290\footnote{\url{https://bugs.launchpad.net/nova/+bug/1185290}} was the discordances in the comments between the developers of Nova. These are the comments where the discordance is obvious:
+During the first stage, 4 bug reports were removed from the initial set of 120 bug reports. Then, there are 57 bug reports in Nova and 59 bug reports in ElasticSearch that are considered into the next stage. The reason to removed the bug report  \#1185290\footnote{\url{https://bugs.launchpad.net/nova/+bug/1185290}} was the discordances in the comments between the developers of Nova. These are the comments where the discordance is obvious:
 	\begin{itemize}
 		\item ``I am not sure that I consider this a bug. Without --all-tenants=1, the code operates under your own tenant. That means that --all-tenants=1 foo should really be a no-op without --all-tenants=1.'' 
 		\item ``I disagree, mainly because the structure of the requests and code path should largely be transparent to the user. I would suggest that specifying --tenants should imply you are doing a query across --all-tenants=1unless the --tenants specified is the same as what is contained in OS\_TENANT\_NAME (the unless part is debatable)''
 	\end{itemize}
 
-Furthermore, other reasons were also discovered, for instance the bug \#1431571\footnote{\url{https://bugs.launchpad.net/nova/+bug/1431571}} reported a bug in a test file. It was removed  because a bug in a test file does not mean that the source code of the project may contain a bug. It was also discovered that some bug reports such as \#1814\footnote{\url{https://github.com/elastic/elasticsearch/issues/1814}}, \#7740\footnote{\url{https://github.com/elastic/elasticsearch/issues/7740}} and \#1448075\footnote{\url{https://bugs.launchpad.net/nova/+bug/1448075}} are describing hypothetical scenarios. In these cases, the bug report details a possible bug in the future. 
-These bug reports were removed from the analysis because although the developers described them as bug reports, it is understood that when the \BFC was submitted, the bug had not occurred in the project. 
+Furthermore, other reasons were also discovered, for instance the bug \#1431571\footnote{\url{https://bugs.launchpad.net/nova/+bug/1431571}} reported a bug in a test file. It was removed  because a bug in a test file does not mean that the source code of the project may contain a bug. It was also discovered that some bug reports such as \#7740\footnote{\url{https://github.com/elastic/elasticsearch/issues/7740}} describe hypothetical scenarios. In these cases, the bug report details a possible bug in the future.  These bug reports were removed from the analysis because although the developers described them as bug reports, it is understood that when the \BFC was submitted, the bug had not occurred in the project. 
 
 \subsection{Second Stage}
 \label{subsec:resultsSS}
@@ -2108,9 +2105,9 @@ The second part presents the effectiveness of the SZZ algorithm. Once we have th
 \label{subsec:Explanation}
 This section explains the datasets of Nova and ElasticSearch that were manually analyzed to identify the \BIC and the \FFC.
 
-The datasets of Nova and ElasticSearch contain 58 bug reports linked to 58 \BFC. In Nova there are 9 \emph{BFCs} with only new added lines to fix the bug, almost the same number that ElasticSearch which has 8 \emph{BFCs} with only new additions. The total number of previous commits identified in Nova was 137 and, 120 in ElasticSearch.   
+The datasets of Nova and ElasticSearch contain 57 bug reports linked to 59 \BFC. In Nova there are 9 \emph{BFCs} with only new added lines to fix the bug, almost the same number that ElasticSearch which has 8 \emph{BFCs} with only new additions. The total number of previous commits identified in Nova was 124 and, 112 in ElasticSearch.   
 
-Figure~\ref{fig:statistic} presents the average of previous commits, files and test files in each bug report of Nova and ElasticSearch. On average, both projects are similar with 2 previous commits per \BFC, although it is slightly higher in Nova with 2.36 previous commit per \BFC. However, the average of files touched by the \BFC is higher in ElasticSearch, with 3.18 files\footnote{the test files are not included here} per \BFC. The average of test files modified in a \BFC is almost the same in both projects with 1.53 in Nova and 1.60 in ElasticSearch.
+Figure~\ref{fig:statistic} presents the average of previous commits, files and test files in each bug report of Nova and ElasticSearch. On average, both projects are similar around 2 previous commits per \BFC, although it is slightly higher in Nova with 2.17 previous commit per \BFC. However, the average of files touched by the \BFC is higher in ElasticSearch, with 3.18 files\footnote{the test files are not included here} per \BFC. The average of test files modified in a \BFC is almost the same in both projects with 1.53 in Nova and 1.60 in ElasticSearch.
 
 \begin{figure}[ht]
 \centering
@@ -2123,21 +2120,21 @@ Figure~\ref{fig:statistic} presents the average of previous commits, files and t
 \label{subsec:RQ1}
 
 Table~\ref{tableBugNoBug} shows the number of \emph{BFCs} that have been caused by \emph{BICs} and the number of \emph{BFCs} that have not been caused by a \emph{BICs} in the datasets.
-The trend in the results of both projects is similar as both present higher percentage of \emph{BFCs} caused by a \BIC. However, the percentage of \emph{BFCs} that were not caused by a \emph{BICs} is more representative in Nova with 24\% of the \emph{BFCs} being fixing a bug that was not introduced in the system. On the contrary, this percentage is lower in ElasticSearch, where only the 10\% of the \emph{BFCs} were not caused by a \BIC. Around 10\% of the \emph{BFCs} in both projects are undecided because of their complexity or lack of information. %Then from the 38 \emph{BFCs} caused by a \BIC in Nova, 66\% of them were able to be manually located. Whereas from the 45 \emph{BFCs} caused by a \BIC in ElasticSearch,  80\% of them were able to be manually located. In both projects, the percentage of doubt between where the bug was located is high, with 6\% in ElasticSearch and  23\% in Nova, illustrating the difficulty of the task. 
+The trend in the results of both projects is similar as both present higher percentage of \emph{BFCs} caused by a \BIC. However, the percentage of \emph{BFCs} that were not caused by a \emph{BICs} is more representative in Nova with 21\% of the \emph{BFCs} being fixing a bug that was not introduced in the system. On the contrary, this percentage is lower in ElasticSearch, where only the 9\% of the \emph{BFCs} were not caused by a \BIC. %Around 19\%-27\% of the \emph{BFCs} in both projects are undecided because of their complexity or lack of information. %Then from the 38 \emph{BFCs} caused by a \BIC in Nova, 66\% of them were able to be manually located. Whereas from the 45 \emph{BFCs} caused by a \BIC in ElasticSearch,  80\% of them were able to be manually located. In both projects, the percentage of doubt between where the bug was located is high, with 6\% in ElasticSearch and  23\% in Nova, illustrating the difficulty of the task. 
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
 	\caption{Percentage of Bug-Fixing Commit (\BFC) with a Bug-Introducing commit (\BIC), without a Bug-Introducing Commit (\emph{NO\_BIC}) and Undecided in Nova and ElasticSearch (\emph{ES}).}
 	\label{tableBugNoBug}
 	\centering
-	\begin{tabular}{|c|c|c|c| }
+	\begin{tabular}{|c|c|c| }
 		\hline
-  		&  BIC & NO\_BIC & Undecided \\
+  		&  BIC & NO\_BIC  \\
 		\hline
 		\hline
-		Nova & 38 (66\%) & 14 (24\%) & 6 (10\%)\\
+		Nova & 45 (79\%) & 12 (21\%) \\
 		\hline
-		ES & 45 (78\%) &  6 (10\%) & 7 (12\%)\\
+		ES & 54 (91\%) &  5 (9\%) \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -2154,13 +2151,13 @@ Additionally, in those cases where the \BFC does not present a \BIC, we have loo
   		& Nova & ElasticSearch  \\
 		\hline
 		\hline
-		Co-evolution Internal & 7 (50\%) & 2 (33\%) \\
+		Co-evolution Internal & 5 (42\%) & 2 (40\%) \\
 		\hline
-		Co-evolution External  & 2 (14\%) & 2 (33\%)\\
+		Co-evolution External  & 2 (17\%) & 1 (20\%)\\
 		\hline
-		Compatibility & 1 (7\%) & 0 (0\%)\\
+		Compatibility & 1 (8\%) & 0 (0\%)\\
 		\hline
-		Bug in External API & 4 (29\%) & 2 (33\%)\\
+		Bug in External API & 4 (33\%) & 2 (40\%)\\
 		\hline
 	\end{tabular}
 \end{table}
@@ -2172,14 +2169,14 @@ Furthermore, they are explained below:
   	\item \textit{Bug in External API}: A bug in the API of a external library to the project has caused a bug in the source code of the project. In this scenario the \BIC exists but it cannot be identified in the \ACS{\BFC} because this change is not in the VCS of the project.
 \end{itemize}
 
-These reasons explain why the \BIC cannot be identified given a \BFC. In Nova the principal reason with a 50\% occurrence rate was the \emph{Co-evolution} of the lines changed to fix the bug with the internal requirements of the projects. The second reason with a 29\% of the cases where the presence of bugs in external APIs that are used in Nova. Then, the third most frequent reason is the \emph{Co-evolution} of the lines changed to fix the bug that is related to third-parties code or external artefacts. Finally, the \emph{Compatibility} reasons explain why in 7\% of the cases the \BFC was not induced by a \BIC. On the other hand, in ElasticSearch the percentages are equally distributed with a 33\% occurrence rate in the categories, with the exception that bug caused by the incompatibility of hardware and software were not found. 
+These reasons explain why the \BIC cannot be identified given a \BFC. In Nova the principal reason with a 42\% occurrence rate was the \emph{Co-evolution} of the lines changed to fix the bug with the internal requirements of the projects. The second reason with a 33\% of the cases where the presence of bugs in external APIs that are used in Nova. Then, the third most frequent reason is the \emph{Co-evolution} of the lines changed to fix the bug that is related to third-parties code or external artefacts. Finally, the \emph{Compatibility} reasons explain why in 8\% of the cases the \BFC was not induced by a \BIC. On the other hand, in ElasticSearch the percentages are equally distributed with a 40\% occurrence rate in \emph{Co-evolution internal} and \emph{Bug in External API}, and 20\% of the cases belongs ti \emph{Co-evolution External} with the exception that bug caused by the incompatibility of hardware and software were not found. 
 
 
 \subsubsection{RQ1.2: Could the location of a bug be modeled on the Bug-Introducing Commit and First-Failing Moment?}
 
-Table~\ref{tableBICFFC} shows the percentage of \BIC and \FFC that have been manually identified by using the model. By definition, and in theory, our model is able to identify the \FFC and the \BIC, and whether it exists, but in practice, since the identification needs to be done manually, sometimes the \BIC or the \FFC cannot be identified for certain. To be noticed, these \BFC that were classified into ``Undecided'' in Table~\ref{tableBugNoBug} are not considered in Table~\ref{tableBICFFC} since researcher were not sure whether they have a \BIC or not. Thus in Nova, from the 38 bugs caused by a \BIC, we correctly identified 25 \emph{BICs} which are also \emph{FFMs}. From the 14 bugs manifested without a \BIC, we successfully identified 6 \emph{FFMs}.
-In the dataset of ElasticSearch, from the 45 bugs caused by a \BIC, we correctly identified 36 \emph{BICs} which are also \emph{FFMs}. Form the 6 bugs manifested without a \BIC, we successfully identified 5 \emph{FFMs}.
-Due to the complexity to identify and ensure correctly the \emph{BICs} and \emph{FFMs}, both projects have the ``Undecided" category, which implies that we have suspicious commits to be the \BIC and \FFC but we cannot be completely sure. 
+Table~\ref{tableBICFFC} shows the percentage of \BIC and \FFC that have been manually identified by using the model. By definition, and in theory, our model is able to identify the \FFC and the \BIC, and whether it exists, but in practice, since the identification needs to be done manually, sometimes the \BIC or the \FFC cannot be identified for certain. To be noticed, these \BFC that were classified into ``Undecided'' in Table~\ref{tableBugNoBug} are not considered in Table~\ref{tableBICFFC} since researcher were not sure whether they have a \BIC or not. Thus in Nova, from the 45 bugs caused by a \BIC, we correctly identified 34 \emph{BICs} which are also \emph{FFMs}. From the 12 bugs manifested without a \BIC, we successfully identified 4 \emph{FFMs}.
+In the dataset of ElasticSearch, from the 54 bugs caused by a \BIC, we correctly identified 38 \emph{BICs} which are also \emph{FFMs}. Form the 5 bugs manifested without a \BIC, we were unable to identify manually the \emph{FFMs}.
+Due to the complexity to identify and ensure correctly the \emph{BICs} and \emph{FFMs}, both projects have the ``Undecided" category, which implies that we have suspicious commits to be the \BIC and \FFC but we cannot be completely sure because of their complexity or lack of information. 
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
@@ -2191,67 +2188,71 @@ Due to the complexity to identify and ensure correctly the \emph{BICs} and \emph
   		&  \BIC = \FFC & only \FFC & Undecided \\
 		\hline
 		\hline
-		Nova & 25 (66\%) & 6 (43\%) & 21 (40\%)\\
+		Nova & 34 (60\%) & 12 (21\%) & 11 (19\%)\\
 		\hline
-		ES & 36 (80\%) &  5 (83\%) & 10 (20\%)\\
+		ES & 38 (64\%) &  5 (9\%) & 16 (27\%)\\
 		\hline
 	\end{tabular}
 \end{table}
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{30em}
-\textbf{RQ1: A Bug-Fixing Commit is not always caused by a Bug-Introducing Commit, 66\%-78\% of \emph{BICs} were responsible for the failure, whereas 10\%-24\% of the failures were caused by other factors. The main reason why a bug is not caused by a \BIC in the projects is the co-evolution internal.}
+\textbf{RQ1: 79\%-91\% of the Bug-Fixing Commits analyzed were caused by a Bug-Introducing Commit,\emph{BICs}. However, 9\%-21\% of the bugs were caused by other factors different from introducing faulty code in the source code. The main reason why a bug is not caused by a \BIC in both projects is the co-evolution internal.}
 \end{minipage}}
 \vspace{0.1cm}
 
 \subsection{ RQ2: What are the specifications that define the effectiveness of an algorithm used to locate the origin of a bug? }
 \label{subsec:RQ2}
 
-After applying the model and identifying the number of \emph{BICs} and \emph{FFMs} in our datasets, we obtained the ``gold standard'' where the number of \emph{BFCs} with a  \BIC and without a  \BIC can be known for certain. For that reason, we are able to compute the true/false positives and true/false negatives for an algorithm, and for that purpose the SZZ algorithm was selected, but we removed the changes in the comments and blank lines from the analysis when using this algorithm. 
+After applying the model and identifying the number of \emph{BICs} and \emph{FFMs} in our datasets, we obtained the ``gold standard'' where the number of \emph{BFCs} with a  \BIC and without a  \BIC can be known for certain. For that reason, we are able to compute the true/false positives and true/false negatives for an algorithm, and for that purpose the original SZZ algorithm \cite{sliwerski2005changes} was selected, but we removed the changes in the comments and blank lines from the analysis when using this algorithm. Also, we analyze the SZZ-1 \cite{kim2006automatic}.
 
 The SZZ algorithm does not compute \BFC with only new lines added, and in the ``gold standard'' of Nova there are three \BFC with only new lines whereas in ElasticSearch there are seven. These cases are the false negatives of SZZ. Furthermore, the average of previous commits per \BFC is around two, this means that the SZZ algorithm may identify more than one possible \BIC per \BFC. In this case, given the \PC{\BFC}, we compute a true positive when a \BIC exists and it is identified by the SZZ, and the rest of previous commits are computed as false positives. %On the contrary, if the SZZ is not able to identify the \BIC between the set of possible \BIC, all of them are computed as false positives.  
 
-The ``gold standard'' of Nova consists of 25 \emph{BFCs} with a \BIC and 14 \emph{BFCs} without a  \BIC. While the ``gold standard'' of ElasticSearch is made up of 36 \emph{BFCs} with a \BIC and six \emph{BFCs} without a \BIC. When applying the SZZ algorithm to the set 39 \emph{BICs} of Nova, it returns a set of 71\footnote{Three of the \emph{BFCs} in the ``gold standard" have only new lines, thus the SZZ cannot be applied. We compute these cases as false negatives because.}  possible \emph{BICs}. When the algorithm is applied to the 42 \BFC of ElasticSearch, it returns a set of 73\footnote{seven of the \emph{BFCs} in the ``gold standard" have only new lines, thus the SZZ cannot be applied. We compute these cases as false negatives.} possible \emph{BICs}. Table~\ref{realSZZ} presents the percentage of true/false positives and false negative for the SZZ as well as the precision and recall in each project.
+The ``gold standard'' of Nova consists of 34 \emph{BFCs} with a \BIC and 12 \emph{BFCs} without a  \BIC. While the ``gold standard'' of ElasticSearch is made up of 38 \emph{BFCs} with a \BIC and five \emph{BFCs} without a \BIC. When applying the SZZ algorithm to the set 46 \emph{BICs} of Nova, it returns a set of 79\footnote{Three of the \emph{BFCs} in the ``gold standard" have only new lines, thus the SZZ cannot be applied. We compute these cases as false negatives because.}  possible \emph{BICs}. When the algorithm is applied to the 43 \BFC of ElasticSearch, it returns a set of 85\footnote{seven of the \emph{BFCs} in the ``gold standard" have only new lines, thus the SZZ cannot be applied. We compute these cases as false negatives.} possible \emph{BICs}. Table~\ref{realSZZ} presents the percentage of true/false positives and false negative for the SZZ and SZZ-1 as well as the precision, recall and F1-score in each project.
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Results of True Positives, True Negatives, False Negatives, Recall and Precision for the SZZ algorithm assuming that the algorithm flags all of the commits belong to a set of \PC{b} as \BIC.}
+	\caption{Results of True Positives, True Negatives, False Negatives, Recall and Precision for the SZZ and SZZ-1 algorithms assuming that the algorithm flags all of the commits belong to a set of \PC{b} as \BIC.}
 	\label{realSZZ}
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
- 	 	&  True Positives & False Positives & False Negatives & Recall & Precision \\
+ 	 	&  True Positives & False Positives & False Negatives & Precision & Recall & F1-Score\\
 		\hline
 		\hline
-		Nova & 22 (30\%) & 49 (66\%) & 3 (4\%) & 0.67 & 0.30\\
+		Nova (SZZ) & 25 (26\%) & 54 (56\%) & 17 (18\%) & 0.32& 0.60&0.42\\
 		\hline
-		ES &  26 (33\%) & 46 (58\%) & 7 (9\%)& 0.79 & 0.36 \\
+		Nova (SZZ-1) & 28 (30\%) & 51 (55\%) & 14 (15\%) &  0.35& 0.58&0.44\\
+		\hline
+		ES (SZZ)&  26 (27\%) & 59 (61\%) & 12 (12\%)&  0.31& 0.68& 0.43\\
+		\hline
+		ES (SZZ-1) &  27 (28\%) & 58 (60\%) & 11 (12\%)& 0.32 & 0.71 &0.44\\
 		\hline
 	\end{tabular}
 \end{table}
 
-In the literature there is no clear heuristic to follow by researchers when the SZZ identifies a set of possible \emph{BICs} for a \BFC. In Table~\ref{realSZZ} it is assumed that regardless of whether this case occurs, the researchers flag all of the commits belonging to that set as possible \emph{BICs}. However, some researchers in the literature state that in this case, the \BIC should be  the earlier one in time. With this assumption, the number of true/false positives and true/false negatives of the SZZ is once again computed using the ``gold standard'' of Nova and ElasticSearch. Now, when applying the SZZ to the 39 \BFC of Nova, it returns a set of 36 possible \emph{BICs}. Furthermore, when SZZ is applied to the 42 \BFC of ElasticSearch, it returns a set of 35 possible \emph{BICs}. Table~\ref{realSZZ2} presents the percentage of true/false positives/negatives for SZZ as well as the precision and recall in this scenario.
+In the literature there is no clear heuristic to follow by researchers when the SZZ identifies a set of possible \emph{BICs} for a \BFC. In Table~\ref{realSZZ} it is assumed that regardless of whether this case occurs, the algorithms flag all of the commits belonging to that set as possible \emph{BICs}. However, some researchers in the literature state that when more than one commit is flagged, the \BIC should be  the earlier one in time. With this assumption, the number of true/false positives and true/false negatives of the SZZ-1 is once again computed using the ``gold standard'' of Nova and ElasticSearch, we selected only SZZ-1 because it performs better results than SZZ. Now, when applying the SZZ to the 46 \BFC of Nova, it returns a set of 43 possible \emph{BICs}. Furthermore, when SZZ is applied to the 43 \BFC of ElasticSearch, it returns a set of 36 possible \emph{BICs}. Table~\ref{realSZZ2} presents the percentage of true/false positives/negatives for SZZ-1 as well as the precision, recall and F1-score in these scenarios.
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Results of True Positives, True Negatives, False Negatives, Recall and Precision for the SZZ algorithm assuming that the algorithm only flags the earlier commits that belongs to a set of \PC{b} as \BIC.}
+	\caption{Results of True Positives, True Negatives, False Negatives, Recall and Precision for the SZZ-1 algorithm assuming that the algorithm only flags the earlier commits that belongs to a set of \PC{b} as \BIC.}
 	\label{realSZZ2}
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
- 	 	&  True Positives & False Positives & False Negatives & Recall & Precision \\
+ 	 	&  True Positives & False Positives & False Negatives & Precision & Recall&F1-Score \\
 		\hline
 		\hline
-		Nova & 21 (54\%) & 15 (38\%) & 3 (8\%) & 0.88 & 0.58\\
+		Nova (SZZ-1) & 25 (45\%) & 14 (25\%) & 17 (30\%) &  0.64 & 0.60&0.66\\
 		\hline
-		ES &  19 (45\%) & 16 (38\%) & 7 (17\%)& 0.73 & 0.54 \\
+		ES (SZZ-1) &  16 (28\%) & 20 (34\%) & 22 (38\%)& 0.44 & 0.42 &0.43\\
 		\hline
 	\end{tabular}
 \end{table}
 
 \vspace{0.2cm}
 \fbox{\begin{minipage}{30em}
-\textbf{RQ2: In the best scenario when applying the heuristics of SZZ, Nova computes 38\% of false positives with a precision of 0.58 and a recall of 0.88. ElasticSearch presents the same percentage of false positives (38\%) than Nova, but lower precision (0.73) and recall (0.54).}
+\textbf{RQ2: SZZ-1 performs better results than the original SZZ, but when applying the heuristics it still computes 25\% of false positives in Nova and 34\% in ElasticSearch. Assuming that the earliest commit caused the \BIC only improves the F1-score in Nova.}
 \end{minipage}}
 \vspace{0.1cm}
 
@@ -2458,26 +2459,25 @@ Many researchers have based their methods for locating \emph{BICs} in the versio
 The SZZ is currently the best-known and easiest algorithm used to identify \emph{BICs}. As a result, some studies have used datasets to feed their bug prediction or classification models with results obtained from the SZZ. Ray \emph{et al.} that studied the naturalness of buggy code \cite{rahman2014comparing}. Massacci \emph{et al.} evaluated most existing vulnerabilities of discovery models on web browsers and took many datasets where at least the built-in used the SZZ approach \cite{massacci2014empirical}. Abreu \emph{et al.} obtained a dataset using the SZZ and studied how the frequency of communication between developers affects the fact to introduce a bug in the source code \cite{abreu2009practical}.
 
 	
-In general, with this new method it may be possible to distinguish between two relevant moments given a \BFC, the \BIC and the \FFC. The first moment does not always exist, because there could be external changes or the instance whereby the internal requirements could have evolved which may have caused the failure. However, there is always a \FFC which indicates the first moment when the project manifests itself the bug. To obtain more accurate results in areas such as bug prediction, bug categorization, and bug detection, the approaches used to identify when a bug is introduced should distinguish between these two moments, the \FFC and the \BIC. The empirical case of study states that the current state-of-the-art approaches identify from 45\% and up to 54\% of ``real'' true positives. Thus, these results are promising to start thinking about implementing new methods based on the theoretical model proposed in this dissertation, or at least, to consider re-formulating correctly the definition of bug introducing. The bug introduction process cannot be considered as a static problem; the current methods need to be able to distinguish between buggy lines and clean lines at the moment of their insertion. This dissertation has demonstrated that other external and internal reasons rather than buggy lines are causing the failure of the systems and that it is not fair to blame a change as the cause when in fact, it did not insert the error as it fulfilled with the functionalities required, environments, necessities, and requirements of the project in that moment. Although more  lights have been given to the problem of emulating software faults realistically, to achieve greater bug localization automation, a more concerted effort is needed in testing to find ways or techniques to address the re-built problem and to build a test that can be automated or partially automated to find the \BIC or \FFC.
+In general, with this new method it may be possible to distinguish between two relevant moments given a \BFC, the \BIC and the \FFC. The first moment does not always exist, because there could be external changes or the instance whereby the internal requirements could have evolved which may have caused the failure. However, there is always a \FFC which indicates the first moment when the project manifests itself the bug. To obtain more accurate results in areas such as bug prediction, bug categorization, and bug detection, the approaches used to identify when a bug is introduced should distinguish between these two moments, the \FFC and the \BIC. The empirical case of study states that the current state-of-the-art approaches identify from 26\% and up to 45\% of ``real'' \BIC (true positives). Thus, these results are promising to start thinking about implementing new methods based on the theoretical model proposed in this dissertation, or at least, to consider re-formulating correctly the definition of bug introducing. The bug introduction process cannot be considered as a static problem; the current methods need to be able to distinguish between buggy lines and clean lines at the moment of their insertion. This dissertation has demonstrated that other external and internal reasons rather than buggy lines are causing the failure of the systems and that it is not fair to blame a change as the cause when in fact, it did not insert the error as it fulfilled with the functionalities required, environments, necessities, and requirements of the project in that moment. Although more  lights have been given to the problem of emulating software faults realistically, to achieve greater bug localization automation, a more concerted effort is needed in testing to find ways or techniques to address the re-built problem and to build a test that can be automated or partially automated to find the \BIC or \FFC.
 
 \subsection{Discussion of the Empirical Study Results}
 \label{subsec:implicationsES}
 
 The empirical study of Chapter~\ref{chap:application} supports the necessity of a new model to identify the changes that introduced bugs as it is not always obvious how errors are introduced into the source code with the current state-of-the-art approaches. This dissertation introduces a new model that might solve this necessity in Chapter~\ref{chap:Theory}. Its implementation has been empirically studied in Chapter~\ref{chap:application}, we have carried out a qualitative study on a set of bug reports to identify whether a \BIC exists and, in this case, to pinpoint where it was introduced given a \BFC.  
 
-The identification of the lines that are responsible for inserting the error is a quite complicated process. Out of 120 bug reports from the datasets of Nova and ElasticSearch, 116 bug reports with their respective  Bug-Fixing Commit were able to pass to the second stage. In this second stage, researchers manually analyzed whether or not the changes identifies from the \BFC introduced the bug. In both projects, the percentage of changes that introduced a bug into the source code was higher than the others categories, with 66\% of occurrence rate in Nova and 78\% in ElasticSearch. However, the percentage of \BFC that were not caused by introducing a \BIC is more representative in Nova with 24\% of occurrence rate, while in ElasticSearch the 10\% of the \BFC did have a \BIC. We hypothesize that a possible reason can be attributed to the programming language. While Python is a dynamic language that can run without compilation, Java is strictly typed and performs run-time checks, which may decrease the category of \BFC that were not induced by a \BIC.
+The identification of the lines that are responsible for inserting the error is a quite complicated process. Out of 120 bug reports from the datasets of Nova and ElasticSearch, 116 bug reports with their respective  Bug-Fixing Commit were able to pass to the second stage. In this second stage, researchers manually analyzed whether or not the changes identifies from the \BFC introduced the bug. In both projects, the percentage of changes that introduced a bug into the source code was higher than the others categories, with 79\% of occurrence rate in Nova and 91\% in ElasticSearch. However, the percentage of \BFC that were not caused by introducing a \BIC is more representative in Nova with 21\% of occurrence rate, while in ElasticSearch the 9\% of the \BFC did have a \BIC. We hypothesize that a possible reason can be attributed to the programming language. While Python is a dynamic language that can run without compilation, Java is strictly typed and performs run-time checks, which may decrease the category of \BFC that were not induced by a \BIC.
 
-During the manual analysis, we discover some reasons which may explain why a \BFC was caused by the insertion of buggy lines. In Nova, the principal reason was the \emph{Co-evolution Internal} with a 50\% occurrence rate, followed by 29\% of the cases where bugs are in external APIs. The third most frequent reason was the \emph{Co-evolution External}, with a 14\% occurrence rate and finally, the less frequent reason was \emph{Compatibility} with a 7\% of the cases. On the other hand, in ElasticSearch the percentages are equally distributed with a 33\% occurrence rate in the categories, with the exception that bugs caused by the incompatibility of hardware and software were not found. This anecdotal classification should be further investigated since it can help researchers to identify different patterns, probably hidden, which can explain better how bugs are introduced and manifested in the source code. It also does not claim that these categories can be extended to other projects. We draw attention to the fact that there are other different reasons that cause bugs, and it should be better studied to improve current classifications. To be noted that, although this manual analysis was mostly conducted by the author of this dissertation, in case of doubts, other researchers were involved to discuss and analyze the root cause of the bug. It may be possible that some differences in judgment about the classification of the root cause exist whether this study is replicated in the future.  In fact, even if the location and time stamp of a \BIC are known, we need to (1) understand the bug and how to fix it in the case we have indeed found the actual \BIC, or (2) determine that what we assume to be the \BIC, is in fact not the \BIC, but simply the \FFC because the bug was not present at this moment.
+During the manual analysis, we discover some reasons which may explain why a \BFC was caused by the insertion of buggy lines. In Nova, the principal reason was the \emph{Co-evolution Internal} with a 42\% occurrence rate, followed by 33\% of the cases where bugs are in external APIs. The third most frequent reason was the \emph{Co-evolution External}, with a 17\% occurrence rate and finally, the less frequent reason was \emph{Compatibility} with a 8\% of the cases. On the other hand, in ElasticSearch the percentages are equally distributed with a 40\% occurrence rate in \emph{Co-evolution Internal} and  \emph{Bug in External API}, 20\% of occurence in  \emph{Co-evolution Exteranal} and bugs caused by the incompatibility of hardware and software were not found. This anecdotal classification should be further investigated since it can help researchers to identify different patterns, probably hidden, which can explain better how bugs are introduced and manifested in the source code. It also does not claim that these categories can be extended to other projects. We draw attention to the fact that there are other different reasons that cause bugs, and it should be better studied to improve current classifications. To be noted that, although this manual analysis was mostly conducted by the author of this dissertation, in case of doubts, other researchers were involved to discuss and analyze the root cause of the bug. It may be possible that some differences in judgment about the classification of the root cause exist whether this study is replicated in the future.  In fact, even if the location and time stamp of a \BIC are known, we need to (1) understand the bug and how to fix it in the case we have indeed found the actual \BIC, or (2) determine that what we assume to be the \BIC, is in fact not the \BIC, but simply the \FFC because the bug was not present at this moment.
 
-After examining 120 bug reports in this study, we notified that attempting to agree on the classification of the root causes of defects is a tedious and sometimes subjective process. Thus, this dissertation suggests an initial classification, without trying to make any strong statement. From the results, it was observed that from 10\% to 24\% of the analyzed \BFC were not induced by a \BIC. This results can be compared to the results obtained by Wan \emph{et al}, they defined a category for bugs caused by environmental and configuration issues as \emph{``Environmental and configuration bugs correspond to the bugs that lie in third-party libraries, underlying operating system, or non-code parts"} and found that 11.42\% of the reported bug studies fall into this category \cite{wan2017bug}. Thus, our initial classification may help to understand better the reasons why a \BFC was not caused by a \BIC. 
+After examining 120 bug reports in this study, we notified that attempting to agree on the classification of the root causes of defects is a tedious and sometimes subjective process. Thus, this dissertation suggests an initial classification, without trying to make any strong statement. From the results, it was observed that from 9\% to 21\% of the analyzed \BFC were not induced by a \BIC. This results can be compared to the results obtained by Wan \emph{et al}, they defined a category for bugs caused by environmental and configuration issues as \emph{``Environmental and configuration bugs correspond to the bugs that lie in third-party libraries, underlying operating system, or non-code parts"} and found that 11.42\% of the reported bug studies fall into this category \cite{wan2017bug}. Thus, our initial classification may help to understand better the reasons why a \BFC was not caused by a \BIC. 
 
-This dissertation discusses a myriad of options in terms of what a \BIC can and cannot be, and also how an SZZ algorithm will fail, depending on the specific implementation/version of the SZZ algorithm. An essential element of the empirical study is the ``gold standard'', which has the characterizations of \emph{BICs}. The study was able to quantify the ``real'' number of false positives, false negatives and true positives in the performance of the SZZ algorithm, and as far as we know, nobody has attempted to calculate it before. According to the results presented in Chapter~\ref{chap:application} Section 3.4, in the best scenario, the SZZ computes 38\% of false positives in Nova  with a recall and precision of 0.88 and 
-0.58. While in ElasticSearch, the number of false positive is the same, but the precision and recall decreased with results of 0.73 and 0.54. 
-These results may appear to be contradictory with the previous results where ElasticSearch has a fewer percentage of bugs that were not introduced by \emph{BICs}, and it may cause a lower number of false positives than Nova. However, the reason why ElasticSearch computes more false positives is that the presence of \BFC with a \emph{PC} set greater than 1 is higher than in Nova. Thus, it explains why the heuristics of the SZZ fail more frequently, and almost in half of these cases. The assumption made about that the earlier commit belongs to the \emph{PC} set is the \BIC is frequently wrong in these cases. When there is a \emph{PC} set with more than one pc, the SZZ algorithm makes heuristics to identify which commit from the set is the \BIC; in this case, the SZZ algorithm looks for the earlier commit and blames it as the \BIC. Another reason that explains why Nova computes higher recall than ElasticSearch is the number of \BFC with only new lines. This causes the number of false negatives to increase since SZZ does not include these \emph{BFCs} in their analysis.
+This dissertation discusses a myriad of options in terms of what a \BIC can and cannot be, and also how an SZZ algorithm will fail, depending on the specific implementation/version of the SZZ algorithm. An essential element of the empirical study is the ``gold standard'', which has the characterizations of \emph{BICs}. The study was able to quantify the ``real'' number of false positives, false negatives and true positives in the performance of the SZZ algorithm, and as far as we know, nobody has attempted to calculate it before. According to the results presented in Chapter~\ref{chap:application} Section 3.4, in the best scenario, the SZZ and SZZ-1 compute 55\% and 35\% of false positives in Nova with a F1-Score of 0.44 and 0.66 respectively. In ElasticSearch, the number of false positive in SZZ and SZZ-1 61\% and 34\% with a F1-score of 0.43 in both algorithms. 
+These results may appear to be contradictory with the previous results where ElasticSearch has a fewer percentage of bugs that were not introduced by \emph{BICs}, and it may cause a lower number of false positives than Nova. However, the reason why ElasticSearch computes more false positives may be because the presence of \BFC with a \emph{PC} set greater than 1 is higher than in Nova. Thus, it explains why the heuristics of the SZZ fail more frequently, and almost in half of these cases. The assumption made about that the earlier commit belongs to the \emph{PC} set is the \BIC is frequently wrong in these cases. When there is a \emph{PC} set with more than one pc, the SZZ algorithm makes heuristics to identify which commit from the set is the \BIC; in this case, the SZZ algorithm looks for the earlier commit and blames it as the \BIC. Another reason that explains why Nova computes higher recall than ElasticSearch is the number of \BFC with only new lines. This causes the number of false negatives to increase since SZZ does not include these \emph{BFCs} in their analysis.
 
 Other studies such as \cite{kim2006automatic}, \cite{williams2008szz}, and \cite{da2016framework} also manually analyzed samples of SZZ data, although they reported much higher percentages of correct SZZ results than this thesis. This is because these studies were not searching for the ``gold standard''; they do not distinguish between \emph{BICs} and \emph{FFMs}, and they do not define what a bug is. As results, they do not contemplate other scenarios which exist and other factors such as changes in external APIs or co-evolution changes. While this dissertation analyzes the whole context of a \BFC, these studies only focus in verifying the bug-fixing hunks, thus they could omit changes in the API or changes due to the evolution of the code. On the other hand, there is also the possibility that the specific projects selected in these studies had a fewer percentage of false negatives due to different cases of bug introduction. This is one of the reasons why we propose a further work to extend the analysis to a varied set of projects. 
 
-Our research provides empirical evidence in the assumption that the previous commit is where the cause of a bug is located is not true for a significant fraction of bugs up to 38\% in the best scenario. SZZ-based algorithms cannot find the change that introduced the bug mainly due to the impossibility to trace further some lines. Da Costa \emph{et al.} studied the impact of refactoring changes on different implementations of the SZZ and observed that 19.9\% of the bug-introducing lines changed in a \BFC are related to refactoring changes, and 47.95\% of the bug-introducing lines contained equivalent changes, in both cases these algorithms fail to identify the \BIC as they cannot track further these lines. 
+Our research provides empirical evidence in the assumption that the previous commit is where the cause of a bug is located is not true for a significant fraction of bugs up to 25\% in the best scenario. SZZ-based algorithms cannot find the change that introduced the bug mainly due to the impossibility to trace further some lines. Da Costa \emph{et al.} studied the impact of refactoring changes on different implementations of the SZZ and observed that 19.9\% of the bug-introducing lines changed in a \BFC are related to refactoring changes, and 47.95\% of the bug-introducing lines contained equivalent changes, in both cases these algorithms fail to identify the \BIC as they cannot track further these lines. 
 
 In addition, the results also show that our proposed model, theoretically, fulfills with the fundamental concern of identifying the \BIC when it exists. The results also indicate that in the best scenario, the use of SZZ presents a 54\% of true positives. These results suggests that the existing techniques based on the SZZ algorithm are generating several false positives and should be improved or reformulated in order to consider all the limitations mentioned in this dissertation. However, further investigation on the automation of the model needs to be conducted, as well as further study on how external factors and the evolution of requirements affect the manifestation of bugs in the projects.  
 
@@ -2513,7 +2513,7 @@ Specifically, in this dissertation we have observed that the basic distinction b
 
 Thus, to address these challenges, Chapter 5 presents a model to identify the changes that introduced bugs in the system. The model includes an overview of the challenges of bug introduction identification that can be used to define what is a bug and how practitioners may identify when it was inserted by assuming that there exists a hypothetical test that can check the correct behavior of the project in different snapshots. Chapter 5 also formulates a comprehensive nomenclature to argue about bug introduction and formally describes the theory of bug introduction. To our knowledge, this is the first study aiming to formulate a nomenclature for the bug introduction process. 
 
-The application of the theoretical model into practice may be complicated without a full automatization, however, Chapter 6 describes an empirical study where the model was applied in a manual process leading to identification of Bug-Introducing Commits (\emph{BICs}). The empirical study demonstrates the challenges and shortcomings of existing SZZ-based approaches and provides means of constructing a ``golden standard'' for their evaluation. It also demonstrates, empirically, that the correct identification of changes that introduced bugs is far from perfect and further research is needed because the results indicate that other factors such as the internal evolution of the requirements or external changes cause that up to 10\%-24\% of the bug were not introduced in the project.
+The application of the theoretical model into practice may be complicated without a full automatization, however, Chapter 6 describes an empirical study where the model was applied in a manual process leading to identification of Bug-Introducing Commits (\emph{BICs}). The empirical study demonstrates the challenges and shortcomings of existing SZZ-based approaches and provides means of constructing a ``golden standard'' for their evaluation. It also demonstrates, empirically, that the correct identification of changes that introduced bugs is far from perfect and further research is needed because the results indicate that other factors such as the internal evolution of the requirements or external changes cause that up to 9\%-21\% of the bug were not introduced in the project.
 
 
 %The thesis focuses on software bugs: while this topic has been extensively studied in the literature However, Ms. Rodríguez Pérez has observed that several basic notions related to bugs such as bug introduction and bug manifestation have not been adequately delineated in the literature, threatening the existing understanding of the bug introduction process. Indeed, as shown in Chapter 4 a well-known automated approach to identification of bug-introducing commits known as SZZ suffers from severe reliability and credibility concerns. To address this challenge in Chapter 5, Ms. Rodríguez Pérez has presented a comprehensive list of concepts needed to argue about bug introduction, as well as a theoretical model of a manual process leading to identification of a bug-introducing commit. This theoretical model necessarily makes several assumptions that are unlikely to be met in practice. Therefore, direct translation of the process model into practice is not obvious, and is a subject of a separate study reported in Chapter 6. Applied in practice this model provides means of constructing a ?golden set? for evaluation of existing automated approaches such as SZZ. Chapter 6 reports 26% and 38% of false positives when applying SZZ to two case studies. Going beyond the quantitative analysis, in this chapter Ms. Rodríguez Pérez also identifies the reasons for imprecision in SZZ and comparable techniques. The thesis concludes with a profound discussion of the findings (Chapter 7) and identification of directions for further research (Chapter 8).
@@ -3068,26 +3068,26 @@ En general, este nuevo modelo propuesto, es capaz de distinguir entre dos moment
 
 El estudio emp\'irico detallado en el Cap\'itulo 6 respalda la necesidad de b\'usqueda de un nuevo modelo para identificar inequ\'ivocamente los cambios que introducen errores, ya que no siempre es obvio identificar y entender c\'omo se introducen los errores en el c\'odigo fuente con los m\'etodos actuales. Esta tesis presenta en el Cap\'itulo 5 un nuevo modelo que resuelve esta necesidad y su implementaci\'on se ha estudiado emp\'iricamente en el Cap\'itulo 6. D\'onde el modelo propuesto se ha utilizado para llevar a cabo un estudio cualitativo de un conjunto de informes de errores para identificar, si existe, el cambio que introdujo el error (\BIC) dado un cambio que arregl\'o el error (\BFC). 
 
-Identificar las l\'ineas que contienen un error en el c\'odigo fuente de un proyecto no es un proceso tan sencillo como se podr\'ia pensar en un primer momento. De los 120 informes de errores extra\'idos de Nova y ElasticSearch en la primera fase, 116 informes pasaron a la segunda fase, cada uno de los informes de error se encuentra enlazado con el cambio que arregl\'o el error. En la segunda fase, los investigadores analizaron manualmente si el \BFC fue inducido por un \BIC los resultados se presentan en la Tabla \ref{tablaBugNoBug}. La tendencia en los resultados de ambos proyectos fue similar, ya que ambos resultados presentan un mayor porcentaje de \BFC que fueron inducidos por un \BIC en lugar de ser inducidos por otras razones. Sin embargo, el porcentaje de \BFC que no fue inducido por un \BIC es m\'as representativo en Nova con un 24\% de los \BFC que arregl\'o un error que no se introdujo en las l\'ineas del sistema. Por el contrario, este porcentaje es menor en ElasticSearch, donde solo el 10\% de los \BFC no fueron inducidos por un \BIC. Adem\'as, de los 38 \BFC inducidos por un \BIC en Nova, fuimos capaces de localizar manualmente el 66\% de ellos. Mientras que en ElasticSearch ese porcentaje fue mayor, de los 45 \BFC inducidos por un \BIC  fuimos capaces de localizar manualmente el 80\% de ellos. En ambos proyectos se puede observar la dificultad en la tarea de identificar manualmente el origen del error, ya que el porcentaje de duda entre los \BFC analizados alcanza un 17\% en ElasticSearch y el 31\% en Nova.
+Identificar las l\'ineas que contienen un error en el c\'odigo fuente de un proyecto no es un proceso tan sencillo como se podr\'ia pensar en un primer momento. De los 120 informes de errores extra\'idos de Nova y ElasticSearch en la primera fase, 116 informes pasaron a la segunda fase, cada uno de los informes de error se encuentra enlazado con el cambio que arregl\'o el error. En la segunda fase, los investigadores analizaron manualmente si el \BFC fue inducido por un \BIC los resultados se presentan en la Tabla \ref{tablaBugNoBug}. La tendencia en los resultados de ambos proyectos fue similar, ya que ambos resultados presentan un mayor porcentaje de \BFC que fueron inducidos por un \BIC en lugar de ser inducidos por otras razones. Sin embargo, el porcentaje de \BFC que no fue inducido por un \BIC es m\'as representativo en Nova con un 21\% de los \BFC que arregl\'o un error que no se introdujo en las l\'ineas del sistema. Por el contrario, este porcentaje es menor en ElasticSearch, donde solo el 9\% de los \BFC no fueron inducidos por un \BIC. Adem\'as, de los 45 \BFC inducidos por un \BIC en Nova, fuimos capaces de identificar manualmente 34 de ellos. Mientras que en ElasticSearch, de los 54 \BFC inducidos por un \BIC  fuimos capaces de identificar manualmente 38 de ellos. En ambos proyectos se puede observar la dificultad en la tarea de identificar manualmente el origen del error, ya que el porcentaje de duda entre los \BFC analizados alcanza un 19\% en Nova y el 27\% en ElasticSearch.
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Porcentaje de  Bug-Fixing Commit que han sido inducidos por un Bug-Introducing Commit \emph{BIC}, que no han sido inducidos a Bug-Introducing Commit \emph{NO\_BIC} e Indecisos.}
+	\caption{Porcentaje de  Bug-Fixing Commit que han sido inducidos por un Bug-Introducing Commit \emph{BIC}, y que no han sido inducidos por un  Bug-Introducing Commit \emph{NO\_BIC}.}
 	\label{tablaBugNoBug}
 	\centering
-	\begin{tabular}{|c|c|c|c| }
+	\begin{tabular}{|c|c|c| }
 		\hline
-  		&  BIC & NO\_BIC & Indecisos \\
+  		&  BIC & NO\_BIC  \\
 		\hline
 		\hline
-		Nova & 38 (66\%) & 14 (24\%) & 6 (10\%)\\
+		Nova & 45 (79\%) & 12 (21\%) \\
 		\hline
-		ES & 45 (78\%) &  6 (10\%) & 7 (12\%)\\
+		ES & 54 (91\%) &  5 (9\%) \\
 		\hline
 	\end{tabular}
 \end{table}
 
-Durante el an\'alisis manual, se descubrieron algunas razones que explican por qu\'e un \BFC no es inducido por un \BIC que se han presentado en forma de una clasificaci\'on anecd\'otica. La Tabla \ref{tablareasosNoBIC} muestra las razones m\'as comunes en ambos proyectos. En Nova, con un porcentaje de ocurrencia del 50\% la raz\'on principal fue la \emph{Co-evoluci\'on} de las l\'ineas que se cambiaron para corregir el error con los requisitos internos del proyecto. Es decir, debido a la evoluci\'on del proyecto, las l\'ineas que fueron insertadas en un momento puede que no tengan sentido o no cumplan las necesidades actuales del proyecto y se ha manifestado un error en esas l\'ineas, sin embargo, este error no significa que las l\'ineas fuesen err\'oneas en el momento que fueron insertadas, si no que debido a las nuevas necesidades del proyecto han pasado a manifestar el error. El segundo motivo, con un porcentaje de ocurrencia del 29\% es la presencia de errores en APIs externas que son consumidas por nuestro c\'odigo. La tercera raz\'on m\'as frecuente es la \emph{Co-evoluci\'on} de las l\'ineas que se modificando para corregir el error. Por otro lado, en ElasticSearch los porcentajes se distribuyen por igual con un 33\% de ocurrencia en todas las categor\'ias, con la \'unica excepci\'on de que en este proyecto no encontramos ning\'un error causado por la incompatibilidad de hardware y software. Esta clasificaci\'on anecd\'otica que explica las razones por las cuales un \BFC no es inducido por un \BIC deber\'ia investigarse con mayor profundidad, ya que puede ayudar a los investigadores a identificar patrones diferentes y quiz\'as ocultos, que ayuden a explicar y entender mejor c\'omo se insertan y se manifiestan los errores en el c\'odigo fuente. El prop\'osito de esta tesis no es establecer una \'unica clasificaci\'on que explique los motivos por los cuales un \BFC no es inducido por un \BIC o que esta clasificaci\'on se pued a extender a otros proyectos, si no que el motivo inicial de la clasificaci\'on es alertar e informar sobre el hecho de que hay otras razones donde una l\'inea que cuando no se insert\'o no era defectuosa  est\'a causando/manifestando un error. Por tanto, creemos que estos casos deber\'ian analizarse en profundidad para mejorar las clasificaciones actuales basadas en el origen del error.  
+Durante el an\'alisis manual, se descubrieron algunas razones que explican por qu\'e un \BFC no es inducido por un \BIC que se han presentado en forma de una clasificaci\'on anecd\'otica. La Tabla \ref{tablareasosNoBIC} muestra las razones m\'as comunes en ambos proyectos. En Nova, con un porcentaje de ocurrencia del 42\% la raz\'on principal fue la \emph{Co-evoluci\'on} de las l\'ineas que se cambiaron para corregir el error con los requisitos internos del proyecto. Es decir, debido a la evoluci\'on del proyecto, las l\'ineas que fueron insertadas en un momento puede que no tengan sentido o no cumplan las necesidades actuales del proyecto y se ha manifestado un error en esas l\'ineas, sin embargo, este error no significa que las l\'ineas fuesen err\'oneas en el momento que fueron insertadas, si no que debido a las nuevas necesidades del proyecto han pasado a manifestar el error. El segundo motivo, con un porcentaje de ocurrencia del 33\% es la presencia de errores en APIs externas que son consumidas por nuestro c\'odigo. La tercera raz\'on m\'as frecuente es la \emph{Co-evoluci\'on} de las l\'ineas que se modificando para corregir el error. Por otro lado, en ElasticSearch los porcentajes se distribuyen por igual con un 40\% de ocurrencia en \emph{Co-evoluci\'on interna} y errores en APIs externas, con la \'unica excepci\'on de que en este proyecto no encontramos ning\'un error causado por la incompatibilidad de hardware y software. Esta clasificaci\'on anecd\'otica que explica las razones por las cuales un \BFC no es inducido por un \BIC deber\'ia investigarse con mayor profundidad, ya que puede ayudar a los investigadores a identificar patrones diferentes y quiz\'as ocultos, que ayuden a explicar y entender mejor c\'omo se insertan y se manifiestan los errores en el c\'odigo fuente. El prop\'osito de esta tesis no es establecer una \'unica clasificaci\'on que explique los motivos por los cuales un \BFC no es inducido por un \BIC o que esta clasificaci\'on se pued a extender a otros proyectos, si no que el motivo inicial de la clasificaci\'on es alertar e informar sobre el hecho de que hay otras razones donde una l\'inea que cuando no se insert\'o no era defectuosa  est\'a causando/manifestando un error. Por tanto, creemos que estos casos deber\'ian analizarse en profundidad para mejorar las clasificaciones actuales basadas en el origen del error.  
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
@@ -3099,41 +3099,47 @@ Durante el an\'alisis manual, se descubrieron algunas razones que explican por q
   		& Nova & ElasticSearch  \\
 		\hline
 		\hline
-		Co-evoluci\'on Interna & 7 (50\%) & 2 (33\%) \\
+		Co-evoluci\'on Interna &  5 (42\%) & 2 (40\%) \\
 		\hline
-		Co-evoluci\'on Externa  & 2 (14\%) & 2 (33\%)\\
+		Co-evoluci\'on Externa  & 2 (17\%) & 1 (20\%)\\
 		\hline
-		Compatibilldad & 1 (7\%) & 0 (0\%)\\
+		Compatibilldad & 1 (8\%) & 0 (0\%)\\
 		\hline
-		Error en API Externa & 4 (29\%) & 2 (33\%)\\
+		Error en API Externa & 4 (33\%) & 2 (40\%)\\
 		\hline
 	\end{tabular}
+
 \end{table}
 
-Despu\'es de analizar varios errores durante el estudio emp\'irico, se ha observado que alcanzar un acuerdo en la clasificaci\'on de la causa ra\'iz de un error es tedioso y muchas veces se basa en la subjetividad de los investigadores. Cabe se\~nalar que, aunque el an\'alisis manual fue realizado principalmente por el autor de esta tesis, otros investigadores se involucraron para discutir y analizar la causa del error, en caso de dudas. Por lo tanto, esta disertaci\'on sugiere una clasificaci\'on inicial, sin tratar de hacer ninguna afirmaci\'on al respecto, pero se observa a partir de los resultados que del 10\% al 24\% de los \BFC analizados no fueron inducidos por \BIC y esta clasificaci\'on puede ayudar a entender mejor los principales motivos. Es posible que si otros investigadores repliquen nuestro trabajo, puedan obtener leves diferencias en la clasificaci\'on, puesto que en algunos casos sin una gu\'ia detallada, el an\'alisis puede ser subjetivo.  Y por ello, actualmente estamos trabajando en minimizar lo m\'aximo posible la subjetividad en la clasificaci\'on.
+Despu\'es de analizar varios errores durante el estudio emp\'irico, se ha observado que alcanzar un acuerdo en la clasificaci\'on de la causa ra\'iz de un error es tedioso y muchas veces se basa en la subjetividad de los investigadores. Cabe se\~nalar que, aunque el an\'alisis manual fue realizado principalmente por el autor de esta tesis, otros investigadores se involucraron para discutir y analizar la causa del error, en caso de dudas. Por lo tanto, esta disertaci\'on sugiere una clasificaci\'on inicial, sin tratar de hacer ninguna afirmaci\'on al respecto, pero se observa a partir de los resultados que del 9\% al 21\% de los \BFC analizados no fueron inducidos por \BIC y esta clasificaci\'on puede ayudar a entender mejor los principales motivos. Es posible que si otros investigadores repliquen nuestro trabajo, puedan obtener leves diferencias en la clasificaci\'on, puesto que en algunos casos sin una gu\'ia detallada, el an\'alisis puede ser subjetivo.  Y por ello, actualmente estamos trabajando en minimizar lo m\'aximo posible la subjetividad en la clasificaci\'on.
 
-Esta tesis discute un amplio abanico de opciones en t\'erminos de lo que puede ser y no puede ser un \BIC y tambi\'en, c\'omo el algoritmo SZZ fallar\'a dependiendo de la implementaci\'on/versi\'on espec\'ifica que se use del algoritmo SZZ. Un elemento esencial del estudio emp\'irico es la obtenci\'on del ``est\'andar de oro'', ya que tiene las caracterizaciones de los \BIC. Por lo tanto, el estudio puede cuantificar el n\'umero ``real'' de falsos positivos, falsos negativos y verdaderos positivos en el rendimiento de el algoritmo SZZ, que hasta donde sabemos, nadie ha intentado cuantificar anteriormente. En base a los resultados presentados en la Tabla \ref{realSZZes} (mas detalles en el Cap\'itulo 6, Secci\'on 3.4,), en el mejor escenario, el SZZ calcula el 38\% de falsos positivos en Nova con una recall y precisi\'on de 0.88 y 0.58. Mientras que en ElasticSearch, el n\'umero de falsos positivos es el mismo, un 38\% pero la precisi\'on y el recall disminuyeron con un resultado de 0.73 y 0.54. Estos resultados pueden parecer contradictorios con los resultados anteriores donde ElasticSearch tiene un menor porcentaje de \BFC que no son inducidos por un \BIC y esto puede hacer que el n\'umero de falsos positivos sea menor que en Nova. Sin embargo, la raz\'on por la cu\'al ElasticSearch computa m\'as falsos positivos se debe a que el n\'umero de \BFC con conjunto commits previos mayor que uno es superior en ElasticSearch que en Nova. Este hecho provoc\'o que la heur\'istica del algoritmo SZZ fallase con m\'as frecuencia en ElasticSearch, y casi en la mitad de estos casos se asumi\'o que el commit mas antiguo en el tiempo perteneciente al conjunto \PC era el \BIC y en realidad, esta heur\'istica no se cumpli\'o en la mayor\'ia de los casos. Otra raz\'on que explica por qu\'e Nova calcula una recall más alta que ElasticSearch es el n\'umero de \BFC con solamente nuevas l\'ineas a\~nadidas, esto caus\'o que la cantidad de falsos negativos aumentase ya que SZZ no incluye estos \BFC en su an\'alisis.
+Esta tesis discute un amplio abanico de opciones en t\'erminos de lo que puede ser y no puede ser un \BIC y tambi\'en, c\'omo el algoritmo SZZ fallar\'a dependiendo de la implementaci\'on/versi\'on espec\'ifica que se use del algoritmo SZZ. Un elemento esencial del estudio emp\'irico es la obtenci\'on del ``est\'andar de oro'', ya que tiene las caracterizaciones de los \BIC. Por lo tanto, el estudio puede cuantificar el n\'umero ``real'' de falsos positivos, falsos negativos y verdaderos positivos en el rendimiento de los algoritmos SZZ y SZZ-1, que hasta donde sabemos, nadie ha intentado cuantificar anteriormente. En base a los resultados presentados en la Tabla \ref{realSZZes} (mas detalles en el Cap\'itulo 6, Secci\'on 3.4,), en el mejor escenario, el algoritmo calcula el 55\% de falsos positivos en Nova con un F1-score de 0.44. Mientras que en ElasticSearch, el n\'umero de falsos positivos es superior, con un 60\% y 
+el F1-Score es igual que en Nova, 0.44. Estos resultados pueden parecer contradictorios con los resultados anteriores donde ElasticSearch tiene un menor porcentaje de \BFC que no son inducidos por un \BIC y esto puede hacer que el n\'umero de falsos positivos sea menor que en Nova. Sin embargo, la raz\'on por la cu\'al ElasticSearch computa m\'as falsos positivos se debe a que el n\'umero de \BFC con conjunto commits previos mayor que uno es superior en ElasticSearch que en Nova. Este hecho provoc\'o que la heur\'istica del algoritmo SZZ fallase con m\'as frecuencia en ElasticSearch, y casi en la mitad de estos casos se asumi\'o que el commit mas antiguo en el tiempo perteneciente al conjunto \PC era el \BIC y en realidad, esta heur\'istica no se cumpli\'o en la mayor\'ia de los casos. Otra raz\'on que explica por qu\'e Nova calcula una recall más alta que ElasticSearch es el n\'umero de \BFC con solamente nuevas l\'ineas a\~nadidas, esto caus\'o que la cantidad de falsos negativos aumentase ya que SZZ no incluye estos \BFC en su an\'alisis.
 
 \begin{table}[!t]
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Resultados de verdaderos positivos, verdaderos negativos, falsos negativos, recall y precisi\'on para el algoritmo SZZ suponiendo que el algoritmo solo marca uno los compromisos anteriores del conjunto de \PC{b} como \BIC.}
+	\caption{Resultados de verdaderos positivos, verdaderos negativos, falsos negativos, recall y precisi\'on para los algoritmos SZZ y SZZ-1 suponiendo que el algoritmo solo marca uno los compromisos anteriores del conjunto de \PC{b} como \BIC.}
 	\label{realSZZes}
 	\centering
-	\begin{tabular}{|c|c|c|c|c|c|}
+	\begin{tabular}{|c|c|c|c|c|c|c|}
 		\hline
- 	 	&  Verdaderos Positivos & Falsos Positivos & Falsos Negatives & Recall & Precisi\'on \\
+ 	 	&  Verdaderos Positivos & Falsos Positivos & Falsos Negativos& Precisi\'on& Recall & F1 \\
 		\hline
 		\hline
-		Nova & 21 (54\%) & 15 (38\%) & 3 (8\%) & 0.88 & 0.58\\
+		Nova (SZZ) & 25 (26\%) & 54 (56\%) & 17 (18\%) & 0.32& 0.60&0.42\\
 		\hline
-		ES &  19 (45\%) & 16 (38\%) & 7 (17\%)& 0.73 & 0.54 \\
+		Nova (SZZ-1) & 28 (30\%) & 51 (55\%) & 14 (15\%) &  0.35& 0.58&0.44\\
+		\hline
+		ES (SZZ)&  26 (27\%) & 59 (61\%) & 12 (12\%)&  0.31& 0.68& 0.43\\
+		\hline
+		ES (SZZ-1) &  27 (28\%) & 58 (60\%) & 11 (12\%)& 0.32 & 0.71 &0.44\\
 		\hline
 	\end{tabular}
 \end{table}
 
 Otros estudios como Kim~\emph{et al.}~\cite{kim2006automatic}, Williams y Spacco~\cite{williams2008szz} y Da Costa \emph{et al.}~\cite{da2016framework} tambi\'en analizaron manualmente muestras de datos usando el algoritmo SZZ. Sin embargo, esto autores obtuvieron porcentajes mucho m\'as altos de precisi\'on y recall en los resultados obtenidos en el SZZ que los que se han obtenido en esta tesis. Esto se debe a que \'estos estudios no estaban comparando sus resultados con ning\'un ``est\'andar de oro'', y por tanto no diferenciaban entre \BIC y \FFC, y no defin\'ian exactamente qu\'e era un error. Como consecuencia, estos estudios no contemplaron otros posibles escenarios donde la causa del error era debida a otras razones distintas a la actual premisa, por ejemplo, cambios en APIs externas o cambios de co-evoluci\'on. Mientras que en esta tesis analizamos todo el contexto de un \BFC, \'estos estudios solo se enfocan en verificar si dado un \BFC el algoritmo es capaz de encontrar un posible \BIC, sin la necesidad de que este \BIC sea la verdadera raz\'on. Por otro lado, puede ocurrir que debido a los proyectos seleccionados en estos estudios, el porcentaje de falsos negativos disminuya debido a casos muy diferentes de introducci\'on de errores por commit previos. Esta es uno de las razones por las cuales proponemos una l\'inea de trabajo futuro con el fin de extender nuestro an\'alisis a un mayor conjunto de proyectos.
 
-En cualquier caso, nuestra investigaci\'on muestra evidencia de que asumir que el commit previo a las l\'ineas modificadas en un \BFC es el origen del error no se cumple para una fracci\'on significativa de errores. Adem\'as, tambi\'en muestra que el modelo propuesto en el Cap\'itulo 5, al menos te\'oricamente, cumple con la preocupaci\'on fundamental de identificar inequ\'ivocamente el \BIC, cuando \'este existe. Y muestra el porcentaje de falsos positivos presentes en el algoritmo SZZ, que en el mejor de los casos es un 26\% en Nova. Sin embargo, es necesario realizar m\'as investigaciones sobre la automatizaci\'on del modelo, as\'i como investigar m\'as a fondo c\'omo los factores externos y la evoluci\'on de los requisitos afectan a la manifestaci\'on e inserci\'on de errores en los proyectos.
+En cualquier caso, nuestra investigaci\'on muestra evidencia de que asumir que el commit previo a las l\'ineas modificadas en un \BFC es el origen del error no se cumple para una fracci\'on significativa de errores. Adem\'as, tambi\'en muestra que el modelo propuesto en el Cap\'itulo 5, al menos te\'oricamente, cumple con la preocupaci\'on fundamental de identificar inequ\'ivocamente el \BIC, cuando \'este existe. Y muestra el porcentaje de falsos positivos presentes en el algoritmo SZZ, que en el mejor de los casos es un 25\% en Nova usando SZZ-1 donde se assume que el BIC es el mas temprano en el tiempo de todos los possibles BIC identificados. Sin embargo, es necesario realizar m\'as investigaciones sobre la automatizaci\'on del modelo, as\'i como investigar m\'as a fondo c\'omo los factores externos y la evoluci\'on de los requisitos afectan a la manifestaci\'on e inserci\'on de errores en los proyectos.
 
 \section{Conclusiones y Trabajo Futuro}
 Este cap\'itulo recapitula los objetivos iniciales de investigaci\'on y las contribuciones establecidas en el Cap\'itulo 1. Adem\'as describe las conclusiones principales de esta tesis as\'i como las posibles l\'ineas de investigaci\'on futura.
@@ -3156,7 +3162,7 @@ Para comprender el problema actual sobre d\'onde se introdujo el error, se ha re
 
 Despu\'es de entender y cuantificar el problema actual sobre la identificaci\'on del \BIC. Se propuso un modelo te\'orico que da soluci\'on a estas limitaciones al usar el algoritmo SZZ o algoritmos basados en el SZZ. Importantes aportaciones en esta tesis son: la definici\'on de qu\'e es un error, c\'omo identificar el momento de inserci\'on de un error usando el propuesto modelo y finalmente el criterio que debe aplicarse para usar el modelo. Como ya se ha comentado anteriormente, el modelo propuesto se basa en la idea de un test hipot\'etico que conoce en cada momento c\'omo debe comportarse el proyecto en un momento espec\'ifico. El modelo propuesto contempla todos los escenarios que limitan el correcto funcionamiento del SZZ ya que ejecuta un test que comprueba en cada uno de los momentos previos al \BFC, la funcionalidad que se ha arreglado en el \BFC y no solo se tiene en cuenta el an\'alisis de las l\'ineas que han sido modificadas par identificar el origen del error. Por tanto, el momento en el que el test falle por primera vez, es el momento en el que se introdujo el error.
 
-Por \'ultimo, se presentas las conclusiones sobre el experimento emp\'irico que estudia la aplicaci\'on pr\'actica del modelo propuesto en dos casos de estudio: Nova y ElasticSearch. \'Este estudio ha demostrado que para una larga fracci\'on de los errores analizados se puede identificar si un \BFC ha sido causado por un \BIC o no usando la teor\'ia del modelo propuesto. Cuando un \BFC es causado por un \BIC, hemos identificado manualmente el 66\% de los commits que insertaron el error en Nova y el 80\% de en ElasticSearch. Adem\'as, hemos sido capaces de identificar hasta una 43\% de los \FFC en Nova y hasta un 83\% en ElasticSearch. Adem\'as, esta tesis tambi\'en propone una terminolog\'ia para entender e identificar cada uno de los elementos que forman parte del an\'alisis para localizar el origen del error. Hasta donde sabemos, esta es la primera vez que se detalla una terminog\'ia con el f\'in de explicar e identificar el \BIC dado un \BFC.
+Por \'ultimo, se presentas las conclusiones sobre el experimento emp\'irico que estudia la aplicaci\'on pr\'actica del modelo propuesto en dos casos de estudio: Nova y ElasticSearch. \'Este estudio ha demostrado que para una larga fracci\'on de los errores analizados se puede identificar si un \BFC ha sido causado por un \BIC o no usando la teor\'ia del modelo propuesto. Cuando un \BFC es causado por un \BIC, hemos identificado manualmente el 60\% de los commits que insertaron el error en Nova y el 68\% en ElasticSearch. Adem\'as, esta tesis tambi\'en propone una terminolog\'ia para entender e identificar cada uno de los elementos que forman parte del an\'alisis para localizar el origen del error. Hasta donde sabemos, esta es la primera vez que se detalla una terminog\'ia con el fin de explicar e identificar el \BIC dado un \BFC.
 
 
 Para resumir, esta tesis se centra en describir y contextualizar el problema actual de identificar el origen de un error. Para tratar este problema, hemos estudiado y cuantificado las limitaciones que afectan al algoritmo m\'as usado, y hemos propuesto una soluci\'on basada en un nuevo modelo te\'orico que localiza inequ\'ivocamente el \BIC. Hemos aplicado este modelo a dos casos de estudio para localizar el origen del error creando un conjunto que contempla ``la gran verdad'' y que ha sido usado para comparar el rendimiento real de algoritmos basados en el SZZ.

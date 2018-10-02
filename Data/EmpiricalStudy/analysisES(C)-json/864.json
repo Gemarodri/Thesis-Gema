@@ -1,0 +1,21 @@
+{
+	"Id" : "864",
+	"Files" : 2,
+	"LA" : 5,
+	"LM" : 0,
+	"LD" : 1,
+	"num_pc_L" : 1,
+	"pcSET_L": ["8f32467"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : ["8f32467"],
+	"num_pc_T" : 0,
+	"pcSET_T": [],
+	"newLines_T" : "Yes",
+	"BIC_T" : "No" ,
+	"BICinpcSET_T" : "No",
+	"idBIC_T" : [],
+	"Match": [],
+	"MatchBIC_T_BIC_L": "-"
+}

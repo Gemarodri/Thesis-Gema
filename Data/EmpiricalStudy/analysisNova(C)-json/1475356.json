@@ -1,0 +1,20 @@
+{
+	"Id" : "1475356",
+	"num_pc_L" : 1,
+	"LA" : 5,
+	"LM" : 2,
+	"LD" : 0,
+	"Files" : 1,
+	"pcSET_L": ["0eb7e35"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : ["0eb7e35"],
+	"num_pc_T" : 1,
+	"pcSET_T": ["83d01e1"],
+	"newLines_T" : "No",
+	"BIC_T" : "Yes" ,
+	"BICinpcSET_T" : "Yes",
+	"idBIC_T" : ["83d01e1"],
+	"Match": ["83d01e1-0eb7e35"]
+}

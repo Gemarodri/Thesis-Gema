@@ -1,0 +1,21 @@
+{
+	"Id" : "9511",
+	"Files" : 2,
+	"LM" : 15,
+	"LD" : 2,
+	"LA" : 53,
+	"num_pc_L" : 5,
+	"pcSET_L": ["128b83e","0c2d12b", "b21024b", "6d87284", "9622f78"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : ["0c2d12b"],
+	"num_pc_T" : 4,
+	"pcSET_T": ["ed61a2d","220348d","57a30d6","adc2b1"],
+	"newLines_T" : "No",
+	"BIC_T" : "Yes" ,
+	"BICinpcSET_T" : "Yes",
+	"idBIC_T" : ["57a30d6"],
+	"Match": ["128b83e-220348d","0c2d12b-57a30d6"],
+	"MatchBIC_T_BIC_L": "Yes"
+}

@@ -1,0 +1,21 @@
+{
+	"Id" : "2546",
+	"num_pc_L" : 1,
+	"LA" : 6,
+	"LM" : 0,
+	"LD" : 1,
+	"Files" : 1,
+	"pcSET_L": ["ea9a4d7"],
+	"ONL_L" : "No",
+	"BIC_L" : "No" ,
+	"BICinpcSET_L" : "No",
+	"idBIC_L" : "",
+	"num_pc_T" : 1,
+	"pcSET_T": ["db3095a"],
+	"newLines_T" : "No",
+	"BIC_T" : "Yes" ,
+	"BICinpcSET_T" : "Yes",
+	"idBIC_T" : ["db3095a"],
+	"Match": [ ],
+	"MatchBIC_T_BIC_L": "-"
+}

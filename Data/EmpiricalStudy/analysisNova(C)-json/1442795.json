@@ -1,0 +1,23 @@
+{
+	"Id" : "1442795",
+	"Nota":"Es demasiado tiempo el que ha pasado desde que se inserto el error hasta que lo nofificaron, pudiera ser que los requisitos cambiasen en ese tiempo",
+	"num_pc_L" : 4,
+	"LA" : 7,
+	"LM" : 6,
+	"LD" : 0,
+	"Files" : 1,
+	"pcSET_L": ["43483ff","0a18598","7a500ec","5aa5229"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : "5aa5229",
+	"num_pc_T" : 0,
+	"pcSET_T": [],
+	"newLines_T" : "Yes",
+	"BIC_T" : "No" ,
+	"BICinpcSET_T" : "No",
+	"idBIC_T" : [],
+	"Match": [],
+	"MatchBIC_T_BIC_L": "-"
+}
+

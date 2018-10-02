@@ -1,0 +1,21 @@
+{
+	"Id" : "7740",
+	"num_pc_L" : 0,
+	"LA" : 295,
+	"LM" : 0,
+	"LD" : 1,
+	"Files" : 2,
+	"pcSET_L": ["7c959e7"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : "7c959e7",
+	"num_pc_T" : 2,
+	"pcSET_T": ["c7dc600","7467759"],
+	"newLines_T" : "No",
+	"BIC_T" : "Yes" ,
+	"BICinpcSET_T" : "Yes",
+	"idBIC_T" : ["7467759"],
+	"Match": ["7467759-7c959e7"],
+	"MatchBIC_T_BIC_L": "Yess"
+}

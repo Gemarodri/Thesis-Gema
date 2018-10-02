@@ -1,0 +1,21 @@
+{
+	"Id" : "13334",
+	"Files" : 1,
+	"LM" : 1,
+	"LD" : 0,
+	"LA" : 0,
+	"num_pc_L" : 1,
+	"pcSET_L": ["c73fff7"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : ["c73fff7"],
+	"num_pc_T" : 1,
+	"pcSET_T": ["085775e"],
+	"newLines_T" : "No",
+	"BIC_T" : "Yes" ,
+	"BICinpcSET_T" : "Yes",
+	"idBIC_T" : ["085775e"],
+	"Match": ["c73fff7-085775e"],
+	"MatchBIC_T_BIC_L": "Yes"
+}

@@ -1,0 +1,21 @@
+{
+	"Id" : "1424647",
+	"num_pc_L" : 1,
+	"LA" : 9,
+	"LM" : 0,
+	"LD" : 3,
+	"Files" : 4,
+	"pcSET_L": ["d2cbb9a"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : ["d2cbb9a"],
+	"num_pc_T" : 1,
+	"pcSET_T": ["7a000f1"],
+	"newLines_T" : "No",
+	"BIC_T" : "Yes" ,
+	"BICinpcSET_T" : "Yes",
+	"idBIC_T" : ["7a000f1"],
+	"Match": ["7a000f1-d2cbb9a"],
+	"MatchBIC_T_BIC_L": "Yes"
+}

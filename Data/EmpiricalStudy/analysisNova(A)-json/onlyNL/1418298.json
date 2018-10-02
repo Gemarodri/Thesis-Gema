@@ -1,0 +1,20 @@
+{
+	"Id" : "1418298",
+	"num_pc_L" : 1,
+	"LA" : 51,
+	"LM" : 2,
+	"LD" : 0,
+	"Files" : 2,
+	"pcSET_L": ["ba92546"],
+	"ONL_L" : "Yes",
+	"BIC_L" : "No" ,
+	"BICinpcSET_L" : "No",
+	"idBIC_L" : "",
+	"num_pc_T" : 1,
+	"pcSET_T": ["ea6c970"],
+	"newLines_T" : "No",
+	"BIC_T" : "No" ,
+	"BICinpcSET_T" : "No",
+	"idBIC_T" : "",
+	"Match": ["ea6c970-ba92546"] 
+}

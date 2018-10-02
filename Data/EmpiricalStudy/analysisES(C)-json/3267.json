@@ -1,0 +1,21 @@
+{
+	"Id" : "3267",
+	"num_pc_L" : 1,
+	"LA" : 5,
+	"LM" : 0,
+	"LD" : 1,
+	"Files" : 1,
+	"pcSET_L": ["9bf686e"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : ["9bf686e"],
+	"num_pc_T" : 0,
+	"pcSET_T": [],
+	"newLines_T" : "Yes",
+	"BIC_T" : "No" ,
+	"BICinpcSET_T" : "No",
+	"idBIC_T" : [],
+	"Match": [],
+	"MatchBIC_T_BIC_L": "-"
+}

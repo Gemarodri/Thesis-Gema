@@ -1,0 +1,21 @@
+{
+	"Id" : "4417",
+	"Files" : 1,
+	"LM" : 1,
+	"LD" : 1,
+	"LA" : 13,
+	"num_pc_L" : 1,
+	"pcSET_L": ["510397a"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : [],
+	"num_pc_T" : 1,
+	"pcSET_T": ["52798a7"],
+	"newLines_T" : "No",
+	"BIC_T" : "Yes" ,
+	"BICinpcSET_T" : "Yes",
+	"idBIC_T" : [],
+	"Match": ["510397a-52798a7"],
+	"MatchBIC_T_BIC_L": "-"
+}

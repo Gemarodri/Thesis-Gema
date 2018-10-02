@@ -1,0 +1,22 @@
+{
+	"Id" : "1403544",
+	"num_pc_L" : 1,
+	"LA" : 0,
+	"LM" : 1,
+	"LD" : 0,
+	"Files" : 1,
+	"pcSET_L": ["6b16c87"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "No",
+	"idBIC_L" : [],
+	"Real_BIC":"6956057ac ( 1 Dec 2010, Eric Day) ",
+	"num_pc_T" : 0,
+	"pcSET_T": [],
+	"newLines_T" : "Yes",
+	"BIC_T" : "No" ,
+	"BICinpcSET_T" : "No",
+	"idBIC_T" : [],
+	"Match": [],
+	"MatchBIC_T_BIC_L": "-"
+}

@@ -1,0 +1,21 @@
+{
+	"Id" : "1466390",
+	"num_pc_L" : 1,
+	"LA" : 0,
+	"LM" : 3,
+	"LD" : 0,
+	"Files" : 1,
+	"pcSET_L": ["501ff41"],
+	"ONL_L" : "No",
+	"BIC_L" : "Yes" ,
+	"BICinpcSET_L" : "Yes",
+	"idBIC_L" : ["501ff41"],
+	"num_pc_T" : 0,
+	"pcSET_T": [],
+	"newLines_T" : "Yes",
+	"BIC_T" : "No" ,
+	"BICinpcSET_T" : "No",
+	"idBIC_T" : [],
+	"Match": [],
+	"MatchBIC_T_BIC_L": "-"
+}
