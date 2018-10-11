@@ -1,0 +1,1927 @@
+#ID;#BFC;BR-Message;BFC-Message;Files;;;;;;;;;
+200;a7ad295f63aaf3b6073cbbe6d0ca684031b84aab;"Zen Discovery: ungraceful shutdown of the master and start of replacement node might cause the cluster not to elect a new master 
+If killing -9 the master, and then starting a new node right away on the same box might cause the cluster to get into a state where a new master is not elected. This is because the new node will use the same port and it will be considered as the failed node.   ";"Zen Discovery: ungraceful shutdown of the master and start of replacement node might cause the cluster not to elect a new master,
+";"modules/elasticsearch/src/main/java/org/elasticsearch/discovery/zen/ZenDiscovery.java,modules/elasticsearch/src/main/java/org/elasticsearch/discovery/zen/fd/MasterFaultDetection.java ,modules/elasticsearch/src/main/java/org/elasticsearch/discovery/zen/fd/NodesFaultDetection.java 
+";;;;;;;;;
+261;c987e8a534c25873a1d52c5c5714fd14adbfac6c;"Querying mapping on a non-master throws an error
+Start three local nodes, and run this script: http://gist.github.com/477132
+Note: don't change the :9201 to :9200
+You will see that the GET _mapping request against :9200 works, but the one against :9201 fails
+";Querying mapping on a non-master throws an error,;modules/elasticsearch/src/main/java/org/elasticsearch/cluster/node/DiscoveryNodes.java;;;;;;;;;
+484;598225f8338bf6bd19ee0d4bf6b7124619c493fc;"document level analyzer (analyzer, index_analyzer, search_analyzer) are not serialized (and not maintained across restarts) 
+document level analyzer (analyzer, index_analyzer, search_analyzer) are not serialized (and not maintained across restarts)";"document level analyzer (analyzer, index_analyzer, search_analyzer) are not serialized (and not maintained across restarts)
+";modules/elasticsearch/src/main/java/org/elasticsearch/index/mapper/xcontent/ObjectMapper.java,modules/elasticsearch/src/main/java/org/elasticsearch/index/mapper/xcontent/XContentDocumentMapper.java;;;;;;;;;
+764;2a0e0b767ad4275dabd7abf4625b6ad5f8a8757;"Mapper: Using `dynamic_template` can result in warning of parsed and original source difference (resulting in excessive mapping parsing)
+Mapper: Using dynamic_template can result in warning of parsed and original source difference (resulting in excessive mapping parsing).";Mapper: Using dynamic_template can result in warning of parsed and original source difference (resulting in excessive mapping parsing),;"modules/elasticsearch/src/main/java/org/elasticsearch/index/mapper/xcontent/DynamicTemplate.java 
+";;;;;;;;;
+864;ffc8c3b68a775a61924ca0cd01dc8b9b97a96d09;"Weird error message on syntax error
+Hiya
+When trying this request (which I know is incorrect) it returns a good error message to my client, but logs a weird error message in the logs:
+# [Tue Apr 19 11:16:36 2011] Protocol: http, Server: 192.168.5.103:9200
+curl -XPOST 'http://127.0.0.1:9200/_aliases?pretty=1'  -d '
+{
+   ""actions"" : [
+      {
+         ""add"" : [
+            ""foo"",
+            ""bar""
+         ]
+      }
+   ]
+}
+'
+
+# [Tue Apr 19 11:16:36 2011] Response:
+# {
+#    ""status"" : 500,
+#    ""error"" : ""ElasticSearchIllegalArgumentException[Alias action 
+# >    [add] requires an [index] to be set]""
+# }
+Weird error in logs:
+[2011-04-19 11:16:36,498][WARN ][http.netty               ] [Dweller-in-Darkness] Caught exception while handling client http traffic, closing connection
+java.lang.IllegalStateException: cannot send more responses than requests
+    at org.elasticsearch.common.netty.handler.codec.http.HttpContentEncoder.writeRequested(HttpContentEncoder.java:102)
+    at org.elasticsearch.common.netty.channel.SimpleChannelHandler.handleDownstream(SimpleChannelHandler.java:266)
+    at org.elasticsearch.common.netty.channel.DefaultChannelPipeline.sendDownstream(DefaultChannelPipeline.java:568)
+    at org.elasticsearch.common.netty.channel.DefaultChannelPipeline.sendDownstream(DefaultChannelPipeline.java:563)
+    at org.elasticsearch.common.netty.channel.Channels.write(Channels.java:611)
+    at org.elasticsearch.common.netty.channel.Channels.write(Channels.java:578)
+    at org.elasticsearch.common.netty.channel.AbstractChannel.write(AbstractChannel.java:259)
+    at org.elasticsearch.http.netty.NettyHttpChannel.sendResponse(NettyHttpChannel.java:118)
+    at org.elasticsearch.rest.action.admin.indices.alias.RestIndicesAliasesAction$1.onFailure(RestIndicesAliasesAction.java:131)
+    at org.elasticsearch.action.support.BaseAction$ThreadedActionListener$2.run(BaseAction.java:95)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+    at java.lang.Thread.run(Thread.java:662)
+";Weird error message on syntax error;modules/elasticsearch/src/main/java/org/elasticsearch/ElasticSearchIllegalArgumentException.java, modules/elasticsearch/src/main/java/org/elasticsearch/rest/action/admin/indices/alias/RestIndicesAliasesAction.java;;;;;;;;;
+1072;355f80adc92cc69ed35cbc4936f0f8334ee55307;"fragment_size doesn't work with quoted phrase
+I nave query with highlight like this: (Here is curl recreation https://gist.github.com/1032233 ) Look at issued result ( item4.description ) (you can see all doc also in _source ), and mapping.
+if i supply query: two words item.description returns only 128 chars, as expected. But if ""two words"" it returns the same 128 chars and all remainder of that field. Bit strange.
+ES (v 0.16.0)
+Please tell, can I do the trick with highlight fields like [""item_.title"", ""item_.description""] in query fields?
+I understand, it looks bit strange. I’m try to explain: All my docs contains 10 items with title and description (and so on, not important). I need to have 1 match per field, so my first version with just array of items wont work. If i setup number_of_fragments to 1 it returns only 1 result for all 10 items. If i setup number_of_fragments to 0 it returns all description concatenated in 1 highlight. So solution is to make item1, item2 etc. Is it best solution?
+PS No any reaction on my 3 messages after first at mailing list. I believe this is a bug, so i created this issue.
+ES v 0.16.2 also vulnerable This is still present in 0.90.0.RC1, I've rewritten the recreation into something runnable:
+https://gist.github.com/clintongormley/5319822
+At the bottom are two queries - one phrase query which shows the problem in item4.description, and one non-phrase query which shows expected behaviour.
+@s1monw this looks like another lucene highlighter problem
+LUCENE-4899 seems to fix this problem as well. At least the test I added does the right thing. I will keep this open until we upgraded to Lucene 4.3";"Added temporary fix for LUCENE-4899 where FastVectorHighlihgter failed with StringIndexOutOfBoundsException
+
+if a single highlight phrase or term was greater than the fragCharSize producing negative string offsets
+
+The fixed BaseFragListBuilder was added as XSimpleFragListBuilder which triggers an assert once Elasticsearch
+upgrades to Lucene 4.3
+";src/main/java/org/apache/lucene/search/vectorhighlight/XSimpleFragListBuilder.java,src/main/java/org/elasticsearch/search/highlight/HighlightPhase.java;;;;;;;;;
+1130;8f6de29580f0162b897525445cfd47cd81bb0d4f;"mget doesn't work with aliases
+# [Tue Jul 19 10:43:16 2011] Protocol: http, Server: 192.168.5.103:9200
+curl -XPUT 'http://127.0.0.1:9200/foo_1/foo/1?pretty=1'  -d '
+{
+   ""foo"" : ""bar""
+}
+'
+
+# [Tue Jul 19 10:43:16 2011] Response:
+# {
+#    ""ok"" : true,
+#    ""_index"" : ""foo_1"",
+#    ""_id"" : ""1"",
+#    ""_type"" : ""foo"",
+#    ""_version"" : 1
+# }
+
+# [Tue Jul 19 10:43:18 2011] Protocol: http, Server: 192.168.5.103:9200
+curl -XPOST 'http://127.0.0.1:9200/_aliases?pretty=1'  -d '
+{
+   ""actions"" : [
+      {
+         ""add"" : {
+            ""index"" : ""foo_1"",
+            ""alias"" : ""foo""
+         }
+      }
+   ]
+}
+'
+
+# [Tue Jul 19 10:43:18 2011] Response:
+# {
+#    ""ok"" : true,
+#    ""acknowledged"" : true
+# }
+
+# [Tue Jul 19 10:43:20 2011] Protocol: http, Server: 192.168.5.103:9200
+curl -XGET 'http://127.0.0.1:9200/foo/_mget?pretty=1'  -d '
+{
+   ""docs"" : [
+      {
+         ""_id"" : 1
+      }
+   ]
+}
+'
+
+# [Tue Jul 19 10:43:20 2011] Response:
+# {
+#    ""status"" : 404,
+#    ""error"" : ""IndexMissingException[[foo] missing]""
+# }
+";mget doesn't work with aliases;"modules/elasticsearch/src/main/java/org/elasticsearch/action/get/MultiGetRequest.java, modules/elasticsearch/src/main/java/org/elasticsearch/action/get/TransportMultiGetAction.java 
+";;;;;;;;;
+1134;cbb1c35f94a36e8871301fce435d516db3cd4256;"Network: Default (back) network.tcp.connect_timeout to 30s 
+It was reduced to 2s in 0.17, but seems to cause problems, make it 30s back";Network: Default (back) network.tcp.connect_timeout to 30s;modules/elasticsearch/src/main/java/org/elasticsearch/common/network/NetworkService.java;;;;;;;;;
+1154;31ea01bbc68f64cd7787b97479cb5deba1b529b9;"Search API: REST endpoint should use default operation_threading of thread_per_shard
+operation_threading, which defaults to thread_per_shard on the Java API, should default to it also in the REST API (it defaults to single_thread now). This only applies for search executed on the node the request was received on.";"Search API: REST endpoint should use default operation_threading of thread_per_shard,
+";"modules/elasticsearch/src/main/java/org/elasticsearch/action/search/SearchOperationThreading.java,modules/elasticsearch/src/main/java/org/elasticsearch/rest/action/search/RestSearchAction.java,modules/elasticsearch/src/main/java/org/elasticsearch/rest/action/search/RestSearchScrollAction.java 
+";;;;;;;;;
+1162;b70694ce631d7b55be6edd7b9049237456a6e4b4;"Update Settings: Changing the number of replicas does not cause allocation / deallocation of shards
+The shards do not get allocated / deallocated when changing the number of replicas until another state changing event happens... (like creating an index, adding / removing a node)";"Update Settings: Changing the number of replicas does cause allocation / deallocation of shards,
+";modules/elasticsearch/src/main/java/org/elasticsearch/cluster/metadata/MetaDataUpdateSettingsService.java;;;;;;;;;
+1380;bd87f8de3ac84eb408d5ada0976664545c9228a0;"Highlighting fails with NPE for multifield and number_of_fragments:0
+To reproduce, start two ES nodes and run the following script:
+curl -XDELETE http://localhost:9200/testidx
+curl -XPUT http://localhost:9200/testidx -d '{
+    ""settings"" : {
+        ""index"" : {
+            ""number_of_shards"" : 1,
+            ""number_of_replicas"" : 0
+        }
+    },
+    ""mappings"" : {
+        ""rec"" : {
+            ""_source"" : { ""enabled"" : false },
+            ""properties"" : {
+            ""from"" : { ""type"": ""string"", ""store"": ""yes"" }
+            }
+        }
+    }
+}'
+curl -XPUT http://localhost:9200/testidx/rec/1 -d '{
+    ""from"" : [""user3@test.com"",""user2@test.com"",""user5@test.com""]
+}'
+echo
+curl -XPOST http://localhost:9200/testidx/_refresh
+echo
+curl localhost:9200/testidx/_search -d '{
+    ""highlight"": {
+         ""fields"":{""from"":{""number_of_fragments"":0}}
+    },
+    ""fields"":[""*""],
+    ""size"":10,
+    ""sort"":[""_score""],
+    ""query"":{
+        ""query_string"":{
+            ""default_field"":""from"",
+            ""query"":""*:*""
+         }
+    }
+}' && echo
+curl localhost:9201/testidx/_search -d '{
+    ""highlight"": {
+         ""fields"":{""from"":{""number_of_fragments"":0}}
+    },
+    ""fields"":[""*""],
+    ""size"":10,
+    ""sort"":[""_score""],
+    ""query"":{
+        ""query_string"":{
+            ""default_field"":""from"",
+            ""query"":""*:*""
+         }
+    }
+}' && echo
+One of the search requests fails and the node where shard is allocated throws the following exception:
+[2011-10-07 11:16:57,872][DEBUG][action.search.type       ] [Maha Yogi] [testidx][0], node[czKz17uBQiaTczE_OzQ0GA], [P], s[STARTED]: Failed to execute [org.elasticsearch.action.search.SearchRequest@43233ac]
+org.elasticsearch.transport.RemoteTransportException: [Mikhail Rasputin][inet[/10.0.1.8:9300]][search/phase/query+fetch]
+Caused by: java.lang.NullPointerException
+    at org.elasticsearch.common.io.stream.HandlesStreamOutput.writeUTF(HandlesStreamOutput.java:54)
+    at org.elasticsearch.search.highlight.HighlightField.writeTo(HighlightField.java:110)
+    at org.elasticsearch.search.internal.InternalSearchHit.writeTo(InternalSearchHit.java:574)
+    at org.elasticsearch.search.internal.InternalSearchHits.writeTo(InternalSearchHits.java:246)
+    at org.elasticsearch.search.fetch.FetchSearchResult.writeTo(FetchSearchResult.java:101)
+    at org.elasticsearch.search.fetch.QueryFetchSearchResult.writeTo(QueryFetchSearchResult.java:90)
+    at org.elasticsearch.transport.support.TransportStreams.buildResponse(TransportStreams.java:136)
+    at org.elasticsearch.transport.netty.NettyTransportChannel.sendResponse(NettyTransportChannel.java:74)
+    at org.elasticsearch.transport.netty.NettyTransportChannel.sendResponse(NettyTransportChannel.java:66)
+    at org.elasticsearch.search.action.SearchServiceTransportAction$SearchQueryFetchTransportHandler.messageReceived(SearchServiceTransportAction.java:502)
+    at org.elasticsearch.search.action.SearchServiceTransportAction$SearchQueryFetchTransportHandler.messageReceived(SearchServiceTransportAction.java:492)
+    at org.elasticsearch.transport.netty.MessageChannelHandler$RequestHandler.run(MessageChannelHandler.java:238)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+    at java.lang.Thread.run(Thread.java:680)
+";Fix NPE in HighlightField serialization.;modules/elasticsearch/src/main/java/org/elasticsearch/search/highlight/HighlightPhase.java;;;;;;;;;
+1458;b1b0b150ffdaade3b19fbcf0afdce68b372fa76;"Using root object level mapping (_size, _source) can cause reparsing of the mapping on startup
+";"Using root object level mapping (_size, _source) can cause reparsing of the mapping on startup,
+";modules/elasticsearch/src/main/java/org/elasticsearch/index/mapper/object/ObjectMapper.java;;;;;;;;;
+1626;a1a30226caaef4667cb7d85a4702ecf6a6bb0703;"Removing a node with TRACE logging enabled causes cluster state not to be properly updated
+";"Removing a node with TRACE logging enabled causes cluster state not to be properly updated
+";"src/main/java/org/elasticsearch/cluster/routing/RoutingNode.java, src/main/java/org/elasticsearch/cluster/routing/RoutingNodes.java ,src/main/java/org/elasticsearch/cluster/routing/allocation/AllocationService.java 
+";;;;;;;;;
+15257;fab44398d9d48f12319bc018d4b436f723b6508;"_analyze API fails if char_filters is set in body.
+If it's passed as URL parameter, it works.
+It looks _analyze API sets char_filters as token_filters: https://github.com/elastic/elasticsearch/blob/master/core/src/main/java/org/elasticsearch/rest/action/admin/indices/analyze/RestAnalyzeAction.java#L132
+";"Analysis: Add detail response support 
+add explain option
+fix char_filter bug
+";"core/src/main/java/org/elasticsearch/action/admin/indices/analyze/AnalyzeRequest.java, core/src/main/java/org/elasticsearch/action/admin/indices/analyze/AnalyzeRequestBuilder.java,core/src/main/java/org/elasticsearch/action/admin/indices/analyze/AnalyzeResponse.java, core/src/main/java/org/elasticsearch/action/admin/indices/analyze/DetailAnalyzeResponse.java , core/src/main/java/org/elasticsearch/action/admin/indices/analyze/TransportAnalyzeAction.java,core/src/main/java/org/elasticsearch/rest/action/admin/indices/analyze/RestAnalyzeAction.java , docs/reference/indices/analyze.asciidoc, rest-api-spec/src/main/resources/rest-api-spec/api/indices.analyze.json , rest-api-spec/src/main/resources/rest-api-spec/test/indices.analyze/10_analyze.yaml 
+";;;;;;;;;
+1725;31b793591ea4dd4c60088d9185fb66a3f7ae293e;"query never returns
+When executing a boolean query that contains a constant score query filter, the query appears to lock up elasticsearch or lucene and never return a response. Details how to reproduce can be found in the following gist:";query never returns;"src/main/java/org/apache/lucene/search/DeletionAwareConstantScoreQuery.java, src/main/java/org/elasticsearch/common/lucene/search/NotDeletedFilter.java 
+";;;;;;;;;
+1814;a76d914cfa4c4ff2a866b8f1539c5cb3ef48afbb;"Java API: Calling SearchHit#sourceAsString will not decompress the source to convert it to string 
+";"Java API: Calling SearchHit#sourceAsString will not decompress the source to convert it to string
+";src/main/java/org/elasticsearch/search/internal/InternalSearchHit.java;;;;;;;;;
+1948;0c732b8bf30e8cd68a6b00cac7ff156c3d19ade1;"Percolator: Wrongly using analyzer configured for the actual index on percolator filtering 
+When ""indexing"" a percolator query with additional metdata, it gets indexed with the analysis set for the _percolator index (which is good). But, when adding a filtering query to the percolator queries to run, they use the analysis of the actual index percolated against, not the _percolator index.";"Percolator: Wrongly using analyzer configured for the actual index on percolator filtering
+";src/main/java/org/elasticsearch/index/percolator/PercolatorExecutor.java;;;;;;;;;
+1960;be01e8fe19c822fe30ba1cff4d9e96c3f567e4c7;"Index Templates settings provided in a config file fails to load properly 
+See repro here: https://gist.github.com/2705752.";Index Templates settings provided in a config file fails to load properly;"src/main/java/org/elasticsearch/cluster/metadata/IndexMetaData.java,src/main/java/org/elasticsearch/cluster/metadata/IndexTemplateMetaData.java, src/main/java/org/elasticsearch/cluster/metadata/MetaData.java,src/main/java/org/elasticsearch/common/settings/loader/SettingsLoader.java, src/main/java/org/elasticsearch/common/settings/loader/YamlSettingsLoader.java 
+";;;;;;;;;
+2546;b9513511e01bf48ea050b8825c82ece86fc7f6ff;"null pointer exception in 19.8. same code path exists in master branch
+Upon restarting an elasticsearch server, I received a ""failed to recover commit_point"" message from Elasticsearch. The cause was a null pointer being passed into a concurrent hashmap. The null comes from PercolatorExecutor.parseQuery, which seems to always parse a query or raise an exception. If there is no ""query"" token, however, the parseQuery method appears to return null.
+I patched code in PercolatorService.QueryiesLoaderCollector.collect to check the return value of parseQuery for null before inserting it into the map, and that seemed to fix it. Here's the pull request:
+#2547
+I'm not familiar enough with ES to know if that's actually the fix. Maybe parseQuery should raise an exception, or maybe the _percolator index needs better sanitization. But in 19.8, at least, it seems possible to get the _percolator index into a state that makes the data unrecoverable without edits to the ES source.
+org.elasticsearch.index.gateway.IndexShardGatewayRecoveryException: [_percolator][0] failed to recover commit_point [commit-19]/[45] at org.elasticsearch.index.gateway.blobstore.BlobStoreIndexShardGateway.recover(BlobStoreIndexShardGateway.java:424) at org.elasticsearch.index.gateway.IndexShardGatewayService$1.run(IndexShardGatewayService.java:177) at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886) at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908) at java.lang.Thread.run(Thread.java:662) Caused by: java.lang.NullPointerException at java.util.concurrent.ConcurrentHashMap.put(ConcurrentHashMap.java:881) at java.util.concurrent.ConcurrentHashMap.putAll(ConcurrentHashMap.java:909) at org.elasticsearch.index.percolator.PercolatorExecutor.addQueries(PercolatorExecutor.java:259) at org.elasticsearch.index.percolator.PercolatorService.loadQueries(PercolatorService.java:128) at org.elasticsearch.index.percolator.PercolatorService.access$700(PercolatorService.java:52) at org.elasticsearch.index.percolator.PercolatorService$ShardLifecycleListener.afterIndexShardStarted(PercolatorService.java:220) at org.elasticsearch.indices.InternalIndicesLifecycle.afterIndexShardStarted(InternalIndicesLifecycle.java:86) at org.elasticsearch.index.shard.service.InternalIndexShard.start(InternalIndexShard.java:277) at org.elasticsearch.index.gateway.blobstore.BlobStoreIndexShardGateway.recoverTranslog(BlobStoreIndexShardGateway.java:435) at org.elasticsearch.index.gateway.blobstore.BlobStoreIndexShardGateway.recover(BlobStoreIndexShardGateway.java:421)
+";"Check for null query on Percolator query loading and omit the query if it can't be parsed.
+";src/main/java/org/elasticsearch/index/percolator/PercolatorService.java;;;;;;;;;
+2566;d6b613ac8c6e3ddee6d8e1604db208721f03cb75;"Make lowercase_expanded_terms apply to fuzzy words in query_string
+In the query_string query, lowercase_expanded_terms applies to wildcards, but not to fuzzy terms:
+curl -XGET 'http://127.0.0.1:9200/test/test/_validate/query?pretty=1&explain=true'  -d '
+{
+   ""field"" : {
+      ""t"" : {
+         ""query"" : ""full text Saerch~2 Wild*"",
+         ""default_operator"" : ""AND""
+      }
+   }
+}
+'
+
+# {
+#    ""_shards"" : {
+#       ""failed"" : 0,
+#       ""successful"" : 1,
+#       ""total"" : 1
+#    },
+#    ""explanations"" : [
+#       {
+#          ""index"" : ""test"",
+#          ""explanation"" : ""+t:full +t:text +t:Saerch~2 +t:wild*"",
+#          ""valid"" : true
+#       }
+#    ],
+#    ""valid"" : true
+# }
+Note: it isn't just validate that shows this - it is borne out in tests
+";Respect lowercase_expanded_terms in MappingQueryParser ;src/main/java/org/apache/lucene/queryparser/classic/MapperQueryParser.java;;;;;;;;;
+2608;20ce01bd53cc3f0d6bcb52554f89fb98ce00bd4c;"NullPointerException
+I'm using version 0.20.2. When I perform the following query (obviously flawed syntactically):
+$ curl -XGET localhost:9200/foo/bar/_search -d '{""query"": {""terms"": {""query"": ""foo""}}}'
+I get the following null pointer exception:
+[2013-01-31 21:52:32,071][DEBUG][action.search.type       ] [Ent] [idents][0], node[mU366vK5T42xL01gFekyvw], [P], s[STARTED]: Failed to execute [org.elasticsearch.action.search.SearchRequest@1f2f0ce9]
+org.elasticsearch.search.SearchParseException: [idents][0]: from[-1],size[-1]: Parse Failure [Failed to parse source [{""query"": {""terms"": {""query"": ""foo""}}}]]
+  at org.elasticsearch.search.SearchService.parseSource(SearchService.java:566)
+    at org.elasticsearch.search.SearchService.createContext(SearchService.java:481)
+    at org.elasticsearch.search.SearchService.createContext(SearchService.java:466)
+    at org.elasticsearch.search.SearchService.executeQueryPhase(SearchService.java:236)
+    at org.elasticsearch.search.action.SearchServiceTransportAction.sendExecuteQuery(SearchServiceTransportAction.java:141)
+    at org.elasticsearch.action.search.type.TransportSearchQueryThenFetchAction$AsyncAction.sendExecuteFirstPhase(TransportSearchQueryThenFetchAction.java:80)
+    at org.elasticsearch.action.search.type.TransportSearchTypeAction$BaseAsyncAction.performFirstPhase(TransportSearchTypeAction.java:205)
+    at org.elasticsearch.action.search.type.TransportSearchTypeAction$BaseAsyncAction.performFirstPhase(TransportSearchTypeAction.java:192)
+    at org.elasticsearch.action.search.type.TransportSearchTypeAction$BaseAsyncAction$2.run(TransportSearchTypeAction.java:178)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+    at java.lang.Thread.run(Thread.java:680)
+Caused by: java.lang.NullPointerException
+    at org.elasticsearch.index.mapper.MapperService.smartName(MapperService.java:697)
+    at org.elasticsearch.index.query.QueryParseContext.smartFieldMappers(QueryParseContext.java:264)
+    at org.elasticsearch.index.query.TermsQueryParser.parse(TermsQueryParser.java:102)
+    at org.elasticsearch.index.query.QueryParseContext.parseInnerQuery(QueryParseContext.java:188)
+    at org.elasticsearch.index.query.IndexQueryParserService.parse(IndexQueryParserService.java:268)
+    at org.elasticsearch.index.query.IndexQueryParserService.parse(IndexQueryParserService.java:246)
+    at org.elasticsearch.search.query.QueryParseElement.parse(QueryParseElement.java:33)
+    at org.elasticsearch.search.SearchService.parseSource(SearchService.java:554)
+    ... 11 more
+";Add additional query validation to the terms query parser ;src/main/java/org/elasticsearch/index/query/TermsQueryParser.java;;;;;;;;;
+2991;29da615afd83d198911f839565257dd03c7fcf39;"BytesRefOrdValComparator ignores highest value in a segment during binarySearch
+The BytesRefOrdValComparator uses Ordinals.Docs.getNumOrdinals() -1 as the upperbound for the binarysearch. The -1 causes that we ignore the last value in the segment.
+This is kind of a very tricky bug since it only happens if we need to binary-search to align ords and the bottom of the sort queue is greater than the largest value in the segment but less than the second largest. This was causing an issue reported by a user on the mailing list: https://groups.google.com/d/msg/elasticsearch/W5s1KypYcYw/L1UgixO_gQ4J
+";"Use full ord range in binary search. The upperbound of the binary search in
+
+BytesRefOrdValComparator starts at 1 and ends at maxOrd - 1. Yet, numOrd is defined
+as maxOrd - 1 excluding the 0 ord.
+
+This causes wrong sort ords when the bottom of the queue is compared to the next
+segment and the greatest term in the new segment is in-fact less than the current
+queue bottom. If that is true we treat the values as equal and never include the right
+value into the queue.
+";"src/main/java/org/elasticsearch/index/fielddata/fieldcomparator/BytesRefOrdValComparator.java 
+";;;;;;;;;
+3242;42b3f06a32844ade7fdf21e48f5e7e5800c31670;"Geoshape filter can't handle multiple shapes
+The geo_shape filter seems to be unable to handle multiple geo_shape fields in a single document if this document is used as indexed filter.
+Assume a mapping with multiple geo_shape fields:
+{
+    ""type1"" : {
+        ""properties"" : {
+            ""location1"" : {
+                 ""type"" : ""geo_shape""
+            },
+            ""location2"" : {
+                ""type"" : ""geo_shape""
+            }
+        }
+    }
+}
+and a document
+{
+    ""location1"" : {
+        ""type"":""polygon"",
+        ""coordinates"":[[[-10,-10],[10,-10],[10,10],[-10,10],[-10,-10]]]
+    },
+    ""location2"" : {
+        ""type"":""polygon"",
+        ""coordinates"":[[[-20,-20],[20,-20],[20,20],[-20,20],[-20,-20]]]
+    }
+}
+If a geo_shape filter is applied to the location2 field
+{
+    ""geo_shape"": {
+        ""location2"": {
+            ""indexed_shape"": { 
+                ""id"": ""1"",
+                ""type"": ""type1"",
+                ""index"": ""test"",
+                ""shape_field_name"": ""location2""
+            }
+        }
+    }
+}
+parsing fails with
+ElasticSearchIllegalStateException[Shape with name [1] found but missing location2 field];
+Is this fix included in the 0.90.3 release? I am currently experiencing the same error when both a geo_shape and a geo_point field are present in the same document.
+Edit: using 0.90.3
+this has never been backported... I will backport! pushed to 0.90 branch. This will be part of 0.90.4 When is the, approximate, anticipated release of 0.90.4?";fixed ShapeFetchService.;src/main/java/org/elasticsearch/index/search/shape/ShapeFetchService.java;;;;;;;;;
+3267;7790d2bf6578825924446013caba183fae6ba92b;"Mget aborting request if index missing
+mget returns an error for each doc if the type or id is not found, but throws a top-level error if the index is not found. This seems inconsistent:
+curl -XPUT 'localhost:9200/test_1/test/1?pretty=1'  -d '
+{
+   ""foo"" : ""bar""
+}
+'
+
+curl -XGET 'localhost:9200/_mget?pretty=1'  -d '
+{
+   ""docs"" : [
+      {
+         ""_index"" : ""test_1"",
+         ""_id"" : ""2"",
+         ""_type"" : ""test""
+      },
+      {
+         ""_index"" : ""test_1"",
+         ""_id"" : ""1"",
+         ""_type"" : ""none""
+      },
+      {
+         ""_index"" : ""test_1"",
+         ""_id"" : ""1"",
+         ""_type"" : ""test""
+      }
+   ]
+}
+'
+
+# {
+#    ""docs"" : [
+#       {
+#          ""_index"" : ""test_1"",
+#          ""_id"" : ""2"",
+#          ""_type"" : ""test"",
+#          ""exists"" : false
+#       },
+#       {
+#          ""_index"" : ""test_1"",
+#          ""_id"" : ""1"",
+#          ""_type"" : ""none"",
+#          ""exists"" : false
+#       },
+#       {
+#          ""_source"" : {
+#             ""foo"" : ""bar""
+#          },
+#          ""_index"" : ""test_1"",
+#          ""_id"" : ""1"",
+#          ""_type"" : ""test"",
+#          ""exists"" : true,
+#          ""_version"" : 1
+#       }
+#    ]
+# }
+
+curl -XGET 'localhost:9200/_mget?pretty=1'  -d '
+{
+   ""docs"" : [
+      {
+         ""_index"" : ""test_1"",
+         ""_id"" : ""2"",
+         ""_type"" : ""test""
+      },
+      {
+         ""_index"" : ""test_2"",
+         ""_id"" : ""1"",
+         ""_type"" : ""test""
+      },
+      {
+         ""_index"" : ""test_1"",
+         ""_id"" : ""1"",
+         ""_type"" : ""none""
+      },
+      {
+         ""_index"" : ""test_1"",
+         ""_id"" : ""1"",
+         ""_type"" : ""test""
+      }
+   ]
+}
+'
+
+# {
+#    ""status"" : 404,
+#    ""error"" : ""IndexMissingException[[test_2] missing]""
+# }
+";"Stop aborting of multiget requests in case of missing index 
+The MultiGet API stops with a IndexMissingException, if only one of all
+requests tries to access a non existing index. This patch creates a
+failure for this item without failing the whole request.
+";src/main/java/org/elasticsearch/action/get/TransportMultiGetAction.java;;;;;;;;;
+3274;2dcc66431033bf9da22cf7b591bef90e1583c005;"Mget: no support for ""parent""
+The parent param is not supported by mget either at the top-level or at the per-document level (while routing is):
+curl -XPUT 'localhost:9200/test_1?pretty=1'  -d '
+{
+   ""mappings"" : {
+      ""test"" : {
+         ""_parent"" : {
+            ""type"" : ""foo""
+         }
+      }
+   }
+}
+'
+
+curl -XGET 'localhost:9200/_cluster/health?wait_for_status=yellow&pretty=1'
+
+curl -XPUT 'localhost:9200/test_1/test/1?parent=4&pretty=1'  -d '
+{
+   ""foo"" : ""bar""
+}
+'
+
+curl -XGET 'localhost:9200/test_1/test/_mget?pretty=1'  -d '
+{
+   ""docs"" : [
+      {
+         ""parent"" : ""4"",
+         ""_id"" : ""1""
+      }
+   ]
+}
+'
+
+# {
+#    ""docs"" : [
+#       {
+#          ""_index"" : ""test_1"",
+#          ""_id"" : ""1"",
+#          ""_type"" : ""test"",
+#          ""exists"" : false
+#       }
+#    ]
+# }
+
+
+curl -XGET 'localhost:9200/test_1/test/_mget?parent=4&pretty=1'  -d '
+{
+   ""docs"" : [
+      {
+         ""_id"" : ""1""
+      }
+   ]
+}
+'
+
+# {
+#    ""docs"" : [
+#       {
+#          ""_index"" : ""test_1"",
+#          ""_id"" : ""1"",
+#          ""_type"" : ""test"",
+#          ""exists"" : false
+#       }
+#    ]
+# }
+Should probably just be supported at the docs level, not the top level";"Support for parent in multi get request 
+When specifying the docs to be returned in a multi get request, a parent
+field could not be specified, so that some docs seemingly did not exist,
+even though they did.
+
+This fix behaves like the normal GetRequest and simply overwrites the
+routing value if it has not yet been set.
+
+Also a test for routing with mget has been added.
+";src/main/java/org/elasticsearch/action/get/MultiGetRequest.java;;;;;;;;;
+3551;8668479b92f28e2d3ef1a55a2095ac515cb7b719;"Plugin Manager can not download _site plugins from github
+Sounds like github changes a bit download url for master zip file.
+From https://github.com/username/reponame/zipball/master to https://github.com/username/reponame/archive/master.zip.
+We need to update plugin manager to reflect that change.
+";"Plugin Manager can not download _site plugins from github 
+Sounds like github changes a bit download url for master zip file.
+
+From `https://github.com/username/reponame/zipball/master` to `https://codeload.github.com/username/reponame/zip/master`.
+
+We need to update plugin manager to reflect that change.
+
+In the meantime, we invite users having this issue to use:
+
+```sh
+bin/plugin -install reponame -url https://codeload.github.com/username/reponame/zip/master
+```
+
+For example:
+
+```sh
+bin/plugin -install paramedic -url https://codeload.github.com/karmi/elasticsearch-paramedic/zip/master
+```
+";src/main/java/org/elasticsearch/plugins/PluginManager.java;;;;;;;;;
+3560;109e2944f2e0cfea948ee77aabb7a022e0146ada;"Cluster Setting update can hang if gets settings which are not dynamically updatable 
+Also holds for settings that do not exist:
+curl -XPUT ""http://localhost:9200/_cluster/settings"" -d'
+{
+    ""transient"": {
+        ""cluster.routing.allocation.same_shard.host"": true
+    }
+}'
+curl -XPUT ""http://localhost:9200/_cluster/settings"" -d'
+{
+    ""transient"": {
+        ""cluster"": true
+    }
+}'
+";ClusterUpdateSettingsAction will hang if no changes were made ;src/main/java/org/elasticsearch/action/admin/cluster/settings/TransportClusterUpdateSettingsAction.java;;;;;;;;;
+3820;565c2127328284ec8a57102a343367119104757e;"Debian Package sets /etc/elasticsearch/* to 0644
+DEBIAN/postinst:37 chmod 644 /etc/elasticsearch/*
+this is only a good idea as long as there are no subdirectories in /etc/elasticsearch/ because after updating the elasticsearch package files in /etc/elasticsearch/synonyms (for example) can't be read anymore.
+";"Set permission in debian postinst script correctly 
+The old post installation script on debian set all data to
+644 inside of /etc/elasticsearch, which does not work, when
+there are subdirectories
+";src/deb/control/postinst;;;;;;;;;
+4417;fe86eddecbdaa2919bb77ec73a6981c1fd72a439;"Elasticsearch goes into infinite loop with long database names
+The following command:
+curl -XPUT http://localhost:9200/test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_haystack
+put my elasticsearch into an infinite loop, writing the following lines over and over to elasticsearch.log:
+[2013-12-11 18:36:04,630][WARN ][cluster.action.shard     ] [Payback] [test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_haystack][1] sending failed shard for [test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_haystack][1], node[8vmR12rFRp2FI3EA-icfrw], [P], s[INITIALIZING], indexUUID [zQIlZKm3R1C1blwKNxFWJg], reason [Failed to create shard, message [IndexShardCreationException[[test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_haystack][1] failed to create shard]; nested: IOException[File name too long]; ]]
+
+[2013-12-11 18:36:04,630][WARN ][cluster.action.shard     ] [Payback] [test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_haystack][1] received shard failed for [test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_haystack][1], node[8vmR12rFRp2FI3EA-icfrw], [P], s[INITIALIZING], indexUUID [zQIlZKm3R1C1blwKNxFWJg], reason [Failed to create shard, message [IndexShardCreationException[[test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_haystack][1] failed to create shard]; nested: IOException[File name too long]; ]]
+
+[2013-12-11 18:36:04,638][WARN ][indices.cluster          ] [Payback][test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_haystack][2] failed to create shard org.elasticsearch.index.shard.IndexShardCreationException: [test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_test_haystack][2] failed to create shard
+
+    at org.elasticsearch.index.service.InternalIndexService.createShard(InternalIndexService.java:347)
+    at org.elasticsearch.indices.cluster.IndicesClusterStateService.applyInitializingShard(IndicesClusterStateService.java:651)
+    at org.elasticsearch.indices.cluster.IndicesClusterStateService.applyNewOrUpdatedShards(IndicesClusterStateService.java:569)
+    at org.elasticsearch.indices.cluster.IndicesClusterStateService.clusterChanged(IndicesClusterStateService.java:181)
+    at org.elasticsearch.cluster.service.InternalClusterService$UpdateTask.run(InternalClusterService.java:414)
+    at org.elasticsearch.common.util.concurrent.PrioritizedEsThreadPoolExecutor$TieBreakingPrioritizedRunnable.run(PrioritizedEsThreadPoolExecutor.java:135)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1146)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+    at java.lang.Thread.run(Thread.java:679)
+Caused by: java.io.IOException: File name too long
+    at java.io.UnixFileSystem.canonicalize0(Native Method)
+    at java.io.UnixFileSystem.canonicalize(UnixFileSystem.java:172)
+    at java.io.File.getCanonicalPath(File.java:576)
+    at org.apache.lucene.store.FSDirectory.getCanonicalPath(FSDirectory.java:129)
+    at org.apache.lucene.store.FSDirectory.<init>(FSDirectory.java:143)
+    at org.apache.lucene.store.NIOFSDirectory.<init>(NIOFSDirectory.java:64)
+    at org.elasticsearch.index.store.fs.NioFsDirectoryService.newFSDirectory(NioFsDirectoryService.java:45)
+    at org.elasticsearch.index.store.fs.FsDirectoryService.build(FsDirectoryService.java:129)
+    at org.elasticsearch.index.store.distributor.AbstractDistributor.<init>(AbstractDistributor.java:35)
+    at org.elasticsearch.index.store.distributor.LeastUsedDistributor.<init>(LeastUsedDistributor.java:36)
+    at sun.reflect.GeneratedConstructorAccessor16.newInstance(Unknown Source)
+    at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+    at java.lang.reflect.Constructor.newInstance(Constructor.java:532)
+    at org.elasticsearch.common.inject.DefaultConstructionProxyFactory$1.newInstance(DefaultConstructionProxyFactory.java:54)
+    at org.elasticsearch.common.inject.ConstructorInjector.construct(ConstructorInjector.java:86)
+    at org.elasticsearch.common.inject.ConstructorBindingImpl$Factory.get(ConstructorBindingImpl.java:98)
+    at org.elasticsearch.common.inject.FactoryProxy.get(FactoryProxy.java:52)
+    at org.elasticsearch.common.inject.ProviderToInternalFactoryAdapter$1.call(ProviderToInternalFactoryAdapter.java:45)
+    at org.elasticsearch.common.inject.InjectorImpl.callInContext(InjectorImpl.java:837)
+    at org.elasticsearch.common.inject.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:42)
+    at org.elasticsearch.common.inject.Scopes$1$1.get(Scopes.java:57)
+    at org.elasticsearch.common.inject.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:45)
+    at org.elasticsearch.common.inject.SingleParameterInjector.inject(SingleParameterInjector.java:42)
+    at org.elasticsearch.common.inject.SingleParameterInjector.getAll(SingleParameterInjector.java:66)
+    at org.elasticsearch.common.inject.ConstructorInjector.construct(ConstructorInjector.java:85)
+    at org.elasticsearch.common.inject.ConstructorBindingImpl$Factory.get(ConstructorBindingImpl.java:98)
+    at org.elasticsearch.common.inject.ProviderToInternalFactoryAdapter$1.call(ProviderToInternalFactoryAdapter.java:45)
+    at org.elasticsearch.common.inject.InjectorImpl.callInContext(InjectorImpl.java:837)
+    at org.elasticsearch.common.inject.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:42)
+    at org.elasticsearch.common.inject.Scopes$1$1.get(Scopes.java:57)
+    at org.elasticsearch.common.inject.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:45)
+    at org.elasticsearch.common.inject.SingleParameterInjector.inject(SingleParameterInjector.java:42)
+    at org.elasticsearch.common.inject.SingleParameterInjector.getAll(SingleParameterInjector.java:66)
+    at org.elasticsearch.common.inject.ConstructorInjector.construct(ConstructorInjector.java:85)
+    at org.elasticsearch.common.inject.ConstructorBindingImpl$Factory.get(ConstructorBindingImpl.java:98)
+    at org.elasticsearch.common.inject.FactoryProxy.get(FactoryProxy.java:52)
+    at org.elasticsearch.common.inject.ProviderToInternalFactoryAdapter$1.call(ProviderToInternalFactoryAdapter.java:45)
+    at org.elasticsearch.common.inject.InjectorImpl.callInContext(InjectorImpl.java:837)
+    at org.elasticsearch.common.inject.ProviderToInternalFactoryAdapter.get(ProviderToInternalFactoryAdapter.java:42)
+    at org.elasticsearch.common.inject.Scopes$1$1.get(Scopes.java:57)
+    at org.elasticsearch.common.inject.InternalFactoryToProviderAdapter.get(InternalFactoryToProviderAdapter.java:45)
+    at org.elasticsearch.common.inject.InjectorBuilder$1.call(InjectorBuilder.java:200)
+    at org.elasticsearch.common.inject.InjectorBuilder$1.call(InjectorBuilder.java:193)
+    at org.elasticsearch.common.inject.InjectorImpl.callInContext(InjectorImpl.java:830)
+    at org.elasticsearch.common.inject.InjectorBuilder.loadEagerSingletons(InjectorBuilder.java:193)
+    at org.elasticsearch.common.inject.InjectorBuilder.injectDynamically(InjectorBuilder.java:175)
+    at org.elasticsearch.common.inject.InjectorBuilder.build(InjectorBuilder.java:110)
+    at org.elasticsearch.common.inject.InjectorImpl.createChildInjector(InjectorImpl.java:131)
+    at org.elasticsearch.common.inject.ModulesBuilder.createChildInjector(ModulesBuilder.java:69)
+    at org.elasticsearch.index.service.InternalIndexService.createShard(InternalIndexService.java:345)
+    ... 8 more
+Now you might argue that this is a stupid thing to do, and that an ES server should be protected from the public so it's not a Denial of Service attack. Nevertheless, this happened to me by accident while I was developing a test harness for Haystack's ElasticSearch backend. However I think it would be better to respond gracefully to invalid input, instead of trying to fill up the hard disk with infinite useless logs.
+";Forbid index names over 100 characters in length ;src/main/java/org/elasticsearch/cluster/metadata/MetaDataCreateIndexService.java;;;;;;;;;
+4564;6c23ace68fd9579e02d570d70aea8880ed3929be;"Closing all indices doesn't work when using wildcard only 
+Closing all indices doesnt' work when doing:
+curl -XPOST localhost:9200/*/_close
+although it works using _all or using a wildcard expression like index*.
+";"Fixed open/close index api when using wildcard only 
+Named wildcards were not always properly replaced with proper values by PathTrie.
+Delete index (curl -XDELETE localhost:9200/*) worked anyway as the named wildcard is the last path element (and even if {index} didn't get replaced with '*', the empty string would have mapped to all indices anyway). When the named wildcard wasn't the last path element (e.g. curl -XPOST localhost:29200/*/_close), the variable didn't get replaced with the current '*' value, but with the empty string, which leads to an error as empty index is not allowed by open/close index.
+";"rest-api-spec/test/indices.open/20_multiple_indices.yaml, src/main/java/org/elasticsearch/common/path/PathTrie.java 
+";;;;;;;;;
+4581;"beaa915
+";"All field uses wrong setting for `term vectors` 
+In the all field mapper the settings that is used is store_term_vector but it should be store_term_vectors.";"Simulate the entire toXContent instead of special caseing 
+Today we try to detect if we need to generate the mapping or not in
+the all mapper. This is error prone since it misses conditions if not
+explicitly added. We should rather similate the generation instead.
+
+This commit also adds a random test to check if the settings
+of the all field mapper are correctly applied.
+";src/main/java/org/elasticsearch/index/mapper/internal/AllFieldMapper.java;;;;;;;;;
+4814;"af1513f
+";"Add tracking of pages to MockPageCacheRecycler
+Page tracking would help make sure that we never forget to release pages when we don't need them anymore.";"Add page tracking to MockPageCacheRecycler. 
+This found an issue in BytesRefHash that forgot to release the start offsets.
+";src/main/java/org/elasticsearch/search/aggregations/bucket/BytesRefHash.java;;;;;;;;;
+4987;"056ad0a 
+";"Bulk operation throws exception on invalid index name
+When doing a bulk operation, if one of the items holds an invalid index name, the operation returns a top level error (HTTP error in the _bulk API or an exception in case of the Java API). It's expected it will return the error as part of the bulk result, as done for other types of errors. The error should be returned for the specific item and not fail the entire operation.
+Example:
+    curl -XPOST ""http://localhost:9200/_bulk"" -d'
+    { ""index"" : { ""_index"" : ""INVALID.NAME"", ""_type"" : ""type1"", ""_id"" : ""1""} }
+    { ""field1"" : ""value1"" }
+    '
+Returns:
+{
+   ""error"": ""InvalidIndexNameException[[INVALID.NAME] Invalid index name [INVALID.NAME], must be lowercase]"",
+   ""status"": 400
+}
+";"Bulk API: Ensure that specific failures do not affect whole request 
+Before a bulk request is executed, missing indices are being created by default.
+If this fails, the whole request is failed.
+
+This patch changes the behaviour to not fail the whole request, but rather all
+requests using the index where the creation has failed.
+"; src/main/java/org/elasticsearch/action/bulk/TransportBulkAction.java;;;;;;;;;
+5021;"e1c1120
+";"Aggregations return different counts when invoked twice in a row
+Hi,
+A couple of days ago I started a thread on the mailing list (https://groups.google.com/forum/?fromgroups=#!topic/elasticsearch/c_xLCPOpvjc) about this issue, and the responses on it are slim.
+The problem exists in the aggregations api since version 1.0.0.RC1 and is confirmed by me to also occur in 1.0.0.RC2.
+The problem is that when you do a terms aggregation on an index sharded in multiple shards (10 in my case) it start to return inconsistent numbers. With this I mean that the numbers are different the second time compared to the first time. You cannot show these numbers to users as when they reload the analytics it shows totally different numbers than before without anything changing to the data.
+I created a test suit as a gist for you to recreate the problem your self. It is hosted at: https://gist.github.com/thanodnl/8803745.
+But since it contains datafiles it is kind of bugged in the web interface of github. Best you can clone this gist by running: $ git clone https://gist.github.com/8803745.git
+cd into the newly created directory and run: $ ./aggsbug.load.sh to load the test set into your local database. This can take a couple of minutes since it is loading ~1M documents. I tried to recreate it with a smaller set, but then the issue is not appearing.
+Once the data is loaded you can run a contained test with: $ ./aggsbug.test.sh. This will call the same aggregation twice, store the output, and later print the diff of the output.
+If you recreated the bug the output of the test should be something like:
+$ ./aggsbug.test.sh
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1088  100   950  100   138    192     27  0:00:05  0:00:04  0:00:01   206
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1086  100   948  100   138   2867    417 --:--:-- --:--:-- --:--:--  2872
+diff in 2 aggs calls:
+2c2
+<   ""took"" : 4918,
+
+---
+>   ""took"" : 325,
+18c18
+<         ""doc_count"" : 3599
+
+---
+>         ""doc_count"" : 3228
+21c21
+<         ""doc_count"" : 2517
+
+---
+>         ""doc_count"" : 2254
+24c24
+<         ""doc_count"" : 2207
+
+---
+>         ""doc_count"" : 2007
+27c27
+<         ""doc_count"" : 2207
+
+---
+>         ""doc_count"" : 1971
+30c30
+<         ""doc_count"" : 1660
+
+---
+>         ""doc_count"" : 1478
+33c33
+<         ""doc_count"" : 1534
+
+---
+>         ""doc_count"" : 1401
+36c36
+<         ""doc_count"" : 1468
+
+---
+>         ""doc_count"" : 1330
+39c39
+<         ""doc_count"" : 1079
+
+---
+>         ""doc_count"" : 952
+When ran against 1.0.0.Beta2 the output is what is to be expected:
+$ ./aggsbug.test.sh
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1087  100   949  100   138    208     30  0:00:04  0:00:04 --:--:--   208
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1086  100   948  100   138   1525    222 --:--:-- --:--:-- --:--:--  1526
+diff in 2 aggs calls:
+2c2
+<   ""took"" : 4525,
+
+---
+>   ""took"" : 611,
+You see the output of the aggs is not occurring in the diff during the test, and the only diff between the two runs is the time it took to calculate the result.
+Thanks for reporting this issue, this looks like a bad bug indeed. I'll look into it.";"ix BytesRef owning issue in string terms aggregations. 
+The byte[] array that was used to store the term was owned by the BytesRefHash
+which is used to compute counts. However, the BytesRefHash is released at some
+point and its content may be recycled.
+
+MockPageCacheRecycler has been improved to expose this issue (putting random
+content into the arrays upon release).
+
+Number of documents/terms have been increased in RandomTests to make sure page
+recycling occurs.
+";"src/main/java/org/elasticsearch/search/aggregations/bucket/BytesRefHash.java,src/main/java/org/elasticsearch/search/aggregations/bucket/terms/StringTerms.java, src/main/java/org/elasticsearch/search/aggregations/bucket/terms/StringTermsAggregator.java 
+";;;;;;;;;
+5048;"6106944
+";"aggregation error ArrayIndexOutOfBoundsException
+mapping extract
+                ""extension"": {
+                    ""type"": ""string"", // eg .xls, no empty fields
+                    ""index"": ""not_analyzed"",
+                },
+                ""sharepath"": {
+                    ""type"": ""string"", // eg //1.2.3.4/Someshare/, no empty fields
+                    ""index"": ""not_analyzed"",
+                },
+                ""doc_type"": {
+                    ""type"": ""string"", // eg Spreadsheet Files, no empty fields
+                    ""index"": ""not_analyzed""
+                },
+query works
+{
+  ""query"": {
+    ""filtered"": {
+      ""filter"": {
+        ""and"": [
+          {
+            ""range"": {
+              ""modified"": {
+                ""lt"": 1391775892000
+              }
+            }
+          }
+        ]
+      },
+      ""query"": {
+        ""match_all"": {}
+      }
+    }
+  },
+  ""aggs"": {
+    ""sharepath"": {
+      ""terms"": {
+        ""field"": ""sharepath"",
+        ""size"": 2147483647
+      },
+      ""aggs"": {
+        ""total_size_sharepath"": {
+          ""filter"": {
+              ""term"": {
+                  ""doc_type"": ""Spreadsheet Files""
+              }
+          },
+          ""aggs"": {
+            ""total_size"": {
+              ""stats"": {
+                ""field"": ""size""
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  ""size"": 0
+}
+query fails (more or less same query as before)
+{
+  ""query"": {
+    ""filtered"": {
+      ""filter"": {
+        ""and"": [
+          {
+            ""range"": {
+              ""modified"": {
+                ""lt"": 1391775892000
+              }
+            }
+          }
+        ]
+      },
+      ""query"": {
+        ""match_all"": {}
+      }
+    }
+  },
+  ""aggs"": {
+    ""extension"": {
+      ""terms"": {
+        ""field"": ""extension"",  // previously 'sharepath' which works
+        ""size"": 2147483647
+      },
+      ""aggs"": {
+        ""total_size_extension"": {
+          ""filter"": {
+            ""term"": {
+              ""doc_type"": ""Spreadsheet Files""
+            }
+          },
+          ""aggs"": {
+            ""total_size"": {
+              ""stats"": {
+                ""field"": ""size""
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  ""size"": 0
+}
+Stacktrace
+[2014-02-07 14:07:35,301][DEBUG][action.search.type       ] [Copycat] [files_v1][3], node[XlVxAUsKRNinZGxwgkLyeg], [P], s[STARTED]: Failed to execute [org.elasticsearch.action.search.SearchRequest@71c8e67c]
+java.lang.ArrayIndexOutOfBoundsException: 51
+  at org.elasticsearch.common.util.BigArrays$LongArrayWrapper.get(BigArrays.java:118)
+  at org.elasticsearch.search.aggregations.bucket.BucketsAggregator.bucketDocCount(BucketsAggregator.java:79)
+  at org.elasticsearch.search.aggregations.bucket.filter.FilterAggregator.buildAggregation(FilterAggregator.java:73)
+  at org.elasticsearch.search.aggregations.bucket.BucketsAggregator.bucketAggregations(BucketsAggregator.java:88)
+  at org.elasticsearch.search.aggregations.bucket.terms.StringTermsAggregator.buildAggregation(StringTermsAggregator.java:121)
+  at org.elasticsearch.search.aggregations.bucket.terms.StringTermsAggregator.buildAggregation(StringTermsAggregator.java:41)
+  at org.elasticsearch.search.aggregations.AggregationPhase.execute(AggregationPhase.java:132)
+  at org.elasticsearch.search.query.QueryPhase.execute(QueryPhase.java:137)
+  at org.elasticsearch.search.SearchService.executeQueryPhase(SearchService.java:230)
+  at org.elasticsearch.search.action.SearchServiceTransportAction.sendExecuteQuery(SearchServiceTransportAction.java:202)
+  at org.elasticsearch.action.search.type.TransportSearchQueryThenFetchAction$AsyncAction.sendExecuteFirstPhase(TransportSearchQueryThenFetchAction.java:80)
+  at org.elasticsearch.action.search.type.TransportSearchTypeAction$BaseAsyncAction.performFirstPhase(TransportSearchTypeAction.java:216)
+  at org.elasticsearch.action.search.type.TransportSearchTypeAction$BaseAsyncAction.performFirstPhase(TransportSearchTypeAction.java:203)
+  at org.elasticsearch.action.search.type.TransportSearchTypeAction$BaseAsyncAction$2.run(TransportSearchTypeAction.java:186)
+  at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1146)
+  at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+  at java.lang.Thread.run(Thread.java:701)
+";Fix NPE/AIOOBE when building a bucket which has not been collected. ;src/main/java/org/elasticsearch/search/aggregations/AggregatorFactories.java;;;;;;;;;
+5165;"3dec916
+";"SearchContext is occasionally closed prematurely
+We have noticed that sometime all shards do not respond to a DFS query then fetch and we get only 4/5 shards responding (and in debugging noticed the same for query then fetch). Turning the logs to debug we see the following message when only 4/5 shards respond.
+2014-02-18 00:01:19,574 DEBUG (elasticsearch[dev][search][T#2]) log4j.Log4jESLogger<109>: [dev] [17] Failed to execute query phase
+org.elasticsearch.search.SearchContextMissingException: No search context found for id [17] 
+        at org.elasticsearch.search.SearchService.findContext(SearchService.java:455) 
+        at org.elasticsearch.search.SearchService.executeQueryPhase(SearchService.java:279) 
+        at org.elasticsearch.search.action.SearchServiceTransportAction.sendExecuteQuery(SearchServiceTransportAction.java:236) 
+        at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction.executeQuery(TransportSearchDfsQueryThenFetchAction.java:148)
+        at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction$2.run(TransportSearchDfsQueryThenFetchAction.java:132) 
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145) 
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:744) 
+Looking into what causes this, I was able to reproduce the issue more quickly by setting the SearchService reaper thread to run almost continuously by explicitly setting ""search.keep_alive_interval"" to a low value in the milliseconds range vs every minute. (we do see the same behavior without modifying this value, but
+I saw two issues occur with some extra debugging. The first is that when SearchContext is created, the default value of lastAccessedTime is 0 and if the reaper runs against that context quickly enough, the context will be freed before it is used.
+2014-02-18 15:32:53,394 DEBUG (elasticsearch[dev][scheduler][T#1]) log4j.Log4jESLogger<104>: [dev] freeing search context 1390 time: 1392737573376 lastAccessTime: 0 keepAlive: 300000
+2014-02-18 15:32:53,399 DEBUG (elasticsearch[dev][search][T#3]) log4j.Log4jESLogger<109>: [dev] [1390] Failed to execute query phase
+org.elasticsearch.search.SearchContextMissingException: No search context found for id [1390]
+        at org.elasticsearch.search.SearchService.findContext(SearchService.java:455)
+        at org.elasticsearch.search.SearchService.executeQueryPhase(SearchService.java:279)
+        at org.elasticsearch.search.action.SearchServiceTransportAction.sendExecuteQuery(SearchServiceTransportAction.java:236)
+        at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction.executeQuery(TransportSearchDfsQueryThenFetchAction.java:148)
+        at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction$2.run(TransportSearchDfsQueryThenFetchAction.java:132)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:744)
+The second the reaper calls context.lastAccessTime() multiple times, but the value can change after the first if statement and an incorrect value will be used in the next statement (such as -1 when the context is being used).
+2014-02-18 15:24:38,721 DEBUG (elasticsearch[dev][scheduler][T#1]) log4j.Log4jESLogger<104>: [dev] freeing search context 1691 time: 1392737078619 lastAccessTime: -1 keepAlive: 300000
+2014-02-18 15:24:38,725 DEBUG (elasticsearch[dev][search][T#4]) log4j.Log4jESLogger<109>: [dev] [1691] Failed to execute query phase
+org.elasticsearch.search.SearchContextMissingException: No search context found for id [1691]
+        at org.elasticsearch.search.SearchService.findContext(SearchService.java:455)
+        at org.elasticsearch.search.SearchService.executeQueryPhase(SearchService.java:279)
+        at org.elasticsearch.search.action.SearchServiceTransportAction.sendExecuteQuery(SearchServiceTransportAction.java:236)
+        at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction.executeQuery(TransportSearchDfsQueryThenFetchAction.java:148)
+        at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction$2.run(TransportSearchDfsQueryThenFetchAction.java:132)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+        at java.lang.Thread.run(Thread.java:744)
+This gist contains code that I have used to resolve the issues. If this needs to be submitted as a pull request, I can do that as well.
+I looked at the gist and I think you should submit this as a PR! Good catch! Can you make sure you sign the CLA as well so we can pull this in quickly.
+One comment about the initialization I think we should initialize the new context with -1 instead so we just skip it on the reaper?
+";"Fix SearchContext from being closed prematurely 
+Fixes SearchContext from being closed during initialization or immediately
+after processing is started
+";"src/main/java/org/elasticsearch/search/SearchService.java, src/main/java/org/elasticsearch/search/internal/DefaultSearchContext.java 
+";;;;;;;;;
+5177; 3e10810;"GetFieldMappings API will not return field mapping if the index is not hosted on the node executing it
+The current implementation of the GetFieldMapping API uses information from the index service which is only available on a node if that node actively hosts a shard from that index. If the information is missing the call will act as if the type/field was not found and will not return information for it.
+During a rolling upgrade from <= 0.90.11 or 1.0.0 the get field mapping api might fail. This has to do with the way this issue has been fixed. The way how internally the request got handled has changed in order completely to fix it properly at the cost that during a rolling upgrade this api may fail.
+";"Change GetFieldMapping API to broadcast requests to nodes hosting the relevant indices.
+
+This is due to the fact that have to have mappers in order to return the response.
+";"elasticsearch/src/main/java/org/elasticsearch/action/admin/indices/mapping/get/TransportGetFieldMappingsAction.java , src/main/java/org/elasticsearch/action/admin/indices/mapping/get/GetFieldMappingsRequest.java , src/main/java/org/elasticsearch/action/admin/indices/mapping/get/GetFieldMappingsRequestBuilder.java 
+";;;;;;;;;
+5195;"ad8a482
+";"NPE in PluginsService when starting elasticsearch with a wrong user
+When starting elasticsearch with a wrong linux user, it could generate a NullPointerException when PluginsService tries to list available plugins in ./plugins dir.
+To reproduce:
+create a plugins directory with rwx rights for root user only
+launch elasticsearch from another account (elasticsearch for example)
+It was supposed to be fixed with #4186, but sadly it's not :-(
+";"NPE in PluginsService when starting elasticsearch with a wrong user 
+When starting elasticsearch with a wrong linux user, it could generate a `NullPointerException` when `PluginsService` tries to list available plugins in `./plugins` dir.
+
+To reproduce:
+
+* create a plugins directory with `rwx` rights for root user only
+* launch elasticsearch from another account (elasticsearch for example)
+
+It was supposed to be fixed with #4186, but sadly it's not :-(
+";"src/main/java/org/elasticsearch/common/io/FileSystemUtils.java , src/main/java/org/elasticsearch/plugins/PluginsService.java 
+";;;;;;;;;
+5948;"aa4dc09
+";"_cat/allocation returns -1 as disk.total for clients nodes 
+No data gets allocated on client nodes, and a subest of the nodes stats information is not available for client nodes. That is why some columns in _cat/allocation might be empty, but there should be consistency on how null values are returned. The example below contains 0b for disk.used, no value for disk.available, and -1b for disk.total:
+0     0b             -1b    Lucas-MacBook-Air.local 192.168.0.13 Hazard
+6 92.5gb 140.4gb 232.9gb 39 Lucas-MacBook-Air.local 192.168.0.13 Ningal
+I think it should be as follows instead, with no value instead of -1, leaving 0b for disk.used though:
+0     0b                    Lucas-MacBook-Air.local 192.168.0.13 Hazard
+6 92.5gb 140.4gb 232.9gb 39 Lucas-MacBook-Air.local 192.168.0.13 Ningal
+";"_cat/allocation to return no value for `disk.total` when not available (e.g. non data nodes) instead of `-1b`
+";src/main/java/org/elasticsearch/rest/action/cat/RestAllocationAction.java;;;;;;;;;
+6018;"85a0b76 
+";"Store IO throttling throttles far more than asked
+I've been digging into the ""merges can fall behind"" at high indexing rates, and I discovered some serious issues with the IO throttling, which we recently (#5902) up'd from 20 MB/sec to 50 MB/sec by default.
+Net/net I think when we ask for 50 MB/sec today we are really throttling at something like 8 MB/sec!
+Details:
+I indexed a bunch of small log-file type docs into 1 shard, 0 replicas, using 1 sync _bulk client, to the point where it did it's first big-ish merge (611 MB, 440K docs); the merge does not use CFS so it's really writing 611 MB. I'm using a fast SSD.
+With no throttling (index.store.throttle.type=none), the merge takes 20.8 seconds.
+With the default 50 MB/sec merge throttling, it takes 72.1 sec, which far too long (611 MB / 50 = 12.2 sec). The rate limiter enforces the instantaneous rate, so at worse the merge time should have been 20.8 + 12.2 = 33 sec but likely much less than that because merging takes CPU time.
+So I dug in and discovered one problem, I think caused by the super.flush and then delegate.flush in BufferedChecksumIndexOutput, where the RateLimiter is always alternately called first on 8192 bytes then on 0 bytes. If I fix RateLimiter to just ignore those 0 bytes, the merge time with 50 MB/sec throttle drops to 49.9 sec: better, but still too long. (I think once we cutover to Lucene's checksums this 0 byte issue will be fixed?)
+System.nanoTime is actually quite costly, so I suspect the overhead of just checking whether to pause, and of calling Thread.sleep, is way too much when the pause time is small. So I change SimpleRateLimiter to just accumulate the incoming bytes and then once it crosses 1 msec worth at the specified rate, invoke the pause logic.
+This really improved it: now the merge takes 25.7 sec at 50 MB/sec throttle, and 64.9 sec at 10 MB/sec throttle. These times seem correct.
+I'll also open a Lucene issue to fix this, and make an XRateLimiter for ES in the meantime.
+I opened https://issues.apache.org/jira/browse/LUCENE-5641 to fix this in Lucene; I'll carry the fix over to ES once that's in ...";"Upgrade to Lucene 4.8.1 
+This commit upgrades to the latest Lucene 4.8.1 release including the
+following bugfixes:
+
+ * An IndexThrottle now kicks in when merges start falling behind
+   limiting index threads to 1 until merges caught up. Closes #6066
+ * RateLimiter now kicks in at the configured rate where previously
+   the limiter was limiting at ~8MB/sec almost all the time. Closes #6018
+";"docs/reference/index-modules/merge.asciidoc, pom.xml, src/main/java/org/apache/lucene/store/RateLimitedFSDirectory.java , src/main/java/org/elasticsearch/index/engine/internal/InternalEngine.java , src/main/java/org/elasticsearch/index/merge/scheduler/ConcurrentMergeSchedulerProvider.java , src/main/java/org/elasticsearch/index/merge/scheduler/MergeSchedulerProvider.java ,  src/main/java/org/elasticsearch/index/snapshots/blobstore/RateLimitingInputStream.java 
+";;;;;;;;;
+7623;cb9cf948dfaf8c91625dca9f436feacdc5c2deb9;"Indexed Scripts/Templates: Indexed Scripts used during reduce phase sometimes hang
+Indexed scripts might need to get fetched via a GET call which is very cheap since those shards are local since they expand [0-all] but sometimes in the case of a node client holding no data we need to do a get call on the first get. Yet this get call seems to be executed on the transport thread and might deadlock since it needs that thread to process the get response. See stacktrace below... The problem here is that some of the actions in SearchServiceTransportAction don't use the search threadpool but use SAME instead which can cause this issue. We should use SEARCH instead for the most of the operations except of free context I guess.
+2> ""elasticsearch[node_s2][local_transport][T#1]"" ID=1421 WAITING on org.elasticsearch.common.util.concurrent.BaseFuture$Sync@2b1fdd72
+  2>    at sun.misc.Unsafe.park(Native Method)
+  2>    - waiting on org.elasticsearch.common.util.concurrent.BaseFuture$Sync@2b1fdd72
+  2>    at java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+  2>    at java.util.concurrent.locks.AbstractQueuedSynchronizer.parkAndCheckInterrupt(AbstractQueuedSynchronizer.java:836)
+  2>    at java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedInterruptibly(AbstractQueuedSynchronizer.java:997)
+  2>    at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(AbstractQueuedSynchronizer.java:1304)
+  2>    at org.elasticsearch.common.util.concurrent.BaseFuture$Sync.get(BaseFuture.java:274)
+  2>    at org.elasticsearch.common.util.concurrent.BaseFuture.get(BaseFuture.java:113)
+  2>    at org.elasticsearch.action.support.AdapterActionFuture.actionGet(AdapterActionFuture.java:45)
+  2>    at org.elasticsearch.script.ScriptService.getScriptFromIndex(ScriptService.java:377)
+  2>    at org.elasticsearch.script.ScriptService.compile(ScriptService.java:295)
+  2>    at org.elasticsearch.script.ScriptService.executable(ScriptService.java:457)
+  2>    at org.elasticsearch.search.aggregations.metrics.scripted.InternalScriptedMetric.reduce(InternalScriptedMetric.java:99)
+  2>    at org.elasticsearch.search.aggregations.InternalAggregations.reduce(InternalAggregations.java:140)
+  2>    at org.elasticsearch.search.controller.SearchPhaseController.merge(SearchPhaseController.java:374)
+  2>    at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction.innerFinishHim(TransportSearchDfsQueryThenFetchAction.java:209)
+  2>    at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction.finishHim(TransportSearchDfsQueryThenFetchAction.java:196)
+  2>    at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction$2.onResult(TransportSearchDfsQueryThenFetchAction.java:172)
+  2>    at org.elasticsearch.action.search.type.TransportSearchDfsQueryThenFetchAction$AsyncAction$2.onResult(TransportSearchDfsQueryThenFetchAction.java:166)
+  2>    at org.elasticsearch.search.action.SearchServiceTransportAction$18.handleResponse(SearchServiceTransportAction.java:440)
+  2>    at org.elasticsearch.search.action.SearchServiceTransportAction$18.handleResponse(SearchServiceTransportAction.java:431)
+  2>    at org.elasticsearch.transport.local.LocalTransport$3.run(LocalTransport.java:322)
+  2>    at com.google.common.util.concurrent.MoreExecutors$DirectExecutorService.execute(MoreExecutors.java:299)
+  2>    at org.elasticsearch.transport.local.LocalTransport.handleParsedResponse(LocalTransport.java:317)
+  2>    at org.elasticsearch.test.transport.AssertingLocalTransport.handleParsedResponse(AssertingLocalTransport.java:59)
+  2>    at org.elasticsearch.transport.local.LocalTransport.handleResponse(LocalTransport.java:313)
+  2>    at org.elasticsearch.transport.local.LocalTransport.messageReceived(LocalTransport.java:238)
+  2>    at org.elasticsearch.transport.local.LocalTransportChannel$1.run(LocalTransportChannel.java:78)
+  2>    at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+  2>    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+  2>    at java.lang.Thread.run(Thread.java:745)
+  2>    Locked synchronizers:
+  2>    - java.util.concurrent.ThreadPoolExecutor$Worker@2339bcc9
+  2> 
+";"[SEARCH] Execute search reduce phase on the search threadpool 
+Reduce Phases can be expensive and some of them like the aggregations
+reduce phase might even execute a one-off call via an internal client
+that might cause a deadlock due to execution on the network thread
+that is needed to handle the one-off call. This commit dispatches
+the reduce phase to the search threadpool to ensure we don't wait
+for the current thread to be available.
+";"src/main/java/org/elasticsearch/action/search/type/TransportSearchDfsQueryAndFetchAction.java , src/main/java/org/elasticsearch/action/search/type/TransportSearchDfsQueryThenFetchAction.java , src/main/java/org/elasticsearch/action/search/type/TransportSearchQueryAndFetchAction.java , src/main/java/org/elasticsearch/action/search/type/TransportSearchQueryThenFetchAction.java , src/main/java/org/elasticsearch/threadpool/ThreadPool.java 
+";;;;;;;;;
+7640;31b63b1a84d9eb7a76f7b97d5bd2e964cf1214e8;"CBOR: Improve recognition of CBOR data format
+Currently we only check if the first byte of the body is a BYTE_OBJECT_INDEFINITE to determine whether the content is CBOR or not. However, what we should actually do is to check whether the ""major type"" is an object.
+See:
+https://github.com/FasterXML/jackson-dataformat-cbor/blob/master/src/main/java/com/fasterxml/jackson/dataformat/cbor/CBORParser.java#L614
+https://github.com/FasterXML/jackson-dataformat-cbor/blob/master/src/main/java/com/fasterxml/jackson/dataformat/cbor/CBORParser.java#L682
+Also, CBOR can be prefixed with a self-identifying tag, 0xd9d9f7, which we should check for as well. Currently Jackson doesn't recognise this tag, but it looks like that will change in the future: https://github.com/FasterXML/jackson-dataformat-cbor/issues/6
+I should have this up for review on Monday.
+We need to change XContentFactory.xContentType(...) to support the new header. By default, the new CBORGenerator.Feature.WRITE_TYPE_HEADER feature is false, so just upgrading will do nothing (nothing breaks, but nothing improves).
+";"Better detection of CBOR 
+CBOR has a special header that is optional, if exists, allows for exact detection. Also, since we know which formats we support in ES, we can support the object major type case.
+";"pom.xml,src/main/java/org/elasticsearch/common/xcontent/XContentFactory.java 
+";;;;;;;;;
+7686;"
+9c8beb8 
+";"ES not throwing parse exception `ids` query double-nested array
+[2014-09-11 11:47:51,946][DEBUG][index.search.slowlog.query] [n020] [index][3] took[3.1s], took_millis[3141], types[type], stats[], search_type[QUERY_THEN_FETCH], total_shards[5], source[{""size"":12,""from"":0,""sort"":{""ats"":""desc""},""query"":{""filtered"":{""query"":{""query_string"":{""query"":""ten words string"",""fields"":[""title"",""tags""],""default_operator"":""OR""}},""filter"":{""bool"":{""must"":[{""range"":{""ats"":{""lte"":1410428944}}},{""terms"":{""aid"":[27]}}],""must_not"":[{""ids"":{""values"":[[""ten-words-dash-separated-string""]]}}]}}}}}], extra_source[]";"Be stricter parsing ids for ids query 
+Adds a check to make sure that all ids in the query are either strings
+or numbers. This is to prevent the case where a user accidentally
+specifies:
+
+""ids"": [[""1"", ""2""]]
+
+(note the double array)
+
+With this change, an exception will be thrown since the second ""["" is
+not a string or number, it is a Token.START_ARRAY.
+";src/main/java/org/elasticsearch/index/query/IdsQueryParser.java;;;;;;;;;
+7740;"b75d1d8
+";"Internal: Make `TransportMasterNodeOperationAction#checkBlock` abstract
+TransportMasterNodeOperationAction#checkBlock should be implemented by any subclasses of ``TransportMasterNodeOperationActionbut it's returningnull` by default. We should make that abstract to force implementations for it.";"Add missing cluster blocks handling for master operations 
+Master node related operations were missing proper handling of cluster blocks, allowing for example to perform cluster level update settings even before the state was fully restored on initial cluster startup
+
+Note, the change allows to change read only related settings without checking for blocks on update settings, as without it, it means one can't re-enable metadata/write. Also, it doesn't check for blocks on cluster state and health API, as those are allowed to be used even when blocked to figure out what causes the block.
+";"src/main/java/org/elasticsearch/action/admin/cluster/health/TransportClusterHealthAction.java 
++7 −0 src/main/java/org/elasticsearch/action/admin/cluster/node/shutdown/TransportNodesShutdownAction.java 
++7 −0 src/main/java/org/elasticsearch/action/admin/cluster/reroute/TransportClusterRerouteAction.java 
++13 −0 ...in/java/org/elasticsearch/action/admin/cluster/settings/TransportClusterUpdateSettingsAction.java 
++7 −0 src/main/java/org/elasticsearch/action/admin/cluster/shards/TransportClusterSearchShardsAction.java 
++22 −15 .../java/org/elasticsearch/action/admin/cluster/snapshots/status/TransportSnapshotsStatusAction.java 
++11 −0 src/main/java/org/elasticsearch/action/admin/cluster/state/TransportClusterStateAction.java 
++8 −0 src/main/java/org/elasticsearch/action/admin/cluster/tasks/TransportPendingClusterTasksAction.java 
++7 −0 src/main/java/org/elasticsearch/action/admin/indices/alias/exists/TransportAliasesExistAction.java 
++8 −1 src/main/java/org/elasticsearch/action/admin/indices/alias/get/TransportGetAliasesAction.java 
++47 −34 src/main/java/org/elasticsearch/action/admin/indices/get/TransportGetIndexAction.java 
++13 −0 src/main/java/org/elasticsearch/action/admin/indices/mapping/get/TransportGetMappingsAction.java 
++9 −0 src/main/java/org/elasticsearch/action/admin/indices/settings/get/TransportGetSettingsAction.java 
++16 −0 src/main/java/org/elasticsearch/action/admin/indices/settings/put/TransportUpdateSettingsAction.java 
++7 −0 ...in/java/org/elasticsearch/action/admin/indices/template/get/TransportGetIndexTemplatesAction.java 
++14 −0 src/main/java/org/elasticsearch/action/admin/indices/warmer/get/TransportGetWarmersAction.java 
++7 −0 src/main/java/org/elasticsearch/action/bench/TransportAbortBenchmarkAction.java 
++8 −1 src/main/java/org/elasticsearch/action/bench/TransportBenchmarkAction.java 
++8 −0 src/main/java/org/elasticsearch/action/bench/TransportBenchmarkStatusAction.java 
++1 −3 src/main/java/org/elasticsearch/action/support/master/TransportMasterNodeOperationAction.java 
++7 −0 src/main/java/org/elasticsearch/cluster/action/index/MappingUpdatedAction.java 
++1 −1 src/main/java/org/elasticsearch/rest/action/admin/indices/settings/RestUpdateSettingsAction.java 
++58 −62 src/test/java/org/elasticsearch/action/bulk/BulkProcessorTests.java 
++3 −3 src/test/java/org/elasticsearch/cluster/BlockClusterStatsTests.java 
+";;;;;;;;;
+8125;d12ae19 ;"Bulk request hangs when one index can be auto created an another cannot
+To reproduce, download latest 1.3.x or 1.4 beta and update config/elasticsearch.yml to include: action.auto_create_index: +willwork*
+Then create a requests file that contains:
+{ ""index"" : { ""_index"" : ""willwork"", ""_type"" : ""type1"", ""_id"" : ""1"" } }
+{ ""field1"" : ""value1"" }
+{ ""index"" : { ""_index"" : ""noway"", ""_type"" : ""type1"", ""_id"" : ""1"" } }
+{ ""field1"" : ""value1"" }
+Run the command to bulk insert:
+curl -s -XPOST localhost:9200/_bulk --data-binary @requests; echo
+The command hangs and doesn't return.
+";"Bulk indexing: Fix 8125 hanged request when auto create index is off. 
+If a bulk request contains a mix of indexing requests for an existing index and one that needs to be auto-created but a cluster configuration prevents the auto-create of the new index the ingest process hangs. The exception for the failure to create an index was not caught or reported back properly. Added a Junit test to recreate the issue and the associated fix is in TransportBulkAction.
+"; src/main/java/org/elasticsearch/action/bulk/TransportBulkAction.java;;;;;;;;;
+8438;"0c94314
+";"Parse Failure: NullPointerException 
+Query is pretty big and I have no idea what's causing it. I don't think that's relevant anyway, IMHO the code should check for nulls and throw a more specific exception, otherwise we clients are left in the dark about what we're doing wrong. Here's the stack trace:
+        at org.elasticsearch.search.SearchService.parseSource(SearchService.java:660)
+        at org.elasticsearch.search.SearchService.createContext(SearchService.java:516)
+        at org.elasticsearch.search.SearchService.createAndPutContext(SearchService.java:488)
+        at org.elasticsearch.search.SearchService.executeQueryPhase(SearchService.java:257)
+        at org.elasticsearch.search.action.SearchServiceTransportAction$5.call(SearchServiceTransportAction.java:206)
+        at org.elasticsearch.search.action.SearchServiceTransportAction$5.call(SearchServiceTransportAction.java:203)
+        at org.elasticsearch.search.action.SearchServiceTransportAction$23.run(SearchServiceTransportAction.java:517)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+        at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.NullPointerException
+        at org.elasticsearch.search.aggregations.bucket.filter.FilterParser.parse(FilterParser.java:42)
+        at org.elasticsearch.search.aggregations.AggregatorParsers.parseAggregators(AggregatorParsers.java:130)
+        at org.elasticsearch.search.aggregations.AggregatorParsers.parseAggregators(AggregatorParsers.java:120)
+        at org.elasticsearch.search.aggregations.AggregatorParsers.parseAggregators(AggregatorParsers.java:77)
+        at org.elasticsearch.search.aggregations.AggregationParseElement.parse(AggregationParseElement.java:60)
+        at org.elasticsearch.search.SearchService.parseSource(SearchService.java:644)
+        ... 9 more
+@clintongormley Indeed, especially with complex code. Sorry I lost the original query. The only thing I can advice is to start applying randomized testing (if you haven't already, I don't know much about the ES codebase). It's great to find this kind of bugs. IIRC Lucene has started using it a couple of years ago.
+@vaibhavkulkar unless there's already some randomized testing in place in the project this isn't trivial to fix.
+I found the same NPE.
+the version is 1.3.2.
+In my case,it happened when i used FilterAggregation ,but sent no filter.
+In java client,it looks like this.";"Parser throws NullPointerException when Filter aggregation clause is empty.
+
+Added Junit test that recreates the error and fixed FilterParser to default to using a MatchAllDocsFilter if the requested filter clause is left empty.
+Also added fix and test for the Filters (with an ""s"") aggregation.
+";"src/main/java/org/elasticsearch/search/aggregations/bucket/filter/FilterParser.java ,src/main/java/org/elasticsearch/search/aggregations/bucket/filters/FiltersParser.java 
+";;;;;;;;;
+8507;"a94fb92
+";"Exception from geohash_grid aggregation with array of points (ES 1.4.0)
+Using a geohash_grid aggregation used to work on arrays of points, but with ES 1.4.0 an exception occurs instead. The following curl commands reproduce the issue on a clean installation of ES:
+# create index with geo_point mapping
+curl -XPUT localhost:9200/test -d '{
+  ""mappings"": {
+    ""test"": {
+      ""properties"": {
+        ""points"": {
+          ""type"": ""geo_point"",
+          ""geohash_prefix"": true
+        }
+      }
+    }
+  }
+}'
+
+# insert documents
+curl -XPUT localhost:9200/test/test/1?refresh=true -d '{ ""points"": [[1,2], [2,3]] }'
+curl -XPUT localhost:9200/test/test/2?refresh=true -d '{ ""points"": [[2,3], [3,4]] }'
+
+# perform aggregation
+curl -XGET localhost:9200/test/test/_search?pretty -d '{
+  ""size"": 0,
+  ""aggs"": {
+    ""a1"": {
+      ""geohash_grid"": {
+        ""field"": ""points"",
+        ""precision"": 3
+      }
+    }
+  }
+}'
+On Elasticsearch 1.3.5 this produces the expected result:
+...
+  ""aggregations"" : {
+    ""a1"" : {
+      ""buckets"" : [ {
+        ""key"" : ""s09"",
+        ""doc_count"" : 2
+      }, {
+        ""key"" : ""s0d"",
+        ""doc_count"" : 1
+      }, {
+        ""key"" : ""s02"",
+        ""doc_count"" : 1
+      } ]
+    }
+  }
+...
+However on Elasticsearch 1.4.0 this triggers a failure:
+{
+  ""took"" : 76,
+  ""timed_out"" : false,
+  ""_shards"" : {
+    ""total"" : 5,
+    ""successful"" : 3,
+    ""failed"" : 2,
+    ""failures"" : [ {
+      ""index"" : ""test"",
+      ""shard"" : 2,
+      ""status"" : 500,
+      ""reason"" : ""QueryPhaseExecutionException[[test][2]: query[ConstantScore(cache(_type:test))],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException[1]; ""
+    }, {
+      ""index"" : ""test"",
+      ""shard"" : 3,
+      ""status"" : 500,
+      ""reason"" : ""QueryPhaseExecutionException[[test][3]: query[ConstantScore(cache(_type:test))],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException[1]; ""
+    } ]
+  },
+  ""hits"" : {
+    ""total"" : 0,
+    ""max_score"" : 0.0,
+    ""hits"" : [ ]
+  },
+  ""aggregations"" : {
+    ""a1"" : {
+      ""buckets"" : [ ]
+    }
+  }
+}
+The log contains this exception:
+[2014-11-17 17:28:25,121][DEBUG][action.search.type       ] [Franklin Storm] [test][3], node[-S9ijRKKQH-IEAr3sUW14Q], [P], s[STARTED]: Failed to execute [org.elasticsearch.action.search.SearchRequest@1fa40d49]
+org.elasticsearch.search.query.QueryPhaseExecutionException: [test][3]: query[ConstantScore(cache(_type:test))],from[0],size[0]: Query Failed [Failed to execute main query]
+    at org.elasticsearch.search.query.QueryPhase.execute(QueryPhase.java:163)
+    at org.elasticsearch.search.SearchService.executeQueryPhase(SearchService.java:275)
+    at org.elasticsearch.search.action.SearchServiceTransportAction$5.call(SearchServiceTransportAction.java:231)
+    at org.elasticsearch.search.action.SearchServiceTransportAction$5.call(SearchServiceTransportAction.java:228)
+    at org.elasticsearch.search.action.SearchServiceTransportAction$23.run(SearchServiceTransportAction.java:559)
+    at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+    at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+    at java.lang.Thread.run(Thread.java:744)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 1
+    at org.elasticsearch.search.aggregations.bucket.geogrid.GeoHashGridParser$GeoGridFactory$CellValues.setDocument(GeoHashGridParser.java:154)
+    at org.elasticsearch.search.aggregations.bucket.geogrid.GeoHashGridAggregator.collect(GeoHashGridAggregator.java:73)
+    at org.elasticsearch.search.aggregations.AggregationPhase$AggregationsCollector.collect(AggregationPhase.java:161)
+    at org.elasticsearch.common.lucene.MultiCollector.collect(MultiCollector.java:60)
+    at org.apache.lucene.search.Weight$DefaultBulkScorer.scoreAll(Weight.java:193)
+    at org.apache.lucene.search.Weight$DefaultBulkScorer.score(Weight.java:163)
+    at org.apache.lucene.search.BulkScorer.score(BulkScorer.java:35)
+    at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:621)
+    at org.elasticsearch.search.internal.ContextIndexSearcher.search(ContextIndexSearcher.java:191)
+    at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:309)
+    at org.elasticsearch.search.query.QueryPhase.execute(QueryPhase.java:117)
+    ... 7 more
+";"Aggregations: Fix geohash grid aggregation on multi-valued fields. 
+This aggregation creates an anonymous fielddata instance that takes geo points
+and turns them into a geo hash encoded as a long. A bug was introduced in 1.4
+because of a fielddata refactoring: the fielddata instance tries to populate
+an array with values without first making sure that it is large enough.
+
+";"src/main/java/org/elasticsearch/index/fielddata/SortingNumericDocValues.java ,src/main/java/org/elasticsearch/search/aggregations/bucket/geogrid/GeoHashGridParser.java ,src/main/java/org/elasticsearch/search/aggregations/support/ValuesSource.java ,src/main/java/org/elasticsearch/search/aggregations/support/values/ScriptLongValues.java 
+";;;;;;;;;
+8526;"15db5b9
+";"Geo: incorrect neighbours computation in GeoHashUtils
+GeoHashUtils.neighbor produces bad neighbours for even level geohash (when geohash length is even).
+For instance :
+For geohash u09tv :
+http://geohash.gofreerange.com/ (this geohash is in Paris, France).
+Real neighbours for this geohash are [u09wh, u09wj, u09wn, u09tu, u09ty, u09ts, u09tt, u09tw]
+GeoHashUtils.neigbors returns [u09qh, u09wj, u09yn, u09mu, u09vy, u09ks, u09st, u09uw]
+";"Fix for geohash neighbors when geohash length is even. 
+We don't have to set XLimit and YLimit depending on the level (even or odd), since semantics of x and y are already swapped on each level.
+XLimit is always 7 and YLimit is always 3.
+";src/main/java/org/elasticsearch/common/geo/GeoHashUtils.java;;;;;;;;;
+8580;"d60500f
+";"Missing Aggregation in 1.4.0 throws ArrayOutOfBoundsException
+This query used to work fine on 1.3.5:
+{
+  ""from"": 0,
+  ""size"": 0,
+  ""query"": {
+    ""filtered"": {
+      ""query"": {
+        ""match_all"": {}
+      },
+      ""filter"": {
+        ""bool"": {
+          ""must"": {
+            ""term"": {
+              ""closed"": false
+            }
+          },
+          ""_cache"": true
+        }
+      }
+    }
+  },
+  ""aggregations"": {
+    ""missing-external_link-square"": {
+      ""missing"": {
+        ""field"": ""external_link.square""
+      }
+    }
+  }
+}
+I upgraded the index to 1.4.0, and now it returns this stack trace (on 10 shards):
+{ ""error"": ""SearchPhaseExecutionException[Failed to execute phase [query], all shards failed; shardFailures {[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][0]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][0]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }{[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][1]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][1]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }{[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][2]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][2]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }{[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][3]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][3]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }{[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][4]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][4]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }{[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][5]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][5]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }{[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][6]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][6]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }{[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][7]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][7]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }{[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][8]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][8]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }{[LBJC8-OYQySmdIMINrn-Ow][radius_2014-11-13-23-39_updated][9]: QueryPhaseExecutionException[[radius_2014-11-13-23-39_updated][9]: query[filtered(ConstantScore(cache(BooleanFilter(+cache(closed:F)))))->cache(_type:place)],from[0],size[0]: Query Failed [Failed to execute main query]]; nested: ArrayIndexOutOfBoundsException; }]"", ""status"": 500 }
+";"Fielddata: Fix iterator over global ordinals. 
+Our iterator over global ordinals is currently incorrect since it does NOT
+return -1 (NO_MORE_ORDS) when all ordinals have been consumed. This bug does
+not strike immediately with elasticsearch since we always consume ordinals in
+a random-access fashion. However it strikes when consuming ordinals through
+Lucene helpers such as DocValues#docsWithField.
+"; src/main/java/org/elasticsearch/index/fielddata/AbstractRandomAccessOrds.java;;;;;;;;;
+8893;7d5a15e461eccf82342dfa7aca7700ee30;"Mappings: _timestamp does not serialize its doc_values settings
+TimestampFieldMapper extends DateFieldMapper and is supposed to support doc values but it overrides toXContent and forgets to serialize doc values settings.  For the record, the bug report comes from the mailing-list: https://groups.google.com/forum/?utm_medium=email&utm_source=footer#!msg/elasticsearch/-ibkkI7dIro/X2KfTjKKt88J
+
+";"Mapping: serialize doc values settings for _timestamp 
+This change fixes _timestamp's serialization method to write out
+`doc_values` and `doc_values_format`, which could already be set,
+but would not be written out.
+
+closes #8893
+closes #8967
+";"src/main/java/org/elasticsearch/index/mapper/core/AbstractFieldMapper.java ,src/main/java/org/elasticsearch/index/mapper/internal/TimestampFieldMapper.java 
+";;;;;;;;;
+9317;7ca2ef9b93fc9421e8604;"Nested aggregation in terms aggregation
+I have issue with aggregation result then i use nested aggregation in terms aggregation. Tested with ES 1.4.[1,2].
+Create mapping and add documents
+DELETE test/product/_mapping
+POST test/product/_mapping
+{
+  ""properties"": {
+    ""categories"": {
+      ""type"": ""long""
+    },
+    ""name"": {
+      ""type"": ""string""
+    },
+    ""property"": {
+      ""type"": ""nested"", 
+      ""properties"": {
+        ""id"": {
+          ""type"": ""long""
+        }
+      }
+    }
+  }
+}
+
+POST test/product
+{
+  ""name"":""product1"",
+  ""categories"":[1,2,3,4],
+  ""property"":[
+    {""id"":1},  
+    {""id"":2},
+    {""id"":3}
+  ]
+}
+
+POST test/product
+{
+  ""name"":""product2"",
+  ""categories"":[1,2],
+  ""property"":[
+    {""id"":1},  
+    {""id"":5},
+    {""id"":4}
+  ]
+}
+Aggregation query
+GET test/product/_search
+{
+  ""size"": 0,
+  ""aggs"": {
+    ""category"": {
+      ""terms"": {""field"": ""categories"",""size"": 0},
+      ""aggs"": {
+        ""property"": {
+          ""nested"": {""path"": ""property""},
+          ""aggs"": {
+            ""property_id"": {
+              ""terms"": {""field"": ""property.id"",""size"": 0}
+            }
+          }
+        }
+      }
+    }
+  }
+}
+Result
+...
+""aggregations"": {
+      ""category"": {
+         ""doc_count_error_upper_bound"": 0,
+         ""sum_other_doc_count"": 0,
+         ""buckets"": [
+            {
+               ""key"": 1,
+               ""doc_count"": 2,
+               ""property"": {
+                  ""doc_count"": 6,
+                  ""property_id"": {
+                     ""doc_count_error_upper_bound"": 0,
+                     ""sum_other_doc_count"": 0,
+                     ""buckets"": [
+                        {
+                           ""key"": 1,
+                           ""doc_count"": 2
+                        },
+                        {
+                           ""key"": 2,
+                           ""doc_count"": 1
+                        },
+                        {
+                           ""key"": 3,
+                           ""doc_count"": 1
+                        },
+                        {
+                           ""key"": 4,
+                           ""doc_count"": 1
+                        },
+                        {
+                           ""key"": 5,
+                           ""doc_count"": 1
+                        }
+                     ]
+                  }
+               }
+            },
+            {
+               ""key"": 2,
+               ""doc_count"": 2,
+               ""property"": {
+                  ""doc_count"": 0,
+                  ""property_id"": {
+                     ""doc_count_error_upper_bound"": 0,
+                     ""sum_other_doc_count"": 0,
+                     ""buckets"": []
+                  }
+               }
+            },
+            {
+               ""key"": 3,
+               ""doc_count"": 1,
+               ""property"": {
+                  ""doc_count"": 0,
+                  ""property_id"": {
+                     ""doc_count_error_upper_bound"": 0,
+                     ""sum_other_doc_count"": 0,
+                     ""buckets"": []
+                  }
+               }
+            },
+            {
+               ""key"": 4,
+               ""doc_count"": 1,
+               ""property"": {
+                  ""doc_count"": 0,
+                  ""property_id"": {
+                     ""doc_count_error_upper_bound"": 0,
+                     ""sum_other_doc_count"": 0,
+                     ""buckets"": []
+                  }
+               }
+            }
+         ]
+      }
+   }
+...
+I have no sub aggregation result in aggregation ""category"" keys 2,3,4
+
+";"Nested aggregator: Fix handling of multiple buckets being emitted for the same parent doc id.
+
+This bug was introduced by #8454 which allowed the childFilter to only be consumed once. By adding the child docid buffering multiple buckets can now be emitted by the same doc id. This child docid buffering only happens in the scope of the current root document, so the amount of child doc ids buffered is small.
+";src/main/java/org/elasticsearch/search/aggregations/bucket/nested/NestedAggregator.java;;;;;;;;;
+9511;a8a35d7c291a99;"Hole is not within polygon 
+Hi,
+I've had some trouble importing some geo_shapes in 1.4+, I get the exception: ElasticsearchParseException: Invaild shape: Hole is not within polygon
+I got an example. Now, I'm not an expert in GIS, but:
+The area looks like this: http://i.imgur.com/oDzSeDQ.png with one vertex of the hole in the same point as one vertex of the polygon.
+The data is from postgis' ST_AsGeoJSON and according to ST_isValid it's a valid area.
+Every version of ES from 0.90 to 1.3.x takes the area just fine. The problems happens after 1.4.0.
+Here's the gist with all the data to reproduce it: https://gist.github.com/bictorman/064a777499719ad66194
+
+";"GEO] Fix hole intersection at tangential coordinate 
+OGC SFA 2.1.10 assertion 3 allows interior boundaries to touch exterior boundaries provided they intersect at a single point. Issue #9511 provides an example where a valid shape is incorrectly interpreted as invalid (a false violation of assertion 3).  When the intersecting point appears as the first and last coordinate of the interior boundary in a polygon, the ShapeBuilder incorrectly counted this as multiple intersecting vertices. The fix required a little more than just a logic check. Passing the duplicate vertices resulted in a connected component in the edge graph causing an invalid self crossing polygon. This required additional logic to the edge assignment in order to correctly segment the connected components. Finally, an additional hole validation has been added along with proper unit tests for testing valid and invalid conditions (including dateline crossing polys).
+";"src/main/java/org/elasticsearch/common/geo/builders/BasePolygonBuilder.java ,src/main/java/org/elasticsearch/common/geo/builders/ShapeBuilder.java 
+";;;;;;;;;
+10113;35a58d874ef56be50a0;"Mapping transform doesn't support file and indexed scripts 
+Looks like the mapping transform feature supports dynamic scripts only. When submitting the following request:
+curl -XPUT localhost:9200/test -d '{
+  ""mappings"" : {
+    ""example"" : {
+        ""transform"" : {
+            ""script_id"" : ""1"",
+            ""lang"": ""groovy""
+        }
+    }
+  }
+}
+'
+the mapping stored in the cluster state becomes the following, hence it loses the information about where the script should be loaded from:
+{
+  ""test"": {
+    ""mappings"": {
+      ""example"": {
+        ""transform"": {
+          ""script"": ""1"",
+          ""lang"": ""groovy""
+        },
+        ""properties"": {
+          ""test"": {
+            ""type"": ""string""
+          }
+        }
+      }
+    }
+  }
+}
+Might relate to #9995.
+"; Scripting: Unify script and template requests across codebase;;;;;;;;;;
+12193;2ea45fd753b89c12431dab;"NoClassDefFoundError w/shaded 2.0.0.beta1 jar
+I am consistently getting the following stack trace when attempting to create a node from a simple application:
+--- Start Example ---
+Jul 11, 2015 1:37:24 PM org.elasticsearch.node.Node <init>
+INFO: [The Blank] version[2.0.0.beta1-SNAPSHOT], pid[18006], build[0b27ded/2015-07-11T20:22:54Z]
+Jul 11, 2015 1:37:24 PM org.elasticsearch.node.Node <init>
+INFO: [The Blank] initializing ...
+Jul 11, 2015 1:37:24 PM org.elasticsearch.plugins.PluginsService <init>
+INFO: [The Blank] loaded [], sites []
+Jul 11, 2015 1:37:24 PM org.elasticsearch.env.NodeEnvironment maybeLogPathDetails
+INFO: [The Blank] using [1] data paths, mounts [[/ (/dev/disk1)]], net usable_space [79.6gb], net total_space [464.7gb], spins? [unknown], types [hfs]
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.337 sec <<< FAILURE!
+x(org.primer.stupid.TestFoo)  Time elapsed: 0.301 sec  <<< ERROR!
+java.lang.NoClassDefFoundError: org/elasticsearch/common/util/concurrent/jsr166e/LongAdder
+    at org.elasticsearch.common.metrics.CounterMetric.<init>(CounterMetric.java:28)
+    at org.elasticsearch.common.util.concurrent.EsAbortPolicy.<init>(EsAbortPolicy.java:31)
+    at org.elasticsearch.common.util.concurrent.EsExecutors.newCached(EsExecutors.java:70)
+    at org.elasticsearch.threadpool.ThreadPool.rebuild(ThreadPool.java:339)
+    at org.elasticsearch.threadpool.ThreadPool.build(ThreadPool.java:296)
+    at org.elasticsearch.threadpool.ThreadPool.<init>(ThreadPool.java:134)
+    at org.elasticsearch.node.Node.<init>(Node.java:159)
+    at org.elasticsearch.node.NodeBuilder.build(NodeBuilder.java:157)
+    at org.elasticsearch.node.NodeBuilder.node(NodeBuilder.java:164)
+    at org.primer.stupid.TestFoo.x(TestFoo.java:50)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    at java.lang.reflect.Method.invoke(Method.java:483)
+    at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+    at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+    at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+    at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+    at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+    at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+    at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+    at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+    at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+    at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+    at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+    at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+    at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+    at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:252)
+    at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:141)
+    at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:112)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    at java.lang.reflect.Method.invoke(Method.java:483)
+    at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(ReflectionUtils.java:189)
+    at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:165)
+    at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
+    at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
+    at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
+Caused by: java.lang.ClassNotFoundException: org.elasticsearch.common.util.concurrent.jsr166e.LongAdder
+    at java.net.URLClassLoader$1.run(URLClassLoader.java:372)
+    at java.net.URLClassLoader$1.run(URLClassLoader.java:361)
+    at java.security.AccessController.doPrivileged(Native Method)
+    at java.net.URLClassLoader.findClass(URLClassLoader.java:360)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+    at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:308)
+    at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+    ... 39 more
+Note that this only happens when using the shaded jar.
+A simple test program to reproduce is:
+public class TestFoo {
+
+    @Test
+    public void x() throws Exception {
+
+        System.out.println(""--- Start Example ---"");
+
+        File home = Files.createTempDir();
+        home.deleteOnExit();
+        Settings settings = Settings.builder()
+                .put(""path.home"", home.getAbsolutePath()).build();
+        Node node = nodeBuilder().settings(settings).local(false).data(true).clusterName(""test-cluster"").node();
+        node.close();
+
+        System.out.println(""--- Finished ---"");
+    }
+}
+From what I can tell, the jsr166e classes are not getting shaded to the correct location. If I look at the shaded jar I can see the actual location of the jsr166e classes:
+[ gnocchi 2.0.0.beta1-SNAPSHOT ] [ 01:42:39 ] > jar tvf elasticsearch-2.0.0.beta1-SNAPSHOT-shaded.jar | grep LongAdder
+  3422 Sat Jul 11 13:23:58 PDT 2015 org/elasticsearch/common/cache/LongAdder.class
+However, the pom.xml for core has this:
+<relocation>
+    <pattern>com.twitter.jsr166e</pattern>
+    <shadedPattern>org.elasticsearch.common.util.concurrent.jsr166e</shadedPattern>
+</relocation>
+";"Merge pull request #12194 from aleph-zero/fix/12193 
+jsr166e was left out of shaded jar
+";core/pom.xml;;;;;;;;;
+13334;"c6da8d5
+";"Multiple wildcards don't seem to work
+Tested v1.7.0 and v2.0.0-beta1
+Put some data:
+curl -XPOST localhost:9200/foo-one-baz/fizz -d '{}'
+curl -XPOST localhost:9200/foo-two-baz/fizz -d '{}'
+curl -XPOST localhost:9200/foo-three-baz/fizz -d '{}'
+Ask about the indices:
+# Against 1.7.0, ""foo-*-*""
+% curl localhost:9200/foo-*-*/_count 
+{""count"":3,""_shards"":{""total"":15,""successful"":15,""failed"":0}}
+
+# Against 2.0.0-beta1, ""foo-*-*"" - doesn't find any results
+% curl localhost:9200/foo-*-*/_count
+{""count"":0,""_shards"":{""total"":0,""successful"":0,""failed"":0}}
+
+# Against 2.0.0-beta1, ""foo-*"" - finds results
+% curl localhost:9200/foo-*/_count    
+{""count"":3,""_shards"":{""total"":15,""successful"":15,""failed"":0}}
+";"IndexNameExpressionResolver should not ignore any wildcards that occur 
+elsewhere in the expression,
+";core/src/main/java/org/elasticsearch/cluster/metadata/IndexNameExpressionResolver.java;;;;;;;;;
+14782;9e4a0cba0b6a9a93;"Confusing exception when `regexp` query used on numeric field
+PUT t/t/1
+{
+  ""num"": 34
+}
+
+GET /_search
+{
+  ""query"": {
+    ""regexp"": {
+      ""num"": {
+        ""value"": ""34""
+      }
+    }
+  }
+}
+returns:
+""error"": { ""root_cause"": [ { ""type"": ""illegal_argument_exception"", ""reason"": ""expected '""' at position 11"" } ],
+
+";"Merge pull request #14910 from camilojd/fix-better-exception-query-nu…m-field-regex
+Return a better exception message when `regexp` query is used on a numeric field
+";core/src/main/java/org/elasticsearch/index/mapper/MappedFieldType.java;;;;;;;;;
+15858;12df1e7a6f096e;"Minimum_should_match for one word query
+The following is a search query. The term full_name uses a synonym analyzer. The synonym expand file has the synonym: rice,arroz. Now if we run the validate query we get the below results:
+GET /products_v2/product/_validate/query?explain
+{
+  ""query"": {
+    ""bool"": {
+      ""must"": [
+        {
+          ""match"": {
+            ""full_name"": {
+              ""query"": ""rice"",
+              ""fuzziness"": 1,
+              ""minimum_should_match"": ""3<90%""
+            }
+          }
+        }
+      ],
+      ""should"": [
+        {
+          ""match_phrase"": {
+            ""name"": {
+              ""query"": ""rice"",
+              ""slop"": 50
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+{
+   ""valid"": true,
+   ""_shards"": {
+      ""total"": 1,
+      ""successful"": 1,
+      ""failed"": 0
+   },
+   ""explanations"": [
+      {
+         ""index"": ""products_v2"",
+         ""valid"": true,
+         ""explanation"": ""filtered(+((full_name:arroz~1 full_name:rice~1)~2) (name:arroz name:rice))->cache(_type:product)""
+      }
+   ]
+}
+Both rice and arroz are position 1. The minimum_should_match doesn't get applied to the position but the number of words in position 1.
+Let's say the synonym file has another synonym : Brown Sugar, brownsugar. The following is the result of the validate query calling brownsugar
+{
+   ""valid"": true,
+   ""_shards"": {
+      ""total"": 1,
+      ""successful"": 1,
+      ""failed"": 0
+   },
+   ""explanations"": [
+      {
+         ""index"": ""products_v4"",
+         ""valid"": true,
+         ""explanation"": ""filtered(+(((full_name:brownsugar~1 full_name:brown~1) full_name:sugar~1)~2) name:\""(brownsugar brown) sugar\""~50)->cache(_type:product)""
+      }
+   ]
+}
+In this case the minimum to match is applied based on positions. brownsugar and brown are position 1, sugar is position 2. The minimum_should_match gets applied as 2.
+If minimum_should_match gets applied based on the number of positions there are, I believe the above example for rice should have minimum_should_match should be 1 and not 2. This is a problem in the way ES handles minimum_should_match for one word synonyms.
+The bug/problem is at the Lucene level. I opened https://issues.apache.org/jira/browse/LUCENE-6972, @jpountz can you take a look ?";"Merge pull request #16078 from jimferenczi/mss_synonym 
+Do not apply minimum-should-match on a boolean query if the coords are disabled
+";core/src/main/java/org/elasticsearch/common/lucene/search/Queries.java;;;;;;;;;
+16246;"1556750
+";"node ingest - simulate - uppercase processor affecting output of previous processors
+Processors appear to be firing out of sequence.
+In example 1, when the geoip processor is the only processor in the pipeline, the resulting object has a continent_name property with the value of ""North America"". Note that is it not all uppercase.
+In example 2, the same geoip processor and input doc is used, but there is an additional uppercase processor after the geoip processor. Note that the output of BOTH processors in the pipeline have a continent_name property that is all uppercase.
+Example 1
+Request Body
+{
+  ""pipeline"": {
+    ""processors"": [
+      {
+        ""geoip"": {
+          ""processor_id"": ""processor_1"",
+          ""source_field"": ""_raw"",
+          ""target_field"": ""geoip""
+        }
+      }
+    ]
+  },
+  ""docs"": [
+    {
+      ""_source"": {
+        ""_raw"": ""64.242.88.10""
+      }
+    }
+  ]
+}
+Response Body
+{
+  ""docs"": [
+    {
+      ""processor_results"": [
+        {
+          ""processor_id"": ""processor_1"",
+          ""doc"": {
+            ""_type"": ""_type"",
+            ""_routing"": null,
+            ""_ttl"": null,
+            ""_index"": ""_index"",
+            ""_timestamp"": null,
+            ""_parent"": null,
+            ""_id"": ""_id"",
+            ""_source"": {
+              ""geoip"": {
+                ""continent_name"": ""North America"",
+                ""city_name"": ""Chesterfield"",
+                ""country_iso_code"": ""US"",
+                ""region_name"": ""Missouri"",
+                ""location"": [
+                  -90.5771,
+                  38.6631
+                ]
+              },
+              ""_raw"": ""64.242.88.10""
+            },
+            ""_ingest"": {
+              ""timestamp"": ""2016-01-26T20:41:59.806+0000""
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+Example 2
+Request Body
+{
+  ""pipeline"": {
+    ""processors"": [
+      {
+        ""geoip"": {
+          ""processor_id"": ""processor_1"",
+          ""source_field"": ""_raw"",
+          ""target_field"": ""geoip""
+        }
+      },
+      {
+        ""uppercase"": {
+          ""processor_id"": ""processor_2"",
+          ""field"": ""geoip.continent_name""
+        }
+      }
+    ]
+  },
+  ""docs"": [
+    {
+      ""_source"": {
+        ""_raw"": ""64.242.88.10""
+      }
+    }
+  ]
+}
+Response Body
+{
+  ""docs"": [
+    {
+      ""processor_results"": [
+        {
+          ""processor_id"": ""processor_1"",
+          ""doc"": {
+            ""_type"": ""_type"",
+            ""_routing"": null,
+            ""_ttl"": null,
+            ""_index"": ""_index"",
+            ""_timestamp"": null,
+            ""_parent"": null,
+            ""_id"": ""_id"",
+            ""_source"": {
+              ""geoip"": {
+                ""continent_name"": ""NORTH AMERICA"",
+                ""city_name"": ""Chesterfield"",
+                ""country_iso_code"": ""US"",
+                ""region_name"": ""Missouri"",
+                ""location"": [
+                  -90.5771,
+                  38.6631
+                ]
+              },
+              ""_raw"": ""64.242.88.10""
+            },
+            ""_ingest"": {
+              ""timestamp"": ""2016-01-26T20:39:10.407+0000""
+            }
+          }
+        },
+        {
+          ""processor_id"": ""processor_2"",
+          ""doc"": {
+            ""_type"": ""_type"",
+            ""_routing"": null,
+            ""_ttl"": null,
+            ""_index"": ""_index"",
+            ""_timestamp"": null,
+            ""_parent"": null,
+            ""_id"": ""_id"",
+            ""_source"": {
+              ""geoip"": {
+                ""continent_name"": ""NORTH AMERICA"",
+                ""city_name"": ""Chesterfield"",
+                ""country_iso_code"": ""US"",
+                ""region_name"": ""Missouri"",
+                ""location"": [
+                  -90.5771,
+                  38.6631
+                ]
+              },
+              ""_raw"": ""64.242.88.10""
+            },
+            ""_ingest"": {
+              ""timestamp"": ""2016-01-26T20:39:10.407+0000""
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+@BigFunger Usage is correct, there seems to be something wrong with the verbose version of the simulate api.";"ingest: The IngestDocument copy constructor should make a deep copy instead of shallow copy
+";core/src/main/java/org/elasticsearch/ingest/core/IngestDocument.java;;;;;;;;;
+16484;2051817780a32c23bc7f15;"Pipeline aggregations do not return metadata
+https://www.elastic.co/guide/en/elasticsearch/reference/2.2/agg-metadata.html
+This works fine for bucket and metrics aggregations, but for pipeline aggregations the supplied metadata isn't returned with the result.
+This is a blocker for the .NET client as we're trying to leverage aggregation metadata for deserialization.
+";Set meta data for pipeline aggregations ; core/src/main/java/org/elasticsearch/search/aggregations/AggregatorParsers.java;;;;;;;;;
+16790;4c6cf7ee88bc75a;"plugin install script not honouring JAVA_OPTS anymore 
+Elasticsearch version: 2.2.0.1 (yum repo)
+JVM version: openjdk version ""1.8.0_71""
+OS version: CentOS 7.2
+Description of the problem including expected versus actual behavior:
+The elasticsearch plugin install script is not honouring the JAVA_OPTS environment variables anymore. this is needed to provide a http proxy for puppet runs.
+Steps to reproduce:
+export JAVA=""-Dhttp.proxyHost=contentproxy.example.com -Dhttp.proxyPort=3128 -Dhttps.proxyHost=contentproxy.example.com -Dhttps.proxyPort=3128""
+/usr/share/elasticsearch/bin/plugin install lmenezes/elasticsearch-kopf
+-> timeout
+please change the last line of the plugin script from:
+eval ""$JAVA""  -client -Delasticsearch -Des.path.home=""\""$ES_HOME\"""" $properties -cp ""\""$ES_HOME/lib/*\"""" org.elasticsearch.plugins.PluginManagerCliParser $arg
+to
+eval ""$JAVA"" $JAVA_OPTS -client -Delasticsearch -Des.path.home=""\""$ES_HOME\"""" $properties -cp ""\""$ES_HOME/lib/*\"""" org.elasticsearch.plugins.PluginManagerCliParser $arg
+";"Pass ES_JAVA_OPTS to JVM for plugins script 
+This commit adds support for ES_JAVA_OPTS to the elasticsearch-plugin
+script.
+";"distribution/src/main/resources/bin/elasticsearch-plugin ,distribution/src/main/resources/bin/elasticsearch-plugin.bat 
+";;;;;;;;;
